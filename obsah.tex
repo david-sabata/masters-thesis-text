@@ -1,0 +1,520 @@
+%===============================================================================
+
+\chapter{Úvod}
+
+\note{TODO: revize}
+
+Hry pro mobilní zaøízení, zejména telefony a tablety, v~souèasnosti za¾ívají nebývalý rozmach. Dalo by se øíct, ¾e jsou nyní tam, kde byly pøed patnácti a¾ dvaceti lety hry poèítaèové. Zatímco typický tým vyvíjející hru pro poèítaè nebo herní konzoli èítá desítky, ale èasto i stovky èlenù, hru pro mobilní telefon je stále mo¾né stvoøit jen v~nìkolika málo lidech.
+
+Neustále narùstající výkon dovoluje pøiblí¾it se kvalitì poèítaèových her. Tìmi se novì díky mobilním zaøízením mù¾e hráè zabavit napøíklad na cestách anebo pøi èekání na autobus. Velká vìt¹ina lidí s~sebou neustále nosí výkonný poèítaè ve velmi malém balení, který je navíc vybaven mno¾stvím sensorù a èasto i soustavným pøipojením k~internetu. To nabízí prostor pro velké mno¾ství inovací a je dobøe ¾e se takové inovativní pøístupy skuteènì objevují.
+
+Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých her pro mobilní zaøízení. Nejdøíve popí¹e platformu na které bude implementace probíhat, dále vysvìtlí principy díky kterým letí a manévruje skuteèné letadlo. Tyto principy poté zjednodu¹í pro pou¾ití v~prostøedí her a shrne souèasné mo¾nosti ovládání herních letadel. Nakonec navrhne novou metodu ovládání zalo¾enou na dotyku a popí¹e souèasný stav její implementace a hry na ní zalo¾ené.
+
+
+
+
+
+\chapter{Vývoj na platformì Android}
+
+\note{TODO: revize, aktualizovat procenta}
+
+Andriod je operaèní systém pro mobilní zaøízení, zalo¾ený na Linuxovém jádøe a poskytovaný ve formì otevøeného zdrojového kódu. Poprvé byl pøedstaven v~roce 2007, první mobilní telefon s~Androidem se dostal na trh o~rok pozdìji. Aktuálnì dle statistik za tøetí ètvrtletí roku 2012 má na poli \textit{chytrých mobilních telefonù} (smartphone) Android jako¾to operaèní systém podíl 75\% \cite{statsIDC}. Aèkoliv je Android pou¾itelný pro mno¾ství rùzných zaøízení (a implementace mimo pole mobilních telefonù se u¾ nyní objevují), bude se tato práce soustøeïovat pouze na jeho vyu¾ití v~mobilních zaøízeních typu mobilního telefonu nebo tabletu. Informace budou vycházet z~\cite{androidDevelopers}.
+
+
+\section{Architektura systému}
+
+\note{OK r1}
+
+Architekturu systému lze rozdìlit do nìkolika úrovní. Na té nejvy¹¹í jsou aplikace psané v~jazyce Java, které pou¾ívají systémové funkce a rozhraní. Distribuují se v~balíècích v~tzv. \textit{mezikódu} (Java bytecode). Mezikód je výstup kompilace a jako takový je pøenositelný mezi platformami. Pro spu¹tìní v¹ak potøebuje interpret, kterým je v~tomto pøípadì virtuální stroj pojmenovaný Dalvik.
+
+Dalvik samotný se nachází na ni¾¹í úrovni, tedy mezi programy a jejich souèástmi v~nativním kódu psanými v~jazyce C, C++ èi jazyce symbolických instrukcí. Zde mù¾eme najít pøedev¹ím sadu systémových knihoven od kterých je vy¾adován vysoký výkon. Jsou jimi napøíklad knihovny pro vykreslování (OpenGL), databáze (SQLite), ¹ifrování (SSL) anebo multimédia. Jejich rozhraní je dostupné jak v~prostøedí Javy, tak skrze \textit{JNI} (Java Native Interface). JNI je rozhraní umo¾òující psát programy v~nìkterém z~vý¹e uvedených jazykù s~mo¾ností pøímého propojení se souèástmi psanými v~Javì. Aplikace jako celek je pak rozdìlená do dvou samostatnì kompilovaných èástí, jejich¾ spolupráci zaji¹»uje Dalvik.
+
+Do nativního kódu je vhodné pøevést pøedev¹ím provádìní nároèných operací v~kritickém èase, napøíklad simulaci fyziky ve 3D scénì anebo výpoèty pro umìlou inteligenci. Není ov¹em vhodné, aèkoliv by se to mohlo zdát, implementovat zde celou aplikaci. Výkon nemusí být oproti interpretovanému kódu nutnì vy¹¹í, a naopak mohou nastat problémy s~pøenositelností a optimalizací pro konkrétní zaøízení \cite{jniPerf}. Tu by bì¾nì provádìl Dalvik, zde ale zále¾í plnì na programátorovi. Konkrétní pøínosy i slabiny pou¾ití JNI budou dále rozvedeny v kapitole \ref{sec:nativni-vyvoj}.
+
+Na nejni¾¹í úrovni je ji¾ zmínìné jádro psané v~jazyce C. To zaji¹»uje pøístup k~hardwaru, multitasking, správu souborového systému a dal¹í základní úlohy. Pøímo k~jádru v¹ak programátor v~drtivé vìt¹inì pøípadù nepotøebuje pøistupovat. Funkce jádra programátor vyu¾ije jen pøi výjimeèných pøípadech kdy vytváøí systémovou aplikaci. Taková aplikace vy¾aduje pro svùj bìh vy¹¹í oprávnìní a bì¾ný u¾ivatel ji nemù¾e spustit. Své uplatnìní ale nachází pøi modifikacích systému, kde jako¾to pøedinstalované aplikace získávají vy¹¹í oprávnìní automaticky. Jeliko¾ je Android otevøená platforma, je mo¾né její souèásti libovolnì upravovat a takto vzniklý systém distribuovat.
+
+
+
+
+
+\section{Verze systému a cílová zaøízení}
+
+\note{TODO: revize, nové procenta a grafy}
+
+Vývoj operaèního systému vede firma Google, která vydává zdrojové kódy nových verzí. Ty se ov¹em pøímo do zaøízení dostávají jen velmi zøídka (jde o~referenèní modely telefonù a tabletù které si nechává vyrábìt pøímo Google). Typicky pøebírají kód jednotliví výrobci a upravují èi doplòují jej tak, aby fungoval pro konkrétní modely (nekompatibilita hrozí pøedev¹ím u~specifického hardwaru jako je 3D displej). Èasto také výrobce pøidává dodateèné aplikace, a» u¾ pro plné vyu¾ití mo¾ností zaøízení nebo èistì pro reklamní úèely. Jak bude výsledný systém vypadat, jaké funkce bude obsahovat a jaká zaøízení bude podporovat je plnì v~zodpovìdnosti výrobcù. Právì kvùli tomu jsou nejèastìji aktualizovány modely z~vy¹¹í cenové tøídy a levnìj¹í zaøízení bývají opomíjena.
+
+Dùsledkem otevøenosti Androidu je jeho roztøí¹tìnost co se verzí týèe. Aktuální rozlo¾ení verzí \textit{API} (programátorské rozhraní, Application Programming Interface) k~prosinci 2012 je na obrázku \ref{fig:api-verze}, data pocházejí z~oficiálního zdroje \cite{statsDroid}. Je jasnì vidìt dominance verzí 9 a 10 (v~u¾ivatelském znaèení jde o~Android verze 2.3.x) které jsou i nyní, po témìø dvou letech od prvního vydání, stále nasazovány do novì prodávaných zaøízení.
+
+\begin{figure}[ht]
+	\begin{center}
+		\vspace{\baselineskip}
+		\includegraphics{fig/api-versions.pdf}
+		\caption{Rozlo¾ení verzí systému Android k~prosinci 2012}
+		\label{fig:api-verze}
+	\end{center}
+\end{figure}
+
+Je èasto pøipomínanou pravdou, ¾e právì zpìtná kompatibilita se star¹ími verzemi systému znamená pro tvùrce aplikací mno¾ství práce navíc. V~pøípadì vývoje her v¹ak toto neplatí, nebo» ve skuteènosti vyu¾ívají jen malou èást API. Zde je z~programové èásti dùle¾itá pøedev¹ím podpora knihovny OpenGL ES ve verzi 2.0. Ta je nyní dostupná na více ne¾ 90\% zaøízení a mù¾eme ji tedy pova¾ovat za standard. Mnohem dùle¾itìj¹í je v¹ak technická vybavenost zaøízení, zejména pak výkon procesoru, výkon grafického èipu a velikost jeho pamìti. Zde jsou parametry èasto velmi rozdílné a relevantní srovnání èi statistiky bohu¾el chybí. Nezanedbatelným parametrem jsou také rozmìry displeje. Vzhledem k~rùzným hustotám zobrazení není vhodné uvádìt pouze rozli¹ení. Vìt¹í vypovídací hodnotu z~hlediska dotykového ovládání má fyzická úhlopøíèka displeje, která je v~souèasnosti nejvíce zastoupená v~rozmìrech okolo 4 palcù. \cite{statsDroid}
+
+
+
+\section{Android pøi tvorbì her}
+\label{sec:vyvoj-her}
+
+\note{OK r1}
+
+Pokud se zamìøíme konkrétnì na vývoj grafických her, zjistíme ¾e hluboké znalosti systému nejsou nezbytné. Android umo¾òuje navrhovat velmi slo¾itá a propracovaná u¾ivatelská rozhraní, hernímu vývojáøi v¹ak bude staèit jen nezbytné minimum. Podobnì je tomu s~dal¹ími vymo¾enostmi systému.
+
+Základním stavebním kamenem ka¾dé aplikace je tzv. \textit{Aktivita} (tøída \texttt{Activity}). Zjednodu¹enì lze øíct ¾e Aktivita je okno aplikace, typicky zobrazované pøes celý prostor displeje (s~výjimkou informaèní li¹ty a pøípadných virtuálních kláves), se kterým mù¾e u¾ivatel interagovat. Aktivita je rodièem jednotlivých elementù u¾ivatelského rozhraní, pøípadných dialogù, nabídek a dal¹ích prvkù. Pro potøeby hry bì¾nì postaèuje jediná aktivita jejím¾ potomkem je speciální oblast do které mù¾e vykreslovat OpenGL (oblast je tøídy \texttt{GLSurfaceView}). Pøi vytoøení této oblasti systém souèasnì spustí speciální vlákno, které má pøístup k~OpenGL kontextu, a mù¾e tedy provádìt grafická volání. Toto vlákno je poté systémem pravidelnì probouzeno tak, aby vykreslování probíhalo v~rychlosti co nejbli¾¹í ideálním 60 snímkùm za vteøinu. S~u¾ivatelským rozhraním systému bì¾ící hra a¾ na výjimky nepracuje, v¹e probíhá v oblasti vyhrazené pro vykreslování.
+
+Kromì zobrazování je Aktivita dùle¾itá také pro pøíjem vstupních událostí. Má mo¾nost \textit{pøihlásit} se u~systému ke sledování dotykù na obrazovce, stiskù tlaèítek, naklonìní zaøízení, pøípadnì stavù dal¹ích sensorù. Tyto události pøicházejí v~oddìleném vláknì které nemá mo¾nost vykreslování. Vlákno typicky upraví vnitøní stav hry a poté se opìt uspí a èeká na dal¹í událost. Platí zde samozøejmì obdobné principy jako u~jiných vícevláknových prostøedí. Jak vlákno pro vykreslování, tak i vlákno pro zpracování události nesmìjí provádìt blokující volání a nemìly by provádìt èasovì nároèné výpoèty. Pro takové pøípady nabízí Android mo¾nost spu¹tìní oddìleného vlákna a postupy jak s~takovým vláknem asynchronnì komunikovat, ani¾ by docházelo k~naru¹ení plynulosti bìhu aplikace, v~tomto pøípadì poklesu poètu vykreslených snímkù za vteøinu.
+
+
+
+\section{Nativní vývoj}
+\label{sec:nativni-vyvoj}
+
+\note{OK r1}
+
+V~pøípadì ¾e zvolíme tvorbu hry èistì na základì Androidu bez mezièlánkù typu frameworku nebo herního engine, mù¾eme narazit na nìkteré nepøíjemnosti. Pøedev¹ím nemù¾eme poèítat s~jakýmkoliv roz¹íøením nad mo¾nosti OpenGL ES. Je plnì v~kompetenci programátora aby si pøipravil potøebné datové struktury a pomocné tøídy. Systém jako takový sice obsahuje nìkolik základních tøíd pro popis vektorù a matic a operace s~nimi, ty ale nebyly navr¾eny pro práci s~OpenGL a dochází zde k~nesrovnalostem (pøíkladem mù¾e být vnitøní reprezentace matice, která je jednou øádková a jindy sloupcová).
+
+Jako jedna z~výhod aplikací v~jazyce Java bývá uvádìna automatická správa pamìti pou¾itím tzv. \textit{garbage collectoru}, tedy souèásti virtuálního stroje, která poèítá reference na ka¾dý alokovaný objekt a v~pøípadì odstranìní posledního výskytu tento objekt uvolní z~pamìti. Aèkoliv mù¾e být tento pøístup pohodlný, pøiná¹í mno¾ství rizik. Vzhledem ke slo¾itosti operaèního systému (a èasto i neznalostí jazyka Java) je pro programátora relativnì snadné dr¾et referenci na objekt, který ji¾ nepou¾ívá a o~kterém pøedpokládá, ¾e ji¾ byl z~pamìti uvolnìn. Tím sice nedochází k~nenávratnì ztraceným blokùm pamìti jako pøi práci v~nativním kódu, pamì»ové nároky aplikace v¹ak zbyteènì rostou. Èím více pamìti pak aplikace pou¾ívá, tím èastìji se bude garbage collector obracet právì na ni a její pamì» se bude sna¾it uvolòovat. A~právì pøi úklidu pamìti dochází ke krátkému pozastavení v¹ech vláken dané aplikace. Toto pozastavení bì¾nì trvá jednotky a¾ desítky milisekund a nemusí být pro u¾ivatele viditelné. Zda se ale aplikace pozastaví a jak dlouho tento stav potrvá závisí na velkém mno¾ství faktorù které programátor nemá pod kontrolou. Je tedy velmi dùle¾ité zvolit vhodnou taktiku práce s~pamìtí a té se striktnì dr¾et. Jednou z~mo¾ností je pøedbì¾né vytvoøení v¹ech objektù které mohou být potøeba s~tím, ¾e v~prùbìhu hry ji¾ nové objekty nevznikají. Toto je v¹ak ideální stav, kterého není snadné dosáhnout. Sofistikovanìj¹í správa pamìti bude popsána v~kapitole \ref{sec:vyvoj-s-knihovnama}.
+
+S~problematikou pamìti souvisí také naèítání dat potøebných ve høe, zejména pak geometrie scény a textur. V~pøípadì 3D modelù opìt narazíme na neexistenci jakýchkoliv pomocných tøíd. Ve vývojáøské komunitì navíc není úplná shoda na tom, který z~formátù ulo¾ení modelù pou¾ívat. Ve výsledku je opìt na programátorovi, aby zvolil vhodný formát, ten nastudoval a implementoval jeho naèítání. To vzhledem ke správì pamìti popsané v~pøedchozí èásti rozhodnì není triviální úkol. (U~mnohých formátù existují více èi ménì zdaøilé implementace jejich naèítání, témìø v¾dy ale diktují v~jakých strukturách budou naètená data ulo¾ena, co¾ nemusí být optimální.) 
+
+V~pøípadì textur je situace o~nìco jednodu¹¹í. Jeliko¾ Android bì¾nì vyu¾ívá rastrová data obvyklých formátù ve svém u¾ivatelském rozhraní, umí takové soubory pøirozenì i naèítat. Nedostatkem zde mohou být zvý¹ené pamì»ové nároky ve chvíli kdy se textura dekóduje ze svého formátu do interní reprezentace (velmi podobné bitmapì) a následnì pøesouvá do grafické pamìti. V~tento okam¾ik jsou souèasnì alokovány dva a¾ tøi objekty reprezentující stejnou texturu, ov¹em s~rozdílnou vnitøní reprezentací. S~velkou pravdìpodobností bude opakovanì docházet ke spu¹tìní automatického úklidu pamìti. V~krajních pøípadech pøi pou¾ití rozmìrných textur mù¾e dojít i k~ukonèení aplikace z~dùvodu pøekroèení maximálního mno¾ství pøidìlené pamìti.
+
+Zmínìné slabiny nízkoúrovòového pøístupu k~tvorbì her jsou jen jedny z~mnoha. Zcela jistì zále¾í na subjektivním pøístupu a zku¹enostech, zda se mù¾ou rozvinout do skuteèných problémù èi nikoliv. Drtivá vìt¹ina tìchto i jiných nedostatkù je samozøejmì øe¹itelná a vývojová prostøedí nabízejí mno¾ství pomocných nástrojù. V extrémním pøípadì mù¾e programátor zajít a¾ tak daleko, ¾e vytvoøí vlastní framework èi engine. Je v¹ak otázkou, zda by mìl své síly soustøedit na ladìní a obcházení záludností systému nebo pou¾ít existující øe¹ení a své síly zamìøit na konkrétní prvky, které odli¹í jeho hru od konkurence.
+
+\vspace{\baselineskip}
+
+Z vý¹e uvedeného je zøejmé, ¾e u~vìt¹iny grafických aplikací je ¾ádoucí pou¾ít existující a ovìøený kód na kterém se bude dále stavìt. Není podstatné zda pùjde o~malou knihovnu, framework èi herní engine -- názvosloví zde není ustálené (v~dal¹ím textu se proto budu dr¾et obecného pojmu \textit{knihovna}). Dùle¾itý je pøínos pro programátora, úspora èasu a prostøedkù, mo¾nost soustøedit se na konkrétní produkt a ignorovat podru¾né problémy. V~neposlední øadì také pou¾ití knihovny znamená pøenesení odpovìdnosti za èást aplikace na nìkoho jiného. To mù¾e znamenat zefektivnìní vývojového procesu, ale také jeho zásadní zpomalení v~pøípadì ¾e se vývoj knihovny zastaví nebo obsahuje chyby které autor nechce èi nemù¾e opravit.
+
+
+
+\section{Komplexní vývojová prostøedí}
+
+Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených øe¹ení. Dva nejroz¹íøenìj¹í zástupci této kategorie jsou Unity 3D a Unreal Engine, kde oba sami sebe oznaèují za herní engine. V~obou pøípadech jde o~specializovaná vývojová prostøedí která se sna¾í upozadit programování ve smyslu psaní kódu a naopak upøednostòují pøímé sestavování scény a definice chování. Vývojáø mù¾e hru hrát a soubì¾nì v~reálném èase upravovat. K~tomu slou¾í interaktivní pohled do scény, kde je mo¾né pracovat na úrovni objektù. Samozøejmostí je mno¾ství pøeddefinovaných chování, fyzikálních vlastností, materiálù a èasto i celých objektù se v¹emi vlastnostmi (napøíklad celé pojízdné auto). Na skuteèné programování pøichází èas pouze ve chvíli, kdy je potøeba nadefinovat vnitøní logiku hry, pøípadnì vytvoøit nové chování nìkterého z~objektù. V~takovém pøípadì pou¾ívá engine vlastní skriptovací jazyk. Jak Unity 3D, tak i Unreal Engine jsou komplexní vývojová prostøedí produkující multiplatformní aplikace a Android je pouze jedním z~mnoha výstupù. Vývojáø ve skuteènosti pøichází s~architekturou Androidu do kontaktu jen minimálnì nebo vùbec. I~pøesto není vhodné tento pøístup opomíjet, nebo» s~pou¾itím právì Unity 3D vznikají v~souèasnosti nejlépe hodnocené a po vizuální stránce nejpropracovanìj¹í hry. Záporem je zde vysoká poèáteèní investice, a to v~øádu minimálnì stovek dolarù.
+
+\note{Obrázek vývojového prostøedí UDK / Unity ?}
+
+\begin{figure}[ht]
+	\begin{center}
+		\vspace{\baselineskip}
+		\includegraphics[width=\textwidth]{fig/shadowgun.jpg}
+		\caption{Hra Shadowgun od brnìnského studia Madfinger Games, vytvoøená v~Unity 3D}
+		\label{fig:shadowgun}
+	\end{center}
+\end{figure}
+
+
+
+\section{Knihovna Libgdx}
+
+Alternativou k~placeným vývojovým nástrojùm jsou men¹í knihovny s~tìsnìj¹í vazbou na systém Android. Nejpou¾ívanìj¹í z~nich jsou AndEngine a Libgdx. První z~jmenovaných se nazývá herním engine, druhý se oznaèuje za framework. Oba jsou v¹ak k~dispozici zdarma ve formì otevøených zdrojových kódù s mo¾ností komerèního i nekomerèního vyu¾ití. Jeliko¾ jsou si obì knihovny velmi podobné, soustøedím se v~dal¹ím popisu pouze na Libgdx, kterou také pou¾iji pøi implementaci. Zdrojem bude z~velké èásti oficiální dokumentace \cite{libgdx} a také kniha ?? ???? ? \cite{mario}. Jejím autorem je Mario Zechner, který je souèasnì tvùrcem knihovny Libgdx a jejím hlavním pøispìvatelem.
+
+\note{TODO: Citovat Mariovu knihu!}
+\note{TODO: Øíct ¾e kapitola èerpá z dokumentace libgdx a scene2d.ui}
+
+Na první pohled vypadá knihovna Libgdx podobnì jako døíve zmínìné nástroje -- stejnì jako ony je schopná produkovat aplikaèní balíèky pro více platforem. Pùvodnì v¹ak vznikala jako knihovna pro tvorbu 2D her pro Androida a a¾ postupem èasu do¹lo roz¹íøení o podporu dal¹ích platforem. Aktuálnì je kromì systému Android podporovaná i tvorba webových appletù a klasických aplikací pro poèítaèe. Jak konkrétnì multiplatformní vývoj probíhá bude popsáno v kapitole \ref{sec:oddeleni-platforem}.
+
+Narozdíl od jiných øe¹ení knihovna neobsahuje ¾ádné vývojové prostøedí ani pøedpøipravená data. Zamìøuje se více na usnadnìní vývoje nabízením pomocných algoritmù a tøíd. Je pak èistì na programátorovi, zda výhod knihovny vyu¾ije. Díky tomu má prostor pro detailní optimalizace na nízké úrovni pro dosa¾ení maximálního výkonu hry, stejnì jako se mù¾e pohybovat na vy¹¹í úrovni, která umo¾ní velmi rychlé prototypování a vytvoøení funkèní aplikace. Mezi pøednosti Libgdx patøí vysoko- i nízkoúrovòové rozhraní pro 2D a 3D grafiku, podpora fyziky, propracovaný systém u¾ivatelského rozhraní, naèítání mno¾ství formátù, práce se zvuky a mnoho dal¹ích. V~neposlední øadì se pak sna¾í stírat rozdíly mezi jednotlivými zaøízeními a verzemi systému Android.
+
+Samozøejmostí je øe¹ení vý¹e zmiòovaných nedostatkù pøi vývoji bez pomocných knihoven. Velká síla Libgdx spoèívá v~tom, ¾e je implementována èásteènì pøímo v~Javì a èásteènì v~nativním kódu. Tím dosahuje vy¹¹ího výkonu zejména u ji¾ zmiòovaných fyzikálních simulací, ale pøedev¹ím má plnou kontrolu nad alokací pamìti a jejím následným uvolòováním. Automatické uvolnìní pøirozenì probíhá pouze v~èásti aplikace be¾ící ve virtuálním stroji, zatímco v~nativním kódu je práce s~pamìtí plnì v~re¾ii programátora. Vhodným propojením tìchto dvou èástí lze bezpeènì alokovat pamì» kterou garbage collector \textit{neuvidí}, a dokonce dosáhnout stavu kdy framework jako takový uvnitø hlavní herní smyèky ¾ádnou pamì» nealokuje. To samozøejmì nemù¾e úplnì zamezit spou¹tìní úklidu pamìti, pøíèinou v¹ak bude bìh ostatních aplikací a systému, nikoliv samotné hry. V~praxi se pak pamì» uklízí jen velmi výjimeènì, probíhá velmi rychle (garbage collector spravuje jen velmi malé mno¾ství pamìti), a hra tedy mù¾e bì¾et plynule.
+
+\subsection{Struktura aplikace}
+
+Vstupním bodem aplikace je instance tøídy \texttt{Application}, která obsahuje základní herní smyèku. Ta je volaná systémem právì na døíve zmiòované frekvenci blízké 60 snímkùm za sekundu. Pøi tvorbì grafických aplikací se èasto vyu¾ívá oddìlené volání pro aktualizaci scény a její vykreslení, Android v¹ak takové rozdìlení nepodporuje (z dùvodu návaznosti na systémový element s OpenGL kontextem, popsaný v kapitole \ref{sec:vyvoj-her}. Je samozøejmì mo¾né aktualizaci scény a její vykreslení oddìlit ruènì, napøíklad v pøípadì ¾e není nutné se scénou manipulovat pøíli¹ èasto, ale chceme zachovat plynulost vykreslování. Typické vyu¾ití mù¾e být u tahových her, kdy se herní logika provádí jen v okam¾iku tahu, zatímco zobrazování probíhá v ka¾dém snímku, napøíklad kvùli probíhajícím animacím. Je samozøejmì mo¾né optimalizovat je¹tì více, animace nepou¾ívat a vykreslovat jen ve chvíli, kdy se scéna zmìní. V takovém pøípadì dochází k maximální úspoøe energie. Aplikace ale mù¾e pùsobit znaènì statickým dojmem a pro akèní hry tento pøístup není vhodný vùbec.
+
+Zatímco samostatná tøída aplikace je vhodná jen pro nejtriviálnìj¹í aplikace, u slo¾itìj¹ích bude ¾ádoucí rozdìlit aplikaci do nìkolika èástí. Zde knihovna nabízí èlenìní do tzv. \textit{obrazovek} (potomci tøídy \texttt{Screen}), které mají vlastní ¾ivotní cyklus. Hlavní tøída aplikace pak obstarává pouze pøepínání mezi jednotlivými obrazovkami. Ty lze pova¾ovat za oddìlené logické celky a èasto je mo¾né je i samostatnì vyvíjet, co¾ bude pøínosem zejména pro víceèlenný tým vývojáøù. Obrazovka jako taková v¹ak ¾ádné vy¹¹í funkce nemá a kromì zmínìného zpøehlednìní kódu nabízí jen mo¾nost jednoduchého vykreslování texturovaných obdélníkù (tzv. \textit{sprite}).
+
+
+\subsection{Zpracování vstupních událostí}
+
+Vstupní události jsou závislé na aktuální platformì, a proto jsou v Libgdx skryty pod jednotným rozhraním, kdy konkrétní implementaci doplòuje sama knihovna právì podle aktuálního prostøedí. Programátor díky tomu nemusí øe¹it, zda bude aplikace ovládaná dotykem èi my¹í, klávesnicí nebo hardwarovými tlaèítky mobilního telefonu nebo tøeba ovladaèem typickým pro herní konzole. Je zøejmé, ¾e v¹echny typy událostí nebudou podporovány na v¹ech platformách. Knihovna v¹ak zavádí vhodné substituce a sjednocení, kde napøíklad kliknutí na dotykovém displeji odpovídá kliknutí levého tlaèítka my¹i. Na vy¹¹í úrovni je pak mo¾né detekovat celá gesta jako chycení a táhnutí nebo zoom.
+
+Pøirozenì lze definovat i vlastní zpracování vstupu. Pøíkladem mù¾e být køí¾ový ovladaè vykreslovaný na obrazovku v pøípadì, ¾e aplikace bì¾í na dotykovém zaøízení. Vnitønì pak mù¾e takový ovladaè \textit{pøekládat} dotykové události na události stisku klávesy. Ty pak aplikace obslou¾í jako bì¾né události a programátor tak velmi snadno získává podporu pro dotyková zaøízení, poèítaèové klávesnice i konzolové ovladaèe.
+
+\note{TODO: lépe pøelo¾it "vstupní procesor" ?}
+
+Toto chování je umo¾nìno tzv. \textit{vstupními procesory} (tøída \texttt{InputProcessor}). Vstupní procesor je tøída obsahující kód pro zpracování vstupních událostí. V okam¾iku zpracování v procesoru u¾ je známo o jaký typ události jde. Procesor jako takový tedy ¾ádnou detekci neprovádí. Typicky obsahuje referenci na objekty aplikaèní logiky a s tìmi nìjak pracuje. Na konci svého bìhu vrací návratovou hodnotu podle toho, zda událost zpracoval (a mìla by tedy zaniknout) anebo ne (co¾ nutnì neznamená ¾e na událost nijak nereagoval).
+
+Vstupních procesorù mù¾e být v aplikaci nìkolik, aktivní je ale v¾dy pouze jeden. Pro komplexní zpracování vstupù se proto zavádí tzv. multiplexer (tøída \texttt{InputMultiplexer}), který pøedstavuje kontejner vstupních procesorù, pøièem¾ rozhraní procesoru také sám implementuje. Pøi pøíchodu události ji pouze pøedává jednotlivým procesorùm do té doby, dokud ji nìkterý z nich nezpracuje. 
+
+Tím je mo¾né vytváøet kaskády vstupních procesorù a» u¾ pro zmínìné sjednocení vstupù napøíè platformami anebo pro obsluhu událostí ze slo¾itìj¹ích scén. Pøíkladem mù¾e být dotykem ovládaná hra vyu¾ívající doplòkové ovládací prvky na obrazovce. Vhodným øe¹ením by mohl být multiplexer zastøe¹ující vstupní procesor pro doplòkové prvky (pøicházející na øadu jako první, tedy mù¾e událost zpracovat a nepustit dál) a procesor pro ovládání samotné hry. Takto oddìlené zpracování vede nejen k pøehlednìj¹ímu kódu, ale i k jednodu¹¹í obsluze událostí ve chvílích, kdy existuje více prvkù soubì¾nì èi postupnì reagujících na stejný vsutp.
+
+
+
+
+
+\subsection{Tvorba u¾ivatelského rozhraní}
+
+Velmi silnou souèástí Libgdx z hlediska tvorby u¾ivatelského rozhraní je knihovna Scene2D.ui (\note{TODO: citace}), která je pou¾itelná i samostatnì v obecných projektech v jazyce Java. Jejím základním prvkem je tabulka (tøída \texttt{Table}), pro kterou se definují jednotlivé buòky a jejich rozdìlení do øádkù. Chování je podobné tabulkám vytvoøeným v jazyce HTML v kombinaci s CSS. Buòkám lze nastavovat pevné èi pomìrné rozmìry, vnitøní okraje, pozadí a nìkteré dal¹í atributy. Je také mo¾né buòky v rámci jednoho øádku sluèovat; vertikální sluèování podporované není, ale lze jej dosáhnout jinou cestou. Specifickým parametrem bunìk je pak \textit{rozpínavost} v rámci øádku a v rámci sloupce. Vhodnou kombinací je mo¾né vytvoøit dynamickou, tzv. \textit{fluidní} tabulku, která se bude pøizpùsobovat svému obsahu i rozmìrùm zobrazovací plochy.
+
+Nad tabulkami jsou dále vystavìny základní prvky u¾ivatelského rozhraní jako tlaèítka, dialogy, pole pro zadání textu, obrázky, bloky textu, posouvatelné panely a dal¹í. Vyu¾ití tabulky lze demonstrovat na tlaèítku. To je ve skuteènosti tabulka o tøech øádcích a tøech sloupcích, kde prostøední buòka obsahuje textový popisek èí obrázek. V¹echny jeho buòky pak mají vhodnì nastavené pozadí, èím¾ lze vytvoøit napøíklad i tlaèítka se zakulacenými okraji. Samozøejmì si opìt zachovává schopnost pøizpùsobit rozmìry svému obsahu i okolí. Slo¾itìj¹í prvky vznikají obdobnì, pøièem¾ èasto vyu¾ijí i mo¾nost tabulky do sebe libovolnì vnoøovat.
+
+Prvky rozhraní také nemusejí být nutnì statické. Ka¾dý prvek mù¾e mít nadefinováno své vlastní chování a v rámci scény se chovat zcela autonomnì. Souèasnì knihovna nabízí mno¾ství pøeddefinovaných efektù, které lze prvkùm pøiøazovat. Typicky jde o geometrické transformace nebo práce s barvami èi prùhledností. Efekty dostávají jako parametr dobu trvání a krajní hodnoty, mezi kterými v èase interpolují. Podobnì jako pøi zpracování událostí i zde existují speciální efekty chovající se jako kontejnery efektù bì¾ných. Ty umo¾òují nechat efekty probíhat souèasnì anebo v øadì za sebou. Samozøejmostí je opìt libovolné vnoøování, èím¾ lze vytvoøit velmi komplexní chování.
+
+\vspace{\baselineskip}
+
+\note{Tento odstavec je divný, proto¾e nevím v jakém rodì o Stage mluvit}
+Koøenovou komponentou u¾ivatelského rozhraní je Stage \note{pøeklad?} (tøída \texttt{Stage}). Pøedstavuje kontejner na vý¹e popsané prvky rozhraní. 
+- zabírá celou plochu
+- øe¹í kameru
+- øe¹í z-order (podle poøadí pøidání nebo explicitnì)
+
+
+
+\note{obrázek - menu UI se zapnutým debugem }
+
+\note{popsat skiny?}
+
+\note{popsat bitmapové fonty?}
+
+\note{scene2d.ui umí dìlat i hry}
+
+
+\note{tmp}
+Libgdx také obsahuje pokroèilou práci s~texturami, kdy programátora odstiòuje od zmiòovaného pøevodu mezi formáty a pøesouvání do grafické pamìti. Navíc pøidává funkce pro práci s~\textit{texturovými atlasy} (nìkolik samostatných textur seskládaných v~jediném souboru), vèetnì mo¾nosti jejich automatického vygenerování. K~úspoøe poté dochází pøedev¹ím pøi vykreslování, které je v~pøípadì jediné textury mnohem rychlej¹í ne¾ pøi pou¾ití jednotek èi desítek men¹ích textur.
+
+
+
+
+\section{Distribuce aplikací}
+
+\note{- podepisování}
+\note{- obfuskace? licencování? root?}
+\note{- free markety}
+\note{- vývojáøský úèet u Google}
+\note{- Google Play}
+\note{- nemo¾nost beta testerù nebo obecnì dìlení do skupin}
+\note{- featuring na hlavní stranì / hlavní stranì kategorie}
+
+
+
+
+
+
+
+\chapter{Ovládání skuteèného letadla}
+
+\note{TODO: revize}
+
+Tato kapitola popí¹e principy ovládání letadel a leteckých her. Shrne existující metody a pøedstaví novou metodu zamìøenou na ovládání akèních leteckých her v~mobilních zaøízeních. 
+
+Pøed návrhem herního ovládání letadla je vhodné se seznámit s~tím, jak létají skuteèná letadla. Více ne¾ o~konkrétní rovnice zde pùjde o~základní principy díky kterým se letadlo udr¾uje ve vzduchu. Rovnice by toti¾ nebylo mo¾né vyèíslit bez znalosti konkrétních koeficientù, které jsou pro ka¾dou konstrukci odli¹né. I~s~nimi by v¹ak bylo exaktní matematické popsání letícího letadla velmi obtí¾né. Následující kapitoly budou èerpat pøedev¹ím z~\cite{umeniLetat} a \cite{nasa}.
+
+
+\section{Síly pùsobící za letu}
+
+\note{TODO: revize}
+
+ Vyjdeme nyní z~takzvaného \textit{ustáleného vodorovného letu}. V~tuto chvíli se letadlo pohybuje konstantní rychlostí s~nulovým zrychlením, nestoupá, neklesá a není v~náklonu. Pùsobí na nìj síly vyznaèené na obrázku \ref{fig:letadlo-sily}. Jsou jimi vzlak, gravitaèní tíha, tah a odpor. Pøi ustáleném letu jsou tyto síly v~rovnováze. Ne v¹ak v¹echny navzájem, jak je nìkdy mylnì uvádìno, ale pouze dvojice sil pùsobících proti sobì. Pro ilustraci mù¾eme pou¾ít namísto celého letadla pouze køídlový profil, na kterém jsou velièiny více zøejmé.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.25]{fig/airfoil.pdf}
+		\caption{Síly pùsobící na letadlo pøi ustáleném vodorovném letu}
+		\label{fig:letadlo-sily}
+	\end{center}
+\end{figure}
+
+Nejdùle¾itìj¹í silou je vztlak. Ten pùsobí kolmo vzhùru od køídla a pøi vodorovném letu vyrovnává tíhu letadla. Dochází k~nìmu díky typickému profilu køídla, kdy na jeho spodní stranì vzniká vy¹¹í tlak vzduchu a souèasnì na horní se tlak vzduchu sni¾uje. Pro zji¹tìní celkového vztlaku køídla je potøeba znát mno¾ství parametrù, jako je hustota prostøedí èi rychlost pohybu køídla. Pøedev¹ím ale zále¾í na koeficientech popisujících tvar køídla, jeho plochu, rozpìtí a tvar jeho profilu. Pokud by nás zajímal celkový vztlak letadla, bylo by samozøejmì nutné zapoèítat dílèí vztlakové síly na celém jeho povrchu.
+
+Dal¹í z~hlavních sil je tah motoru. Ten je tvoøen jednou èi více vrtulemi. Lopatky vrtule svým tvarem ¾enou vzduch za sebe (tedy smìrem na trup a køídla letadla), èím¾ vzniká síla táhnoucí vrtuli, a tím i celé letadlo, dopøedu. Ta¾ná síla opìt závisí na mno¾ství parametrù které popisují stavbu vrtule, poèet lopatek a jejich aerodynamické vlastnosti, a samozøejmì také na rychlosti jakou se vrtule otáèí. S~vy¹¹í rychlostí stoupá tah a souèasnì se zvy¹uje rychlost proudìní vzduchu v~oblasti za vrtulí. Tím se nepøímo zvy¹uje vztlak køídel, ale také se mìní citlivost ovládacích prvkù letadla.
+
+Gravitaèní síla pùsobící na letadlo je zøejmá a v¾dy smìøuje ke støedu Zemì. 
+
+Poslední silou je odpor který klade vzduch letícímu letadlu a pùsobí v¾dy v~opaèném smìru ne¾ je smìr jeho pohybu. Je slo¾ený ze dvou hlavních slo¾ek. Jednou je odpor zpùsobený tvarem køídla, pota¾mo celého letadla, a jeho pohybem v~prostøedí. Druhou slo¾kou je odpor vznikající na koncích køídel. Jak ji¾ bylo zmínìno, u~horní èásti køídla se nachází podtlak, zatímco u~spodní èásti je naopak pøetlak. V~místì kde je køídlo spojeno s~trupem letadla se tyto tlaky \textit{nepotkávají}, na opaèném konci køídla v¹ak ano. Dochází k~jejich pøirozenému vyrovnávání a vznikají víry, které pokrucují proudìní vzduchu a mìní smìr vztlakové síly køídla. Její pomyslný vektor pak není kolmý ke køídlu, ale mírnì sklopený, èím¾ pøispívá k~velikosti odporové síly. Èím vy¹¹í vztlak køídlo tvoøí, tím více odporové síly souèasnì vzniká. Obecnì je pro zji¹tìní odporové síly dùle¾itá rychlost pohybu a charakteristika prostøedí, pøedev¹ím pak samotný tvar køídel a celého letadla.
+
+Výsledné chování letadla zále¾í v¾dy na pomìru zmínìných sil. Pokud by køídla netvoøila dostateèný vztlak (z~dùvodu konstrukce nebo nízké rychlosti pohybu), letadlo se nevznese, pøípadnì spadne. Je v¹ak nutné si uvìdomit, ¾e s~výjimkou tahu motoru nemá pilot letadla mo¾nost ¾ádné z~uvedených parametrù zmìnit, nebo» jsou dány konstrukcí letadla.
+
+
+
+\section{Ovládací prvky a manévry}
+\label{sec:let-skutecneho-letadla}
+
+\note{TODO: revize}
+
+Pro popis jiného ne¾ vodorovného letu je potøeba zavést nový pojem, a sice \textit{úhel nábìhu}. Jde o~úhel, který svírá tìtiva profilu køídla s~proudem vzduchu, který na ni dopadá. Úhel nábìhu je vyznaèený na obrázku \ref{fig:uhel-nabehu}.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.4]{fig/angle-of-attack.pdf}
+		\caption{Úhel nábìhu køídla}
+		\label{fig:uhel-nabehu}
+	\end{center}
+\end{figure}
+
+
+Navzdory èasté pøedstavì ve skuteènosti neplatí, ¾e by smìr letu letadla byl v¾dy toto¾ný s~osou jdoucí jeho trupem. Pøi dostateèné rychlosti mù¾e letadlo letìt vodorovným letem, pøièem¾ trup bude skuteènì soubì¾ný s~dráhou letu. Vztlak køídla bude v~tomto pøípadì dostateèný právì díky vysoké rychlosti proudìní. Pokud je ale cílem ni¾¹í letová rychlost (napøíklad z~dùvodu úspory paliva), bude pro zachování vodrovného smìru nutné aby pilot zvý¹il úhel nábìhu køídel (pou¾ije k~tomu vý¹kové kormidlo -- viz dále). Tím zvý¹í i jejich koeficient vztlaku a zamezí klesání letadla. V~této chvíli se letadlo pohybuje vodorovnì, ale jeho pøíï je vý¹ ne¾ záï a míøí tedy mírnì nahoru (úhel o~který je letadlo naklonìno odpovídá úhlu nábìhu). Pøibli¾ný vztah mezi úhlem nábìhu a vztlakovým koeficientem køídla je znázornìn na obrázku \ref{fig:vztlak}. Pøesný tvar prùbìhu je opìt dán konstrukèními vlastnostmi konkrétního køídla.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.5]{fig/lift-coefficient.pdf}
+		\caption{Závislosti vztlakového koeficientu na úhlu nábìhu u~neidentifikovaného køídla. Zdroj: Wikimedia Commons na základì dat z~proframu XFOIL}
+		\label{fig:vztlak}
+	\end{center}
+\end{figure}
+
+Nejvy¹¹í hodnota vztlakového koeficientu je vidìt v~oblasti kolem $17^{\circ}$ (opìt je nutné pøipomenout ¾e tento prùbìh je jen jedním z~mnoha mo¾ných a napøíklad sportovní letadla mohou efektivnì vyu¾ívat i vy¹¹ích úhlù nábìhu). Pøi dal¹ím zvy¹ování úhlu nábìhu se mìní proudìní kolem horní èásti køídla z~\textit{laminárního} (proudnice jsou rovnobì¾né a na pohled vypadají jako by byly rozdìlné do vrstev) na proudìní \textit{turbulentní} (proudnice se trhají a vzájemnì prolínají, vznikají vzdu¹né víry). V~dùsledku vznikajících turbulencí klesá vztlak køídla a souèasnì roste jeho povrchové tøení, èím¾ stoupá i jeho odpor. Na hranici blízké $25^{\circ}$ pak køídlo ztrácí vztlak úplnì a letadlo se zaène propadat. Této situaci se èasto øíká \textit{pøeta¾ení}.
+
+\vspace{\baselineskip}
+
+Pilot k~øízení letadla pou¾ívá takzvané \textit{primární ovládací prvky}. Jsou jimi klapky na køídlech a vý¹kové kormidlo, obojí ovládané kniplem, a dále smìrové kormidlo ovládané pomocí pedálù. V¹echny tyto ovládací prvky ve skuteènosti plní jedinou èinnost, a sice ¾e mìní úhly nábìhu jednotlivých èástí letadla. Pøesto¾e jsou køídla pevnì spojená s~trupem, jsou na nich pohyblivé klapky. Stejnì tak vodorovné vý¹kové i svislé smìrové kormidlo má tvar køídla, jeho¾ èást u~odtokové hrany je pohyblivá.
+
+Pokud nyní pøestaneme dosud popisované síly vztahovat k~celému letadlu, ale budeme je uva¾ovat jako samostatné síly vznikající v¾dy na konkrétním køídle (za køídla zde pova¾ujeme i vý¹kové a smìrové kormidlo), mù¾eme snadno popsat základní letecké manévry.
+
+Proces stoupání èi klesání pilot reguluje nastavením klapek vý¹kového kormidla. V~pøípadì stoupání klapky zvedne, èím¾ sní¾í úhel nábìhu kormidla a tím i jeho vztlak. Záï letadla zaène klesat, úhel nábìhu hlavních køídel letadla se zaène zvy¹ovat a s~ním i jejich vztlak, pota¾mo vztlak letadla jako celku. Pøi klesání je situace analogická, pouze se velièiny pohybují opaèným smìrem.
+
+U~zatáèecího manévru èasto panuje pøesvìdèení, ¾e k~jeho provedení slou¾í smìrové kormidlo, od kterého se u¾ podle názvu oèekává ¾e bude øídit smìr letu. Z~pøedchozích odstavcù ji¾ mù¾eme tu¹it ¾e tomu tak není. Pokud by pilot pøi vodorovném letu pou¾il smìrové kormidlo, záï letadla by se sice vùèi smìru letu natoèila, samotný smìr letu by se v¹ak zmìnil jen málo. Tím jak se osa letadla natáèí vùèi smìru letu souèasnì roste proudìní kolem køídla které je více vystaveno pøímému smìru letu. Tím na køídle vzniká vìt¹í vztlak a letadlo zaèíná podélnì rotovat, aèkoliv je knipl stále ve výchozí poloze.
+
+Správný prùlet zatáèkou probíhá v~náklonu. Pilot nejdøíve zatoèením kniplu nakloní klapky na køídlech (které se narozdíl od vý¹kového a smìrového kormidla pohybují navzájem protichùdnì) tak, ¾e na jednom z~køídel se vztlak zvý¹í, zatímco na druhém se sní¾í. Letadlo tedy letí v~náklonu a vztlak vznikající na køídlech nepùsobí kolmo vzhùru, ale kolmo k~horním stranám køídel (vztlak vzniká stále stejnì, pouze jeho smìr ji¾ není pøímo opaèný ke gravitaèní síle). Mù¾eme tedy vztlakovou sílu pomyslnì rozlo¾it na skuteèný vztlak dr¾ící letadlo ve vzduchu a slo¾ku vodorovnou, která pùsobí jako dostøedivá síla a nutí letadlo skuteènì zatáèet. Smìrové kormidlo pøi prùletu zatáèkou slou¾í regulaci vzájemné polohy pøídì a zádi letadla. Nìkterá letadla mají toti¾ tendenci v~dùsledku rùznì velkého odporu na køídlech (napøíklad pokud letadlo automaticky nenastavuje klapky do vzájemnì opaèných poloh) \textit{sklouzávat} po pøídi nebo zádi do støedu pomyslného ku¾ele po jeho¾ vnitøní stìnì letadlo zatáèkou prolétává. Vý¹kové kormidlo mù¾e zatáèecí manévr doplnit na vzestupný èi sestupný.
+
+
+
+\section{Stabilita letadla}
+
+\note{TODO: revize}
+
+Ka¾dé letadlo má svou konstrukcí dané stabilizaèní schopnosti, které se uplatòují ani¾ by pilot zasahoval do øízení. Stabilitu dìlíme na statickou a dynamickou.
+
+Statická stabilita popisuje reakci letadla ve chvíli kdy dojde k~naru¹ení jeho dosavadního smìru letu napøíklad poryvem vìtru. U~staticky stabilního letadla vznikne opaèná síla sna¾ící se letadlo vrátit do pùvodní polohy. Staticky neutrální letadlo bude pokraèovat v~pozmìnìném smìru a u~staticky nestabilního letadla se dokonce objeví síla pùsobící spolu s~ru¹ivým vlivem, která odklon od pùvodního smìru je¹tì více posílí.
+
+Dynamická stabilita popisuje stabilitu letadla v~dlouhodobém horizontu. Dynamicky stabilní letadlo sice bude pøi vyrovnávání svého smìru oscilovat kolem rovnová¾né polohy (vodorovného letu), ale po èase se v~nìm ustálí. Dynamicky neutrální letadlo bude oscilovat s~poøád stejnou sílou a dynamicky nestabilní letadlo bude od rovnová¾né polohy dokonce divergovat.
+
+Letadlo které je staticky i dynamicky stabilní je vìt¹inou snáze ovladatelné a vhodné pro zaèínající piloty. Pokud je v¹ak tendence letadla dosáhnout stabilní polohy pøíli¹ velká, mù¾e to být ke ¹kodì, nebo» bude k~ovládání letadla nutné vynalo¾it vy¹¹í sílu. Aè se to nemusí zdát, není v¾dy cílem zkonstruovat dokonale stabilní letadlo a v~nìkterých pøípadech mù¾e být vhodné pokud se letadlo chová neutrálnì nebo dokonce nestabilnì.
+
+
+
+
+
+
+
+
+\chapter{Návrh dotykového ovládání a letecké hry}
+
+\section{Herní ovládání letadla}
+
+\note{TODO: revize}
+
+V~následujících podkapitolách bude popsáno zapojení vý¹e vysvìtlených mechanik letu do leteckých her. Zamìøím se pøitom pøedev¹ím na takzvané \textit{causual} hry, tedy oddechové hry které od hráèe nevy¾adují vysokou úroveò zku¹eností. U~her a programù profilujících se jako simulátory je zøejmá snaha co nejvíce se pøiblí¾it reálné pøedloze jak u~letové dynamiky, tak i z~hlediska ovládání letadla. I~pøesto lze u~simulátorù pozorovat vyu¾ití nìkterých zjednodu¹ení zejména z~oblasti ovládání.
+
+
+\subsection{Chování letadla}
+
+\note{TODO: revize}
+V~pøedchozích kapitolách byla zmínìna slo¾itost numericky pøesného výpoètu v¹ech sil pùsobících na letadlo. Nejen ¾e by bylo potøeba znát a¾ desítky reálných koeficientù pro ka¾dý jeden typ letadla, ale po¾adavky na výpoèetní výkon by byly velmi vysoké (tím spí¹e pokud uva¾ujeme mobilní zaøízení). Proto se v~pøípadì leteckých simulátorù a her pou¾ívají matematické modely s~rùznou úrovní vìrnosti fyzikální pøedloze \cite{simulationModels}.
+
+Je pochopitelné, ¾e v~pøípadì simulátorù pro prvotní výcvik pilotù je maximální vìrnost simulace nezbytná. V~pøípadì leteckých her se v¹ak ukazuje, ¾e pøíli¹ reálnì ovládané letadlo je spí¹e na obtí¾. Hráè causual her neumí a èasto ani nechce umìt plnohodnotnì ovládat letadlo. Jeho prvotním cílem je splnìní herních úkolù, typicky sestøelení protivníka nebo let na dané místo. Letadlo je v~této kategorii her pouze prostøedkem k~dosa¾ení cíle, nikoliv cílem samotným.
+
+Do matematických modelù se proto vkládají zjednodu¹ující pøedpoklady, jako napøíklad stabilita letadla pøi zatáèení. To potom nemá tendence v~zatáèce sklouzávat do jejího støedu (tento jev byl detailnìji popsán v~kapitole \ref{sec:let-skutecneho-letadla}). Èastým zjednodu¹ením je také nemo¾nost dosáhnout bodu pøeta¾ení (opìt viz kap. \ref{sec:let-skutecneho-letadla}). Pomyslný omezovaè nedovolí dal¹í zvy¹ování úhlu nábìhu a letadlo pøeta¾ení nikdy nedosáhne. Tím odpadne èást simulace, kdy se letadlo ocitá ve vzduchu s~minimálním nebo ¾ádným vztlakem a mìlo by zaèít padat. Jeliko¾ v¹ak bì¾ný hráè nemá nejmen¹í ponìtí o~úhlu nábìhu a jeho dùsledcích na let, je tohoto zjednodu¹ení èasto vyu¾íváno. Nevýhodou tohoto pøístupu mù¾e být pro hráèe viditelné omezení manévrovacích mo¾ností. Pokud se ale stále dr¾íme v~kategorii her které se nesna¾í býti skuteènými simulátory, není tento problém nijak záva¾ný. Navíc lze vhodným návrhem hry takové omezení ospravedlnit, napøíklad pou¾itím grafického modelu letadla který v~hráèi vyvolá dojem tì¾kopádnosti a nízkého výkonu. Od takového letadla potom podvìdomì nebude oèekávat velké manévrovací schopnosti a snáze pochopí, kdy¾ narazí na jejich hranice, které ve skuteènosti slou¾í primárnì ke zjednodu¹ení celého výpoètu.
+
+Podobnì lze mlèky pøedpokládat existenci nìjakého inteligentního øízení, které hráèi asistuje. To mù¾e kontrolovat dal¹í ovládací prvky letadla slou¾ící zejména ke zjednodu¹ení práce pilota v~nìkterých specifických situacích. (Jde mimo jiné o~tzv. \textit{sekundární ovládací prvky}, jejich¾ popis je v¹ak nad rámec této práce.) Takový pomocný systém je zcela jistì reálný a mù¾eme na nìj nahlí¾et jako na jistou formu autopilota.
+
+\vspace{\baselineskip}
+
+Z~pohledu ovládání letadla se hry v~drtivé vìt¹inì omezují výhradnì na klapky na køídlech a vý¹kové kormidlo. Pokud uva¾ujeme zmínìné \textit{asistované øízení}, lze tìmito dvìma prvky letadlo plnohodnotnì (stále pouze z~hlediska hry, nikoliv simulátoru) ovládat. V~nìkterých pøípadech bývá doplnìna i mo¾nost ovládání smìrového kormidla. U~nìj v¹ak nastává èasté nepochopení jeho funkce a bývá implementováno jako mo¾nost zatáèení letadla bez náklonu pøi zachování vodorovného letu. Takové letadlo pak zatáèí podobnì jako napøíklad ponorka. Je otázkou, zda toto pramení z~neznalosti vývojáøe hry anebo zda jde o~objednávku samotných hráèù. Prùlet zatáèkou je toti¾ pøi pou¾ití \textit{nepochopeného} smìrového kormidla mnohem snaz¹í, dává hráèi vìt¹í kontrolu nad letadlem a pøirozenì sni¾uje po¾adavky na hráèovu zruènost. Ve výsledku zále¾í na herním vývojáøi a na návrhu a zamìøení hry, zda se bude dr¾et reálného (by» zjednodu¹eného) ovládání letadla anebo se podvolí poptávce po snadno ovládaném letadle, pøesto¾e by tím popíral fyzikální zákonitosti.
+
+V~neposlední øadì u~vìt¹iny leteckých her chybí mo¾nost regulovat tah motoru. To je velièina se kterou pilot skuteèného letadla v~prùbìhu letu a pøedev¹ím pak manévrù aktivnì pracuje. Je ale také jednou z~velièin ovlivòujících celkový vztlak letadla a pøi neznalosti v¹ech dùsledkù by pro hráèe bylo snadné ztratit nad letadlem kontrolu. Stejnì tak se èasto ignoruje døíve zmiòovaná zmìna citlivosti ovládacích prvkù letadla v~závislosti na tahu motoru. Obvyklým øe¹ením bývá opìt pøedpoklad existence nìjakého palubního systému který tah motoru automaticky reguluje. Ve výsledku bývá v~prùbìhu letu tah konstantní a k~jeho zmìnám dochází pouze pøi vzletu nebo pøistávání. Èasto také informace o~otáèkách motoru úplnì chybí a jedinou zpìtnou vazbou hráèi je zvuk který motor vydává.
+
+
+
+
+\subsection{Vstupní metody}
+
+\note{TODO: revize}
+
+Pokud se podíváme na letecké hry pro poèítaèe, pøípadnì pro herní konzole, jsou ovládací mo¾nosti vcelku omezené. Prakticky v¾dy se omezují na ovládání ve dvou osách, kdy pohyb v~jedné ose øídí klapky na køídlech letadla a pohyb v~druhé ose ovládá vý¹kové kormidlo. Subjektivnì je asi nejménì pohodlnou a souèasnì nejménì pøesnou metodou ovládání klávesnice poèítaèe. Reakce na øízení jsou z~povahy kláves skokové a nelze ovlivòovat jejich intenzitu. Pozitivem pou¾ití klávesnice mù¾e být velké mno¾ství kláves, které mù¾ou ovládat dal¹í prvky letadla. Tyto mo¾nosti v¹ak vyu¾ijí spí¹e simulátory.
+
+O~mnoho lep¹í kontrolu nabízí joystick, pøípadnì jeho zmen¹ená varianta na ovladaèích souèasných herních konzolí. Ovládání je opìt dvouosé, ov¹em s~mo¾ností plynule regulovat intenzitu. Nejdùle¾itìj¹í vlastností je ale podobnost se skuteèným øízením letadla pomocí kniplu. To umo¾òuje pøedev¹ím v~pøípadì joysticku mnohem vy¹¹í vtáhnutí hráèe do hry. Nevýhodou mù¾e být omezený poèet doplòkových ovládacích prvkù, typicky je na ovladaèi pouze nìkolik málo dal¹ích tlaèítek. Pokud by hra nabízela mo¾nost detailnìj¹ího ovládání letadla (napøíklad vysouvání podvozku nebo vypou¹tìní svìtlic pro odlákání nepøátelských støel), mohl by to být problém.
+
+\vspace{\baselineskip}
+
+Roz¹íøení výkonných mobilních zaøízení umo¾nilo pøíchod nových metod ovládání. Mù¾eme ignorovat generaci mobilních telefonù s~klávesnicí, jeliko¾ ty je¹tì nemìly dostatek výkonu a k~roz¹íøení leteckých her u~nich nedo¹lo, a zamìøme se pouze na zaøízení s~velkým dotykovým displejem. Taková zaøízení èasto nemají hardwarová tlaèítka nebo taková tlaèítka slou¾í systému a hra je pro své potøeby nemù¾e vyu¾ít. Novým prvkem je ale zapojení sensorù. Konkrétnì gyroskopu a akcelerometru, které sledují orientaci, respektive zrychlení zaøízení v~trojrozmìrném prostoru. Hráè ovládá letadlo naklánìním zaøízení pøièem¾ se typicky neuva¾uje svislá osa. Natoèení do stran (pohyb podobný zatáèení volantem) ovládá klapky letadla a naklonìní od sebe èi k~sobì ovládá vý¹kové kormidlo.
+
+Ovládání her pomocí sensorù se rychle roz¹íøilo pravdìpodobnì díky své inovativnosti a v~souèasnosti si udr¾uje pøinejmen¹ím u~leteckých her vìt¹inový podíl. Má v¹ak také nìkolik nedostatkù. Asi nejzásadnìj¹ím je výchozí pozice zaøízení. Pøi pou¾ívání sensorù je potøeba stanovit referenèní bod ke kterému namìøené hodnoty vztahujeme. Èastým øe¹ením je nastavit bod na zaèátku ka¾dého letu, poté se ji¾ mìnit pøirozenì nemù¾e. Problém nastává ve chvíli, kdy se hráè hrající hru sám pohybuje ve skuteèném svìtì. Mù¾e jít napøíklad o~houpání se v~køesle anebo pøesun v~nìjakém dopravním prostøedku. Hry se v~takovém pøípadì stávají nehratelnými a zatím se neobjevila metoda, která by umìla tento jev odstranit. 
+
+Druhý nedostatek stojící za zmínku je zmìna úhlu pohledu pøi pohybu se zaøízením. Displeje mají vìt¹inou relativnì velký pozorovací úhel, i tak ale mù¾e docházet ke sni¾ování viditelnosti pokud je zaøízení a¾ moc pøiklonìno, respektive odklonìno od pohledu hráèe. Øe¹ením mù¾e být vhodná volba citlivosti tak, aby staèilo zaøízení naklánìt jen v~\textit{pohledovì bezpeèném} rozsahu. Stejnì tak mù¾e být problémové i otáèení displeje. Pøesto¾e zde se úhel pohledu nemìní, dochází k~otáèení celého obrazu vèetnì u¾ivatelského rozhraní. Na tuto skuteènost je nutné myslet pøi návrhu hry tak, aby u¾ivatel ¹patnou èitelností prvkù rozhraní nepøicházel o~dùle¾ité informace.
+
+Dal¹ím problémem je relativnì pomalá odezva sensorického vstupu a tvar jeho prùbìhu. Zpo¾dìní není zásadní, ale je pozorovatelné. Hru je navíc mo¾né navrhnout tak, aby pro hráèe bylo pochopitelné. Pøi letu s~velkým tì¾kopádným letadlem asi nikdo nebude oèekávat reakce v~øádu zlomkù vteøiny. U~rychlých a akèních her by v¹ak toto mohlo být omezující. Prùbìh signálu vznikajícího v~sensoru navíc není ideální a bì¾nì obsahuje výkyvy a ¹um. Je proto nutné jej filtrovat, èím¾ mù¾e docházet ke ztrátì pøesnosti.
+
+Poslední slabinou sensorového ovládání je spoleèenská vhodnost. S~tím jak se herní zaøízení stala mobilními se roz¹íøila i místa kde mù¾e èlovìk hry hrát. Ne v¾dy a v¹ude bude okolí tolerovat hráèe který pøed sebou mává mobilním telefonem èi tabletem. Vývojáø sice nemù¾e ovlivnit na jakých místech budou hráèi jeho hru hrát, mù¾e se v¹ak pøinejmen¹ím zamyslet kdo bude cílovou skupinou a nakolik jsou èlenové této skupiny ochotní se ve spoleènosti tímto zpùsobem zviditelòovat.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/race-pilot.png}
+		\caption{Screenshot hry Race Pilot ovládané pomocí sensorù. ©edé ètverce po stranách ovládají smìrové kormidlo, které je v¹ak implementováno nesprávnì}
+		\label{fig:racepilot}
+	\end{center}
+\end{figure}
+
+\vspace{\baselineskip}
+
+Z~pohledu mobilních zaøízení je asi nejzásadnìj¹í mo¾nost ovládání dotykem. Ta se neomezuje pouze na tlaèítka a polohovací páèky a je zde mo¾né navrhnout témìø libovolné ovládací prvky. K~tomu lze vyu¾ít polo¾ení prstu na displej, který odpovídá stisku klávesy, a mù¾e tedy øídit dvoustavové velièiny. Souèasnì je mo¾né sledovat pohyb jednoho èi více prstù v~nìjaké pøedem dané oblasti a získávat plynulé zmìny hodnoty (napøíklad vzdálenost bodu dotyku od referenèního bodu). Dal¹ím velmi silným prostøedkem je vzájemná poloha dvou a více bodù dotyku.
+
+Ve srovnání se sensorickým ovládáním netrpí zmiòovanými nedostatky jako je nutné natáèení a naklánìní zaøízení a nepou¾itelnost v~pøípadì ¾e je hráè v~pohybu. Pøi návrhu dotykového ovládání je v¹ak nutné poèítat s~tím, ¾e hráè mù¾e svými prsty pøekrývat znaènou èást displeje. To se mù¾e projevit zejména u~displejù s~men¹í úhlopøíèkou. Stejnì tak je vhodné se pøi návrhu ovládání zamý¹let nad tím, kdo bude typickým hráèem hry. Zcela jistì bude rozdíl mezi prstem dítìte a dospìlého jedince, navíc s~pøihlédnutím k~vykonávané profesi, a je nutné tomuto ovládací metodu pøizpùsobit.
+
+Pøesto¾e se zdá ¾e právì dotykové ovládání nabízí ¹iroké mo¾nosti pro inovace, herní vývojáøi je zatím spí¹e nevyu¾ívají. V~pøípadì leteckých her drtivì pøevládá vyu¾ití sensorù, pøípadnì dotykového ovladaèe na displeji -- bodu který hráè dotykem posouvá a simuluje tak pohyb joysticku.
+
+
+\section{Novì navrhovaná metoda ovládání}
+
+\note{TODO: revize}
+
+Pøi uva¾ování o~inovativním pøístupu k~ovládání letadla jsem témìø okam¾itì vyøadil vstup pomocí sensorù. Dùvody zmínìné v~pøedchozí kapitole mi pøijdou pøíli¹ omezující. Souèasnì v~této oblasti nejsou velké mo¾nosti k~dal¹ímu roz¹iøování tak, aby pro hráèe zùstala zachovaná pohodlnost a intuitivnost ovládání.
+
+Navrhované ovládání tedy bude dotykové. Tím bude mo¾né jej pou¾ívat kdekoliv a jeho hlavními pøednostmi bude vysoká pøesnost a rychlá odezva. Díky tomu na nìm pùjde vystavìt i velmi rychlou a akèní hru. Oproti existujícímu dotykovému vstupu by mìlo hráèi nabídnou vìt¹í vta¾ení do hry a snad i navodit pocit jisté jedineènosti, tedy ¾e hráè pou¾ívá nìco nového a neobvyklého. Proti této my¹lence jde èásteènì po¾adavek na nízké znalosti a zku¹enosti. Hráè by mìl princip ovládání pochopit prakticky ihned, v~nejlep¹ím pøípadì pak bez jakékoliv nápovìdy nebo pøedchozího pro¹kolení. Souèasnì musí být ovládání maximálnì pohodlné. To toti¾ opìt není cílem hry, ale pouze prostøedkem k~jeho dosa¾ení. V~ideálním pøípadì by mìlo být pro hráèe natolik pøirozené, ¾e nad ním nebude muset pøemý¹let èi je¹tì lépe vùbec si uvìdomovat jeho existenci. Pochopitelnì jej také nesmí omezovat a mìlo by postihnout v¹echny podstatné funkce ovládaného objektu, v~tomto pøípadì letadla.
+
+\vspace{\baselineskip}
+
+Pro dal¹í popis rozdìlme ovládání do jednotlivých os. První z~nich bude osa ovládající klapky na køídlech a tím i náklon celého letadla. V~pøípadì joysticku a z~nìj vycházejících metod jde o~pohyb ukazatele èi ovladaèe do stran. Navrhovaná metoda ovládání vy¾aduje aby existovaly právì dva body ve kterých se hráè dotýká displeje. Tyto se pou¾ijí k~sestrojení pomyslné kru¾nice, její¾ støed bude le¾et uprostøed mezi obìma body. Úhel náklonu letadla pak odpovídá úhlu o~který se spojnice bodù odchyluje od vodorovné osy kru¾nice. Situace je zachycená na obrázku \ref{fig:ovladani-roll}. Aèkoliv to z~popisu nemusí být zøejmé, na polomìru kru¾nice ve skuteènosti vùbec nezále¾í. Hráè mù¾e prùbì¾nì vzdálenost bodù mìnit a pokud oba body zùstanou na pùvodní pøímce, náklon letadla se nezmìní. Vedlej¹ím efektem je pak mo¾nost takto mìnit citlivost ovládání. Zatímco u~kru¾nice o~velkém polomìru je mo¾né dosáhnout velmi jemné regulace náklonu, pøi pøibli¾ování bodù a zmen¹ování polomìru se citlivost pøirozenì zvy¹uje. Dùle¾ité je, ¾e nezále¾í na pozici kru¾nice v~rámci dotykové plochy a v~ka¾dém okam¾iku se vytváøí tak, aby její støed le¾el ve støedu spojnice mezi obìma body dotyku.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.4]{fig/controls-roll.png}
+		\caption{Ovládání náklonu letadla, èervená místa znaèí body dotyku}
+		\label{fig:ovladani-roll}
+	\end{center}
+\end{figure}
+
+Druhou z~ovládaných velièin je vý¹kové kormidlo. To bývá u~joysticku a podobných metod reprezentování pøitáhnutím nebo odtlaèením ovládací páèky. Princip nastiòuje obrázek \ref{fig:ovladani-pitch}. Opìt zde pracujeme se støedem spojnice mezi dvìma body dotyku a odeèítáme jeho vzdálenost od referenèního bodu, který je na obrázku znázornìn uprostøed displeje. Støed displeje je zvolen pouze pro ilustraci a ve skuteènosti se referenèní bod pøemístí poka¾dé kdy¾ se displeje dotýkají právì dva prsty. V~okam¾ik prvotního dotyku se referenèní bod nastaví a nemìní se dokud se oba prsty nepøestanou displeje dotýkat. Jakmile se znovu dotknou, referenèní bod se pøesune na novou pozici na které opìt po dobu kontaktu prstù s~displejem zùstává. Hráè tak pøi pouhém polo¾ení prstù na displej bez dal¹ího pohybu nijak nezasahuje do ovládání letadla. Souèasnì tento pøístup umo¾òuje hráèi zaèít letadlo ovládat dotykem v~libovolné èásti displeje, co¾ mù¾e být výhodné zejména u~tabletù a obecnì zaøízení s~vìt¹í úhlopøíèkou.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.4]{fig/controls-pitch.png}
+		\caption{Ovládání vzestupu nebo poklesu letadla, èervená místa znaèí body dotyku}
+		\label{fig:ovladani-pitch}
+	\end{center}
+\end{figure}
+
+Kombinací tìchto dvou principù vzniká ovládání schopné pokrýt stejný rozsah velièin jako zmiòovaný \textit{klasický dotykový} anebo sensorový vstup. Skládá se pøitom ze známých prvkù -- ovládání náklonu mù¾e hráèi evokovat zatáèení volantem, zmìna vý¹ky pak gesto bì¾nì pou¾ívané pro svislé posouvání obsahu. Je proto mo¾né pøedpokládat, ¾e navrhované ovládání bude pro hráèe skuteènì intuitivní a k~jeho vysvìtlení nebude potøeba více ne¾ dva nákresy uvedené v~této kapitole. Tento pøedpoklad se potvrdil pøi testování na jednotlivcích, které v~prùbìhu vývoje probíhalo. Zatím jej v¹ak nelze pova¾ovat za dostateènì prùkazné nebo» probíhalo ve velmi omezeném rozsahu i poètu úèastníkù a není ani nijak zdokumentované. Detailnìj¹í prùzkum bude probíhat v~pozdìj¹ích stádiích vývoje.
+
+
+\section{Návrh hry}
+
+\note{TODO: revize}
+
+V~této èásti práce popí¹i jak by mìla výsledná hra vypadat, jaké budou její herní mechanismy a v~jakém stavu se nachází implementace v~dobì psaní této zprávy. Stále je potøeba mít na pamìti, ¾e se pohybujeme v~oblasti her pro mobilní zaøízení. Je proto vhodné hru dìlit do krátkých úsekù a poèítat s~èastým pøeru¹ováním. Dalo by se øíct ¾e jedna \textit{epizoda} mobilní hry by mìla trvat v~øádu desítek vteøin a¾ jednotek minut.
+
+Pøi navrhování hry jsem vycházel zejména z~\cite{gameindustry1} a \cite{gameindustry2}.
+
+
+\section{®ánrové zaøazení a herní mechanismy}
+
+\note{TODO: revize}
+
+Hra se bude odehrávat v~prostøedí leteckých závodù. Hráè je v~roli pilota akrobatického letadla který nav¹tìvuje jednotlivé závody. Samotný závod pak spoèívá v~prùletu branek ve stanoveném poøadí (pøesná dráha letu se nevy¾aduje), vzlet ani pøistávání se neuva¾uje. Branky mù¾ou být rùzného typu: obyèejná, jednosmìrná nebo branka vy¾adující prùlet v~pøedem dané poloze letadla. Právì poslední typ branky je typickým prvkem leteckých závodù, kdy nezále¾í pouze na èasu letu, ale hodnotí se také pøesnost se kterou pilot brankou proletí. Rozli¹uje se prùlet vodorovný, svislý (takzvaný \textit{no¾ový let}) a prùlet vzhùru nohama.
+
+Cílem hráèe je proletìt v¹emi brankami v~co nejkrat¹ím èase. Pøi prùletu brankou vy¾adující konkrétní polohu letadla se kontroluje pøesnost prùletu. Pokud je nízká, pøiète se k~èasu prùletu postih závisející na velikosti odchylky. Prùlet brankou se v¹ak zapoèítá i v~pøípadì, ¾e bude odchylka maximální. To je rozdíl oproti jednosmìrné brance, která se pova¾uje za splnìnou pouze pøi prùletu ze správného smìru. U~obyèejné branky ¾ádná omezení ani postihy nejsou. U~ka¾dého závodu jsou definovány tøi èasy prùletù, které se hráè sna¾í pøekonat. Tyto èasy vzniknou pravdìpodobnì v~prvotní fázi odhadem, pozdìji se upraví na základì testování a zpìtné vazby od hráèù.
+
+Celá hra se pak sestává s~mno¾ství závodù, kde ka¾dý se mù¾e odehrávat v~jiném grafickém prostøedí (ne v¹ak nutnì v¾dy unikátním). Jednotlivé závody spolu ale nijak nesouvisejí. Na zaèátku má hráè zpøístupnìné omezené mno¾ství závodù (napøíklad tøi) do kterých mù¾e vstoupit, ostatní závody jsou uzamèené. Ve chvíli kdy hráè v~nìkterém ze závodù pøekoná alespoò jeden z~pøeddefinovaných èasù, pova¾uje se závod za splnìný a zpøístupní se jeden dal¹í závod. Tím se u~hráèe udr¾uje pocit soustavného pokroku, radost z~roz¹iøování mo¾ností a souèasnì se omezuje riziko stavu kdy hráè není schopný ¾ádný z~èasù pøekonat a ve høe prakticky nemù¾e pokraèovat. Motivací pro nejlep¹í mo¾né splnìní závodu, tedy pøekonání nejlep¹ího z~èasù, pak budou speciální odmìny, jako napøíklad nové a výkonnìj¹í letadlo za ka¾dých deset závodù. To navíc dovolí postupnì zvy¹ovat obtí¾nost závodù a tlaèit hráèe do opakovaného hraní s~cílem dosáhnout nejlep¹ího èasu. V~jisté chvíli toti¾ zjistí ¾e se souèasným letadlem nemù¾e závod splnit a potøebuje svùj stroj vylep¹it. Jde o~¹iroce pou¾ívaný princip, kdy se zvy¹ují nároky na hráèe a¾ do stavu velmi vysoké obtí¾nosti a následnì se umìle zvý¹í hráèovy mo¾nosti dodáním nového vybavení jako jsou zbranì nebo v~tomto pøípadì rychlej¹í letadlo. U~hráèe se pøi hraní støídá pocit výzvy a následného uspokojení z~odmìny a hra pro nìj nepùsobí jednotvárnì a nudnì.
+
+Hra by mìla pùsobit akènì a rychle, èemu¾ musí odpovídat i metoda ovládání. Právì u~akrobatických letù je potøeba aby odezva na vstup byla minimální a hráè neustále cítil ¾e má letadlo plnì pod kontrolou. Takovouto hru by zcela jistì bylo velmi obtí¾né ovládat pomocí sensorického vstupu, a je proto dobrým prostøedkem pro prezentaci pøedností novì navrhovaného ovládání.
+
+
+
+
+\section{Roz¹iøitelnost}
+
+\note{TODO: revize}
+
+Podstatným faktorem je také následná roz¹iøitelnost hry. Aktualizace aplikace se nemusí zamìøovat pouze na opravování chyb, ale mohou souèasnì pøidávat dal¹í herní obsah. To je z~pohledu hráèe velmi ¾ádoucí a právì informaci o~aktualizaci mu mù¾e pøipomenout dávno dohranou hru. Aktualizace se pak stávají men¹inovým propagaèním nástrojem a je nutné s~nimi takto i pracovat. Pøíli¹ èasté vydávání nových verzí mù¾e být obtì¾ující, zejména pokud hráè vìt¹inu herního obsahu zkonzumoval a nového se mu nedostává. I~v~pøípadì ¾e má vývojáø vìt¹í mno¾ství nevydaného obsahu, je vhodné jeho zveøejòování dávkovat a sna¾it se tak udr¾ovat dlouhodobý zájem o~hru.
+
+Konkrétnì u~navrhované hry je relativnì jednoduché doplnit dal¹í herní re¾imy. Ve chvíli kdy je implementováno ovládání letadla a jeho interakce s~herním svìtem, je jen otázkou témìø triviální logiky, zda se budou poèítat body za prolétnuté branky nebo zda bude cílem proletìt trasu v~co nejkrat¹ím èase, pøípadnì cokoliv jiného.
+
+Podobnì je tomu v~pøípadì vytváøení nových herních úrovní, tedy závodù. Hra nepoèítá s~unikátním prostøedím pro ka¾dý jeden závod a scenérie se nutnì budou opakovat. Nejjednodu¹¹ím doplnìním obsahu tedy mù¾e být vyu¾ití existujícího prostøedí a vytvoøení pouze nové sady branek. O~nìco nároènìj¹ím roz¹íøením by pak bylo doplnìní nového prostøedí. Tam je nároènost zejména na stranì grafických prací. Tímto zpùsobem je mo¾né pøipravovat tématické balíèky s~novými úrovnìmi k~rùzným významným pøíle¾itostem, co¾ mù¾e být opìt zajímavý propagaèní prvek.
+
+
+
+\section{Stav implementace}
+
+\note{TODO: revize - ponechat?}
+
+V~prùbìhu vývoje vznikl prototyp pro ovìøení základní funkcionality a principù ovládání. Ten nepou¾íval ¾ádnou podpùrnou knihovnu a byl tvoøený pouze plochou pro vykreslování. Jako u¾ivatelské rozhraní vyu¾íval standardní systémové prvky. To bylo sice velmi neefektivní, ale souèasnì velmi snadno implementovatelné. Prototyp obsahoval jediné herní prostøedí a jediné letadlo s~mo¾ností neomezeného letu s~pouze základní kontrolou kolizí. Jeho cílem bylo zjistit mo¾nosti a omezení z~hlediska výkonu a vykreslování a pøedev¹ím experimentovat s~rùznými mo¾nostmi ovládání. Podle pøedpokladù se potvrdilo ¾e ovládání pomocí sensorù je pro tento typ hry velmi pomalé a tì¾kopádné. Prototyp byl nahodile testován na nìkolika hráèích, plnohodnotné u¾ivatelské testování v¹ak zatím z~dùvodu chybìjících herních prvkù není mo¾né.
+
+Let letadla je implementován velmi jednodu¹e. Orientace letadla ve scénì je reprezentovaná pomocí kvaternionù. Ty nabízejí mo¾nost pohodlného skládání dílèích rotací podél jednotlivých os do výsledného smìru letu. V~ka¾dém prùchodu herní smyèkou dochází k~výpoètu tìchto dílèích rotací na základì vstupu z~ovládání, aktualizace natoèení letadla a jeho posun ve smìru letu. Namísto výpoètu skuteèných sil pùsobících na letadlo se hodnoty ze vstupu normalizují do rozsahu 0--1 a následnì se pøímo pøevádìjí na hodnoty natoèení letadla. V¹echny velièiny jsou samozøejmì vá¾ené svými koeficienty, co¾ umo¾òuje definovat více letadel s~odli¹nými parametry. Je také zapojena funkce stabilizace letadla, která v~ka¾dém okam¾iku kdy hráè nepou¾ívá ovládání pomalu vrací letadlo do rovnová¾né polohy, tedy do vodorovného letu.
+
+V~souèasnosti pracuji na verzi hry vystavìné nad zmiòovanou knihovnou Libgdx. Ta zcela pøejímá principy ovládání a pohybu letadla které se osvìdèily v~prototypu. Souèasnì vyu¾ívá pokroèilé funkce knihovny jako napøíklad detekci kolizí nebo pøeddefinované prvky u¾ivatelského rozhraní. Tato implementace je v¹ak v~ranném stádiu s~funkcionalitou jen o~málo vìt¹í ne¾ kterou nabízel prototyp. Aktuálním cílem je vytvoøení jednoduchého závodu obsahujícího alespoò obyèejné branky a provedení prvního rozsáhlej¹ího u¾ivatelského testování pro stanovení optimálních parametrù letadla a citlivosti ovládání.
+
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/ingame-proto.png}
+		\caption{Souèasná podoba hry}
+		\label{fig:hra-proto}
+	\end{center}
+\end{figure}
+
+
+
+
+
+
+
+\chapter{Implementace a publikování hry}
+
+\section{Prototyp bez pou¾ití knihoven}
+\note{- proè a jak vznikl prototyp}
+\note{- obrázek z prototypu}
+\note{- diagram tøíd?}
+
+
+\section{Struktura aplikace}
+\note{Tato kapitola popí¹e... pøedstaví... vysvìtlí...}
+
+\subsection{Oddìlení platforem}
+\label{sec:oddeleni-platforem}
+\note{- jak gdx odli¹uje/sjednocuje vývoj pro jednotlivé platformy; jaké jsou výhody a jaké jsou nedostatky}
+\note{- rozdíly ve vývoji : desktop se hodí na ladìní, ale tøeba letadlo v nìm nejde dobøe ovládat}
+\note{- mo¾nost toèit na desktopu screencasty se simulovaným vstupem}
+
+\subsection{Objektová struktura aplikace}
+\note{- diagram tøíd, popis jednotlivých komponent}
+
+\section{Herní logika}
+\note{Herní mechanismy a jejich implementace}
+
+\section{U¾ivatelské rozhraní}
+\note{- popis v souladu s kapitolou v teorii}
+\note{- diagram provázanosti obrazovek a dialogù}
+\note{- detailnìj¹í popis nìkterých komponent - slider v menu a letadýlka na pozadí? pøidat i vzorce chování?}
+
+\section{Zveøejnìní hry a zpìtná vazba}
+
+\subsection{Veøejné testování a prùzkum}
+\note{- co je potøeba zaøídit pøed vydáním}
+\note{- jak probíhala public beta}
+\note{- ohlasy, dotazník, shrnutí výsledkù}
+
+\subsection{Zveøejnìní na Google Play}
+\note{- co se zmìnilo od public bety}
+\note{- na co pozor u publikování na Play}
+\note{- jak probíhala propagace}
+\note{- jaké jsou statistiky, zpìtná vazba a hodnocení + grafy}
+\note{- jak se mìnila pozice v Play + grafy}
+
+
+
+\section{Mo¾nosti dal¹ího vývoje}
+\note{- shrnout slabiny, rozepsat co by se dalo dál roz¹iøovat, co má smysl a co spí¹ ne}
+\note{- hra má velký potenciál -> monetizace}
+
+
+
+\chapter{Závìr}
+
+\note{TODO: revize}
+
+Tento text shrnul mo¾nosti vývoje 3D her na platformì Android, jeho pøínosy a nedostatky. Dále se vìnoval popisu letu skuteèného letadla a z~nìho vycházející zjednodu¹ené simulaci letu pou¾ívané v~hrách. Srovnává také existující metody ovládání leteckých her a navrhuje novou metodu, která záva¾nými nedostatky oproti ostatním netrpí. Navrhovaná metoda je zalo¾ená na dotykovém vstupu za pou¾ití dvou prstù a nabízí velmi rychlé a pøesné ovládání, èím¾ posiluje dojem ¾e má hráè letadlo plnì pod kontrolou.
+
+Dále tato práce popsala návrh a prvotní implementaci hry, která toto ovládání vyu¾ívá. Jde o~hru kde hráè s~akrobatickým letadlem prolétává brankami a sna¾í se doletìt do cíle v~co nejkrat¹ím èase. Hra je navr¾ená tak, aby co nejvíce tì¾ila z~navr¾ené ovládací metody, podpoøila tak její platnost a v~ideálním pøípadì i její dal¹í roz¹íøení na poli leteckých her. V~prùbìhu vývoje vznikl prototyp hry, na kterém se ovìøily základní my¹lenky a principy ovládání. Na nìkolika testovacích subjektech se potvrdila jeho pou¾itelnost a v~souèasnosti probíhá vývoj dal¹í verze hry, tentokrát vystavené na knihovnì Libgdx. Ta by mìla implementovat popsané herní mechanismy a následnì se rozvinout v~plnohodnotnou hru. Detailní popis implementace v~této práci chybí, nebo» ta je¹tì není zcela ustálená a s~velkou pravdìpodobností se bude dále vyvíjet. Souèasnì je v~plánu pøed vydáním hry provést nejménì jedno rozsáhlej¹í a øádnì zdokumentované u¾ivatelské testování.
+
+
+
+
+
+
+
+
+

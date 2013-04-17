@@ -1,0 +1,138 @@
+%============================================================================
+% tento soubor pouzijte jako zaklad
+% (c) 2008 Michal Bidlo
+% E-mail: bidlom AT fit vutbr cz
+%============================================================================
+% kodovaní: iso-8859-2 (zmena prikazem iconv, recode nebo cstocs)
+%----------------------------------------------------------------------------
+% zpracování: make, make pdf, make desky, make clean
+% pøipomínky posílejte na e-mail: bidlom AT fit.vutbr.cz
+% vim: set syntax=tex encoding=latin2:
+%============================================================================
+\documentclass[cover]{fitthesis} % odevzdani do wisu - odkazy, na ktere se da klikat
+%\documentclass[cover,print]{fitthesis} % pro tisk - na odkazy se neda klikat
+%\documentclass[english,print]{fitthesis} % pro tisk - na odkazy se neda klikat
+%      \documentclass[english]{fitthesis}
+% * Je-li prace psana v anglickem jazyce, je zapotrebi u tridy pouzit 
+%   parametr english nasledovne:
+%      \documentclass[english]{fitthesis}
+% * Neprejete-li si vysazet na prvni strane dokumentu desky, zruste 
+%   parametr cover
+
+% zde zvolime kodovani, ve kterem je napsan text prace
+% "latin2" pro iso8859-2 nebo "cp1250" pro windows-1250, "utf8" pro "utf-8"
+%\usepackage{ucs}
+\usepackage[latin2]{inputenc}
+\usepackage[T1, IL2]{fontenc}
+\usepackage{url}
+\DeclareUrlCommand\url{\def\UrlLeft{<}\def\UrlRight{>} \urlstyle{tt}}
+
+%zde muzeme vlozit vlastni balicky
+\usepackage{verbatim}
+
+\usepackage{xcolor}
+\newcommand\note[1]{\textcolor{red}{#1}}
+
+
+% =======================================================================
+% balíèek "hyperref" vytváøí klikací odkazy v pdf, pokud tedy pou¾ijeme pdflatex
+% problém je, ¾e balíèek hyperref musí být uveden jako poslední, tak¾e nemù¾e
+% být v ¹ablonì
+\ifWis
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
+\else
+  \usepackage{color}
+  \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex]{hyperref}
+  \definecolor{links}{rgb}{0.4,0.5,0}
+  \definecolor{anchors}{rgb}{1,0,0}
+  \def\AnchorColor{anchors}
+  \def\LinkColor{links}
+  \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajù kolem odkazù
+  \pdfcompresslevel=9
+\fi
+\fi
+
+%Informace o praci/projektu
+%---------------------------------------------------------------------------
+\projectinfo{
+  %Prace
+  project=DP,            %typ prace BP/SP/DP/DR
+  year=2013,             %rok
+  date=\today,           %datum odevzdani
+  %Nazev prace
+  title.cs={Letecká hra pro Android},  %nazev prace v cestine
+  title.en={Flight Game for Android}, %nazev prace v anglictine
+  %Autor
+  author={David ©abata},   %jmeno prijmeni autora
+  author.title.p=Bc., %titul pred jmenem (nepovinne)
+  %author.title.a=PhD, %titul za jmenem (nepovinne)
+  %Ustav
+  department=UPGM, % doplnte prislusnou zkratku: UPSY/UIFS/UITS/UPGM
+  %Skolitel
+  supervisor=Adam Herout, %jmeno prijmeni skolitele
+  supervisor.title.p=Doc. Ing.,   %titul pred jmenem (nepovinne)
+  supervisor.title.a={Ph.D.},    %titul za jmenem (nepovinne)
+  %Klicova slova, abstrakty, prohlaseni a podekovani je mozne definovat 
+  %bud pomoci nasledujicich parametru nebo pomoci vyhrazenych maker (viz dale)
+  %===========================================================================
+  %Klicova slova
+  keywords.cs={vývoj her, mobilní zaøízení, Android, mechanika letu, dotykové ovládání}, %klicova slova v ceskem jazyce
+  keywords.en={game development, mobile devices, Android, flight mechanics, touch input}, %klicova slova v anglickem jazyce
+  %Abstract
+  abstract.cs={Tato práce se zabývá vývojem letecké hry pro platformu Android. Nejdøíve budou popsány mo¾nosti nativního vývoje a~vývoje s vyu¾itím knihovny Libgdx. Dále budou vysvìtleny principy které se uplatòují pøi letu skuteèného letadla a tyto budou zjednodu¹eny pro pou¾ití v leteckých hrách. Práce také shrne souèasné trendy v ovládání leteckých her na mobilních zaøízeních a navrhne novou metodu zalo¾enou na dotykovém ovládání. V závìru bude popsán aktuální stav implementace.}, % abstrakt v ceskem jazyce
+  abstract.en={This work deals with flight game development on Android platform. Firstly the possibilities of native development and development using Libgdx library will be discussed. Then flight mechanics of a real aircraft will be explained and simplified for the use in flight games. The work will also summarize current trends in mobile flight game controls and will propose a~new control method based on touch input. In the end the current state of implementation will be described.}, % abstrakt v anglickem jazyce
+  %Prohlaseni
+  declaration={Prohla¹uji, ¾e jsem tento semestrální projekt vypracoval samostatnì pod vedením\\ Doc.~Ing.~Adama~Herouta, Ph.D.},
+  %Podekovani (nepovinne)
+  %acknowledgment={Zde je mo¾né uvést podìkování vedoucímu práce a tìm, kteøí poskytli odbornou pomoc.} % nepovinne
+}
+
+%Abstrakt (cesky, anglicky)
+%\abstract[cs]{Do tohoto odstavce bude zapsán výtah (abstrakt) práce v èeském jazyce.}
+%\abstract[en]{Do tohoto odstavce bude zapsán výtah (abstrakt) práce v anglickém jazyce.}
+
+%Klicova slova (cesky, anglicky)
+%\keywords[cs]{Sem budou zapsána jednotlivá klíèová slova v èeském jazyce, oddìlená èárkami.}
+%\keywords[en]{Sem budou zapsána jednotlivá klíèová slova v anglickém jazyce, oddìlená èárkami.}
+
+%Prohlaseni
+%\declaration{Prohla¹uji, ¾e jsem tuto bakaláøskou práci vypracoval samostatnì pod vedením pana X...
+%Dal¹í informace mi poskytli...
+%Uvedl jsem v¹echny literární prameny a publikace, ze kterých jsem èerpal.}
+
+%Podekovani (nepovinne)
+%\acknowledgment{V této sekci je mo¾no uvést podìkování vedoucímu práce a tìm, kteøí poskytli odbornou pomoc
+%(externí zadavatel, konzultant, apod.).}
+
+\begin{document}
+  % Vysazeni titulnich stran
+  % ----------------------------------------------
+  \maketitle
+  % Obsah
+  % ----------------------------------------------
+  \tableofcontents
+  
+  % Seznam obrazku a tabulek (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
+  % \listoffigures
+  % \listoftables 
+
+  % Text prace
+  % ----------------------------------------------
+  \input{obsah} % viz. obsah.tex
+
+  % Pouzita literatura
+  % ----------------------------------------------
+\ifczech
+%  \bibliographystyle{czechiso}
+  \bibliographystyle{czplain}
+\else 
+  \bibliographystyle{plain}
+%  \bibliographystyle{alpha}
+\fi
+  \begin{flushleft}
+  \bibliography{literatura} % viz. literatura.bib
+  \end{flushleft}
+  \appendix
+  
+  \input{prilohy} % viz. prilohy.tex
+\end{document}

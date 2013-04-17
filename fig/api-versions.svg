@@ -1,0 +1,69 @@
+<svg width="600" height="371" style="overflow: hidden;">
+  <defs id="defs"></defs>
+  <rect x="0" y="0" width="600" height="371" stroke="none" stroke-width="0" fill="#ffffff"></rect>
+  <g><rect x="363" y="71" width="123" height="107" stroke="none" stroke-width="0" fill-opacity="0" fill="#ffffff"></rect>
+  <g><rect x="363" y="71" width="123" height="12" stroke="none" stroke-width="0" fill-opacity="0" fill="#ffffff"></rect>
+  <g>
+    <text text-anchor="start" x="380" y="81.2" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#222222">API 7 a nižší</text></g>
+    <rect x="363" y="71" width="12" height="12" stroke="none" stroke-width="0" fill="#3366cc"></rect>
+  </g>
+  <g>
+    <rect x="363" y="90" width="123" height="12" stroke="none" stroke-width="0" fill-opacity="0" fill="#ffffff"></rect>
+    <g>
+      <text text-anchor="start" x="380" y="100.2" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#222222">API 8</text>
+    </g>
+    <rect x="363" y="90" width="12" height="12" stroke="none" stroke-width="0" fill="#dc3912"></rect>
+  </g>
+  <g>
+    <rect x="363" y="109" width="123" height="12" stroke="none" stroke-width="0" fill-opacity="0" fill="#ffffff"></rect>
+    <g>
+      <text text-anchor="start" x="380" y="119.2" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#222222">API 9 a 10</text>
+    </g>
+    <rect x="363" y="109" width="12" height="12" stroke="none" stroke-width="0" fill="#ff9900"></rect>
+  </g>
+  <g>
+    <rect x="363" y="128" width="123" height="12" stroke="none" stroke-width="0" fill-opacity="0" fill="#ffffff"></rect>
+    <g>
+      <text text-anchor="start" x="380" y="138.2" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#222222">API 11 až 13</text>
+    </g>
+    <rect x="363" y="128" width="12" height="12" stroke="none" stroke-width="0" fill="#109618"></rect>
+  </g>
+  <g>
+    <rect x="363" y="147" width="123" height="12" stroke="none" stroke-width="0" fill-opacity="0" fill="#ffffff"></rect>
+    <g>
+      <text text-anchor="start" x="380" y="157.2" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#222222">API 14 a 15</text>
+    </g>
+    <rect x="363" y="147" width="12" height="12" stroke="none" stroke-width="0" fill="#990099"></rect>
+  </g>
+  <g>
+    <rect x="363" y="166" width="123" height="12" stroke="none" stroke-width="0" fill-opacity="0" fill="#ffffff"></rect>
+    <g>
+      <text text-anchor="start" x="380" y="176.2" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#222222">API 16 a 17</text>
+    </g>
+    <rect x="363" y="166" width="12" height="12" stroke="none" stroke-width="0" fill="#0099c6"></rect>
+  </g>
+</g>
+<g>
+  <path d="M230,186L230,72A114,114,0,0,1,252.06463935779806,74.15568101145992L230,186A0,0,0,0,0,230,186" stroke="#ffffff" stroke-width="1" fill="#3366cc"></path>
+</g>
+<g>
+  <path d="M230,186L252.06,74.16A114,114,0,0,1,315.03729057835676,110.07464711249533L230,186A0,0,0,0,0,230,186" stroke="#ffffff" stroke-width="1" fill="#dc3912"></path>
+  <text text-anchor="start" x="255.79418658806844" y="114.29721081003947" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#ffffff">10.3%</text>
+</g>
+<g>
+  <path d="M230,186L183.41,81.95A114,114,0,0,1,230,72L230,186A0,0,0,0,0,230,186" stroke="#ffffff" stroke-width="1" fill="#0099c6"></path>
+  <text text-anchor="start" x="196.68467019275712" y="99.7941454068549" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#ffffff">6.7%</text>
+</g>
+<g>
+  <path d="M230,186L134.52,248.29A114,114,0,0,1,183.41400548005623,81.95315903600067L230,186A0,0,0,0,0,230,186" stroke="#ffffff" stroke-width="1" fill="#990099"></path>
+  <text text-anchor="start" x="132.37472956893373" y="166.64823908358113" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#ffffff">27.5%</text>
+</g>
+<g>
+  <path d="M230,186L141.26,257.56A114,114,0,0,1,134.5218034351958,248.28895552770663L230,186A0,0,0,0,0,230,186" stroke="#ffffff" stroke-width="1" fill="#109618"></path>
+</g>
+<g>
+  <path d="M230,186L315.04,110.07A114,114,0,1,1,141.25529762135932,257.5568151871399L230,186A0,0,0,1,0,230,186" stroke="#ffffff" stroke-width="1" fill="#ff9900"></path>
+  <text text-anchor="start" x="267.92823449956177" y="255.51249969519316" font-family="Arial" font-size="12" stroke="none" stroke-width="0" fill="#ffffff">50.8%</text>
+</g>
+<g></g>
+</svg>
