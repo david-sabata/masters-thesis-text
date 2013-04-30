@@ -114,6 +114,8 @@ Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených ø
 \section{Knihovna Libgdx}
 \label{sec:libgdx}
 
+\note{TODO: zmínit i bullet - vlastní kapitola?}
+
 Alternativou k~placeným vývojovým nástrojùm jsou men¹í knihovny s~tìsnìj¹í vazbou na systém Android. Nejpou¾ívanìj¹í z~nich jsou AndEngine a Libgdx. První z~jmenovaných se nazývá herním engine, druhý se oznaèuje za framework. Oba jsou v¹ak k~dispozici zdarma ve formì otevøených zdrojových kódù s mo¾ností komerèního i nekomerèního vyu¾ití. Jeliko¾ jsou si obì knihovny velmi podobné, soustøedím se v~dal¹ím popisu pouze na Libgdx, kterou také pou¾iji pøi implementaci. Zdrojem bude z~velké èásti oficiální dokumentace \cite{libgdx} a také kniha ?? ???? ? \cite{mario}. Jejím autorem je Mario Zechner, který je souèasnì tvùrcem knihovny Libgdx a jejím hlavním pøispìvatelem.
 
 \note{TODO: Citovat Mariovu knihu!}
@@ -134,6 +136,7 @@ Zatímco samostatná tøída aplikace je vhodná jen pro nejtriviálnìj¹í aplikace, u 
 
 
 \subsection{Zpracování vstupních událostí}
+\label{sec:libgdx-vstup}
 \note{r1 OK}
 
 Vstupní události jsou závislé na aktuální platformì, a proto jsou v Libgdx skryty pod jednotným rozhraním, kdy konkrétní implementaci doplòuje sama knihovna právì podle aktuálního prostøedí. Programátor díky tomu nemusí øe¹it, zda bude aplikace ovládaná dotykem èi my¹í, klávesnicí nebo hardwarovými tlaèítky mobilního telefonu nebo tøeba ovladaèem typickým pro herní konzole. Je zøejmé, ¾e v¹echny typy událostí nebudou podporovány na v¹ech platformách. Knihovna v¹ak zavádí vhodné substituce a sjednocení, kde napøíklad kliknutí na dotykovém displeji odpovídá kliknutí levého tlaèítka my¹i. Na vy¹¹í úrovni je pak mo¾né detekovat celá gesta jako chycení a táhnutí nebo zoom.
@@ -309,6 +312,7 @@ Letadlo které je staticky i dynamicky stabilní je vìt¹inou snáze ovladatelné a v
 
 \section{Herní ovládání letadla}
 
+\note{TODO: zmínit pou¾ití kvaternionù}
 \note{TODO: revize}
 
 V~následujících podkapitolách bude popsáno zapojení vý¹e vysvìtlených mechanik letu do leteckých her. Zamìøím se pøitom pøedev¹ím na takzvané \textit{causual} hry, tedy oddechové hry které od hráèe nevy¾adují vysokou úroveò zku¹eností. U~her a programù profilujících se jako simulátory je zøejmá snaha co nejvíce se pøiblí¾it reálné pøedloze jak u~letové dynamiky, tak i z~hlediska ovládání letadla. I~pøesto lze u~simulátorù pozorovat vyu¾ití nìkterých zjednodu¹ení zejména z~oblasti ovládání.
@@ -544,21 +548,79 @@ Zmínìné testování probíhalo v prùbìhu vývoje prototypu a jednotlivých metod na v
 \subsection{Oddìlení platforem}
 \label{sec:oddeleni-platforem}
 
-Jak ji¾ bylo naznaèeno v popisu knihovny Libgdx v kapitole \ref{sec:libgdx}, jednou z jejích výhod je pøenositelnost mezi platformami. 
+Jak ji¾ bylo naznaèeno v popisu knihovny Libgdx v kapitole \ref{sec:libgdx}, jednou z jejích výhod je pøenositelnost mezi platformami. Pro vytváøenou hru budou relevantní platformy Android a PC (bez rozdílu operaèního systému). V dobì psaní této práce existuje v knihovnì Libgdx také podpora platformy iOS, která se nachází na mobilních zaøízeních firmy Apple. Tato podpora je v¹ak ve velmi ranném stádiu a proces sestavení aplikace vy¾aduje proprietální software, vývojáøskou licenci a fyzické zaøízení dané platformy. Kvùli tìmto okolnostem jsem podporu iOS vylouèil. Z povahy pou¾ívané knihovny by ov¹em bylo pøidání podpory této platofrmy do ji¾ hotové hry triviální zále¾itostí.
 
+\vspace{\baselineskip}
 
+Pro dal¹í popis budu vyu¾ívat pojem \textit{projekt} tak, jak je chápán z hlediska vývojového prostøedí, zde programu Eclipse. Jeden projekt lze sestavit do jedné spustitelné aplikace èi knihovny. Doporuèeným postupem je zde vyèlenìní ve¹keré aplikaèní logiky do jednoho projektu, ze kterého sestavením vznikne knihovna. Tuto knihovnu vyu¾ívají ostatní projekty, v¾dy jeden pro ka¾dou cílovou platofrmu. Existence projektu pro platformu Android je vy¾adována. Z historických a praktických dùvodù jsou právì zde ulo¾eny ve¹keré datové soubory budoucí aplikace a varianty pro ostatní platformy se na tento obsah pouze odkazují (ke kopírování dat dochází a¾ pøi sestavování konkrétních aplikací). Projekty pro jednotlivé platformy ale typicky plní úlohu triviálního zavadìèe, který pouze pøipraví prostøedí pro bìh a následnì pøedá øízení hlavní aplikaèní logice. Podoba tìchto zavadìèù je pevnì daná a v prùbìhu vývoje aplikace se ji¾ prakticky nemìní.
 
-\note{- jak gdx odli¹uje/sjednocuje vývoj pro jednotlivé platformy; jaké jsou výhody a jaké jsou nedostatky}
-\note{- rozdíly ve vývoji : desktop se hodí na ladìní, ale tøeba letadlo v nìm nejde dobøe ovládat}
-\note{- mo¾nost toèit na desktopu screencasty se simulovaným vstupem}
+Ukázalo se jako velmi výhodné vedle platformy Android pou¾ít i platformu PC a provádìt maximální mo¾né mno¾ství vývoje právì zde. Narozdíl od mobilní aplikace, kde probíhá typický proces sestavení a následné instalace do zaøízení, zde dochází k sestavení a spu¹tìní pøímo v poèítaèi vývojáøe. To probíhá øádovì v jednotkách sekund, tedy zásadnì rychleji ne¾ na mobilním zaøízení. Díky knihovna Libgdx jsou pøitom rozdíly mezi platformami z pohledu vyvíjené hry minimální a lze takto vyvíjet a celé u¾ivatelské rozhraní i ve¹keré vykreslování 3D scény. Problém nastává pøi implementace ovládání, které pro svoji funkènost vy¾aduje souèasný dotyk dvou prstù. Tuto èást bylo tedy nutné vyvíjet pøímo na skuteèném mobilním zaøízení. Díky dùmyslnému systému práce se vstupem (popsáno v kapitole \ref{sec:libgdx-vstup}) lze nahradit dotykový vstup vstupem z klávesnice. Takové øe¹ení sice není ideální (øízení letadla je skokové), ale pro vývoj èástí se vstupem pøímo nesouvisejících je více ne¾ postaèující.
+
+Dal¹ím dùvodem k vytvoøení projektu pro platformu PC mù¾e být také tvorba propagaèních materiálù, typicky videí. V pøípadì mobilních zaøízení je snímání obrazovky a souèasné ukládání ve formì videa velmi omezené nebo úplnì nemo¾né. Je to dáno jak výkonovými mo¾nostmi, tak i potøebou speciálního oprávnìní takové snímací aplikace. U bì¾ného poèítaèe by v souèasnosti po¾adavky na výkon nemìly pøedstavovat problém a stejnì tak je snadno dostupný i software pro záznam. Opìt díky sjednocenému chování napøíè platformami je mo¾né vytvoøit video pøímo ze hry, ani¾ by neznalý divák rozeznal rozdíl. Stejnì jako pøi vývoji zde mù¾e nastat problém se vstupem. Není v¹ak slo¾ité pøi hraní na mobilním zaøízení ve¹kerý vstup zaznamenávat a následnì jej v poèítaèi pøehrávat do bì¾ící aplikace. Tímto zpùsobem lze velmi efektivnì vizualizovat i místa dotyku a vytvoøit napøíklad názornou ukázku, jak mù¾e hráè svými dotyky letadlo ovládat.
+
+\note{TODO: jak se toèil screencast? je pou¾itý?}
+
 
 \subsection{Objektová struktura aplikace}
-\note{- diagram tøíd, popis jednotlivých komponent}
-\note{- zmínit ¾e existuje i devscreen, ale v diagramu není}
 
-\section{Herní logika}
-\note{Herní mechanismy a jejich implementace}
-\note{- fyzika - výkon znaènì klesá se slo¾itostí obalových tìles}
+Nyní se v popisu pøesunu od prototypu k finální aplikaci vystavené nad knihovnou Libgdx. V døívìj¹ích kapitolách ji¾ bylo zmínìno, ¾e knihovna umo¾òuje rozèlenìní aplikace do tzv. \textit{obrazovek}. Vyvíjená hra této mo¾nosti vyu¾ívá, jak je vidìt z obrázku \ref{fig:classes-main}. Do diagramu jsou zaneseny jen základní tøídy aplikace a jejich vazba na tøídy z knihovny. Ka¾dá z obrazovek má pak vazby dal¹í, které jsem v zájmu pøehlednosti oddìlil do samostatných diagramù. 
+
+Základní tøídou aplikace je \texttt{FlightGame}, která po spu¹tìní vytváøí jednotlivé obrazovky a zaji¹»uje mechanismy pro jejich pøepínání. Souèasnì vytváøí a zpøístupòuje objekty \texttt{AssetManager} a \texttt{LevelsManager} pro naèítání obecných datových souborù a definièních souborù pro jednotlivé závody. \note{TODO: viz obrázek?}
+
+Jak probíhá navigace mezi jednotlivými obrazovkami popisuje obrázek \note{??? - nedát ho spí¹ k UI?}. První obrazovka která se po spu¹tìní aplikace zobrazí je \texttt{LoadingScreen}. Ta obsahuje triviální animaci informující u¾ivatele o naèítání hry. Tato obrazovka musí být velmi jednoduchá, aby v dobì mezi spu¹tìním aplikace a jejím zobrazením nenabýval u¾ivatel dojmu, ¾e aplikace pøestala pracovat. Ihned po zobrazení naèítací obrazovky se volá \texttt{AssetManager}, který naète podklady pro ostatní obrazovky, vèetnì samotné hry. Tato funkcionalita je ji¾ souèástí Libgdx. V závìru naèítání je volán \texttt{LevelsManager}, který ze souborù ve formátu JSON naète definice jednotlivých závodù, aby na jejich základì mohla obrazovka hlavního menu vytvoøit navigaèní rozhraní. Pøepnutí na obrazovku samotného závodu pak v rámci jednoho spu¹tìní aplikace probíhá v¾dy témìø okam¾itì. Probìhne toti¾ pouze presunutí ji¾ naètených herních objektù na správné pozice a ¾ádným dal¹ím nároèným operacím nedochází.
+
+\vspace{\baselineskip}
+		
+\note{TODO: opravit diagram - konstruktor GameScreen (a dal¹í?)}
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/classes-main.eps}
+		\caption{Diagram klíèových tøíd aplikace}
+		\label{fig:classes-main}
+	\end{center}
+\end{figure}
+
+Datová reprezentace svìta je znázornìná na obrázku \ref{fig:classes-simulation}. Diagram nìkteré souvislosti v zájmu pøehledosti zjednodu¹uje, hlavní my¹lenku v¹ak zachovává. Klíèovou tøídou je zde \texttt{GameWorld}, reprezentující právì herní svìt. Z hierarchie dìdiènosti lze vyèíst, ¾e tøída roz¹iøuje tøídy \texttt{BulletWorld} a \texttt{BaseWorld}. Druhá zmínìná, tedy \texttt{BaseWorld}, pøedstavuje základní svìt obsahující vykreslitelné entity. (Samotné vykreslování v¹ak provádí tøída \texttt{GameRenderer}, spravovaná tøídou herní obrazovky.) Ka¾dá entita vzniká ze svého \textit{konstruktoru} (ve smyslu tøídy \texttt{Constructor}). Konstruktor definuje 3D model entity a v pøípadì ¾e má být entita souèástí fyzikální simulace, definuje i její kolizní tvar. Entita je pak instancí svého konstruktoru na urèitém místì ve scénì (pøesnìji øeèeno s urèitou transformací). Tento princip umo¾òuje sdílet zdrojová data v¹ech entit stejného typu a sni¾ovat tak pamì»ové i výkonové nároky.
+
+Základní svìt \texttt{BaseWorld} tedy podporuje pouze vykreslení entit. Jeho potomek \texttt{BulletWorld} roz¹iøuje toto chování o mo¾nost provádìní fyzikální simulace. K tomu roz¹iøuje i konstruktor na \texttt{BulletConstructor}, obsahující právì informaci o kolizním tvaru a povaze tìlesa \note{viz kap. teorie ???}. Stejnì tak roz¹iøuje entitu na \texttt{BulletEntity}, se kterou mù¾e knihovna simulaci provádìt. Poslední roz¹íøení svìta je právì na nejdùle¾itìj¹í tøídu \texttt{GameWorld}, která nad bì¾ící simulací spou¹tí samotnou hru ve smyslu dodání sémantiky kolizím objektù. Z tohoto dùvodu zavádí tøídu \texttt{GateEntity}, která reprezentuje entitu, s ní¾ je kolize ¾ádoucí, tedy branku nebo kruh k prolétnutí.
+
+Tøídy spadající pod knihovnu Bullet Physics obsahují ve svém názvu prefix \texttt{bt}. Pro pou¾ití této knihovny není nutná detailní znalost její vnitøní struktury, proto i já popí¹i tyto tøídy jen velmi zbì¾nì. Základní tøídou je \texttt{btCollisionShape}, tedy kolizní tvar objektu. Podobnì jako vytvoøením instance konstruktoru vzniká entita, tak vytvoøením instance kolizního \textit{tvaru} vzniká kolizní \textit{objekt}, který je souèástí entity a reprezentuje jej tøída \texttt{btCollisionObject}. Z hlediska výkonnosti simulace je dùle¾ité, ¾e opìt objekty vzniklé ze stejného tvaru sdílejí stejné datové struktury. Dále fyzikální svìt obsahuje instanci tøídy \texttt{btCollisionWorld}, co¾ je knihovní reprezentace prostøedí, ve kterém simulace probíhá. (Z dùvodù kompatibility rozhraní je do tøídy \texttt{BulletWorld} pouze vlo¾en a tøída z nìj pøímo nedìdí.) Toto prostøedí pøedstavuje zjednodu¹enou verzi fyzikálního svìta, kde je mo¾né pouze testovat zda dochází ke kolizi nìkterých objektù. Fyzikální simulace ve smyslu napøíklad volného pádu tìles nebo jejich vzájemná interakce zde neprobíhá. Knihovna Bullet Physics toto samozøejmì nabízí, ov¹em za cenu znaèného nárùstu po¾adavkù na výkon. Vyvíjená hra je navíc zámìrnì navr¾ena tak, aby plnohodnotná simulace probíhat nemusela.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/classes-simulation.eps}
+		\caption{Diagram tøíd reprezentujících herní svìt}
+		\label{fig:classes-simulation}
+	\end{center}
+\end{figure}
+
+
+
+\section{Herní logika a prùbìh simulace}
+
+Øídicí funkci z hlediska herní logiky má herní obrazovka, tedy instance tøídy \texttt{GameScreen}. Ve chvíli svého vytvoøení dostává v konstruktoru pøipravený herní svìt (tedy \texttt{GameWorld}) a v nìm naètený závod. Obrazovka vytvoøí objekt letadla (souèástí definice svìta je pouze jeho poèáteèní transformace), nastaví zpracování vstupù tak, aby se dotykové události dostaly na vstup letadla, nechá probíhat simulaci a souèasnì scénu vykresluje pomocí tøídy \texttt{GameRenderer}. 
+
+Vykreslovací tøída je velmi jednoduchá, a proto se jí nebudu hloubìji zabývat. Z externích souborù naèítá shadery ve formátu GLSL, v ka¾dém snímku nastavuje jejich parametry a jejich pomocí vykresluje jednotlivé entity daného svìta. K tomu by jí postaèovaly instance \texttt{BaseWorld} a \texttt{BaseEntity}. Takový objekt je v¹ak ve høe pouze jediný, a sice tzv. \textit{skybox}, tedy krychle obalující celou scénu, na její¾ vnitøních stìnách je textura nebe. V¹echny ostatní objekty jsou zapojeny do fyzikální simulace, kvùli èemu¾ musejí být v hierarchii dìdiènosti ní¾e.
+
+Z hlediska vstupù je situace taková, ¾e herní obrazovka nastaví jako jeden ze vstupních procesorù právì \texttt{PlaneInputProcessor}, který je svázán s objektem letadla. Ka¾dý vstup zpracovaný tímto procesorem se pøevede na intenzitu sil zpùsobujících rotace v jednotlivých osách. (Rotace kolem osy Y, anglicky pojmenovávaná \textit{yaw}, je pøedávána jen pro úplnost; vstup ji v¹ak pøímo ovlivòovat nemù¾e.) V okam¾iku pøíchodu události (který probíhá asynchronnì) se tedy do objektu letadla dostává informace o tom, v jaké poloze jsou které jeho ovládací prvky, nebo» právì taková je sémantika pùsobících sil. Pøi aktualizaci scény v ka¾dém snímku pak letadlo tyto síly zohledòuje pøi svém dal¹ím pohybu. Je tedy mo¾né øíct, ¾e letadlo ve scénì pohybuje autonomnì.
+
+Herní obrazovka pøed vykreslením ka¾dého snímku vyvolá aktualizaci scény, která se skládá právì z aktualizace pozice letadla a dále z provedení kroku fyzikální simulace. Výsledkem této aktualizace mù¾e být informace o tom, ¾e nastala kolize. V takovou chvíli herní svìt rozli¹í, zda jde o kolizi ¾ádoucí (s brankou èi kruhem) nebo ne¾ádoucí (s ostatními objekty ve scénì) a nastaví pøíslu¹né pøíznaky. Obrazovka pak pouze kontroluje, zda se po provedení aktualizace zmìnil stav svìta, co¾ znamená ¾e letadlo buï prolétlo poslední brankou anebo se vybouralo. Na toto obrazovka reaguje zobrazením pøíslu¹ných dialogù.
+
+\vspace{\baselineskip}
+\note{TODO: sem dát diagram tøíd z hlediska herní logiky}
+
+Je zde také vhodné zmínit závislost výkonu aplikace na pou¾itých kolizních tvarech, kterou jsem pøi vývoji vypozoroval. Dostateènì nízké výkonové nároky tak, aby hra bì¾ela plynule na cílených zaøízeních je nezbytností. Výkonovou nároènost hry lze sni¾ovat optimalizací vykreslování scény anebo optimalizací probíhající fyzikální simulace. Narozdíl od zpùsobu vykreslování má úprava simulace pøímý vliv na hratelnost výsledné hry. Ve høe která pou¾ívá fyzikální knihovnu pouze pro detekci kolizí není mnoho prostoru pro optimalizace. Prakticky jedinou promìnnou jsou zde kolizní tvary jednotlivých herních objektù, a právì jejich volba má dopad jak na výkon, tak i na hratelnost. Ve chvíli, kdy jsou kolizní tvary maximálnì zjednodu¹ené (koule, krychle, plochy) jsou sice po¾adavky na výkon nízké, ale kolize mù¾e být detekována (nebo naopak nedetekována) velmi nepøesnì. Dokonce natolik, ¾e si problému v¹imne i sám hráè a pøedstavuje pro nìj chybu. Pøíkladem mù¾e být aproximace kolizního tvaru kruhu pouhým ètvercem. Zde tvar nepokryje nìkteré krajní oblasti kruhu, které v¹ak hráè mù¾e cílenì vyu¾ívat pro dokonèení závodu v lep¹ím èase. Knihovna Bullet Physics podporuje kromì základních geometrických tvarù také tvary slo¾ené. Právì jejich pomocí jsem implementoval kolizní tvar kruhu, slo¾ený ze dvou ètvercù, které jsou vzájemnì pootoèené. Optimálním øe¹ením by jistì bylo pou¾ít ètvercù mnohem více, pøípadnì pak pøímo obecný polygon, v takovém pøípadì pak ale zaèínají nároky na výkon znaènì narùstat. Ji¾ pøi pou¾ití ètyø ètvercù bylo mo¾né pozorovat zpomalení hry (testováno na pøístroji Samsung Galaxy Nexus, který se v dobì psaní této práce øadí mezi zaøízení vy¹¹í tøídy). Podobnì se ukázalo vhodnìj¹í pou¾ít pro kolizní tvar letadla jednoduchý kvádr, namísto dvou kvádrù pøedstavujících trup a køídla. Oba zmiòované kolizní tvary jsou znázornìny na obrázku 
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/kolizni-tvary.jpg}
+		\caption{Kolizní tvary nìkterých herních objektù}
+		\label{fig:kolizni-tvary}
+	\end{center}
+\end{figure}
+
+
+
 
 \section{U¾ivatelské rozhraní}
 \label{sec:implementace-ui} 
