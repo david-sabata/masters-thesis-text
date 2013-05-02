@@ -80,7 +80,7 @@ Kromì zobrazování je Aktivita dùle¾itá také pro pøíjem vstupních událostí. Má mo
 
 V~pøípadì ¾e zvolíme tvorbu hry èistì na základì Androidu bez mezièlánkù typu frameworku nebo herního engine, mù¾eme narazit na nìkteré nepøíjemnosti. Pøedev¹ím nemù¾eme poèítat s~jakýmkoliv roz¹íøením nad mo¾nosti OpenGL ES. Je plnì v~kompetenci programátora aby si pøipravil potøebné datové struktury a pomocné tøídy. Systém jako takový sice obsahuje nìkolik základních tøíd pro popis vektorù a matic a operace s~nimi, ty ale nebyly navr¾eny pro práci s~OpenGL a dochází zde k~nesrovnalostem (pøíkladem mù¾e být vnitøní reprezentace matice, která je jednou øádková a jindy sloupcová).
 
-Jako jedna z~výhod aplikací v~jazyce Java bývá uvádìna automatická správa pamìti pou¾itím tzv. \textit{garbage collectoru}, tedy souèásti virtuálního stroje, která poèítá reference na ka¾dý alokovaný objekt a v~pøípadì odstranìní posledního výskytu tento objekt uvolní z~pamìti. Aèkoliv mù¾e být tento pøístup pohodlný, pøiná¹í mno¾ství rizik. Vzhledem ke slo¾itosti operaèního systému (a èasto i neznalostí jazyka Java) je pro programátora relativnì snadné dr¾et referenci na objekt, který ji¾ nepou¾ívá a o~kterém pøedpokládá, ¾e ji¾ byl z~pamìti uvolnìn. Tím sice nedochází k~nenávratnì ztraceným blokùm pamìti jako pøi práci v~nativním kódu, pamì»ové nároky aplikace v¹ak zbyteènì rostou. Èím více pamìti pak aplikace pou¾ívá, tím èastìji se bude garbage collector obracet právì na ni a její pamì» se bude sna¾it uvolòovat. A~právì pøi úklidu pamìti dochází ke krátkému pozastavení v¹ech vláken dané aplikace. Toto pozastavení bì¾nì trvá jednotky a¾ desítky milisekund a nemusí být pro u¾ivatele viditelné. Zda se ale aplikace pozastaví a jak dlouho tento stav potrvá závisí na velkém mno¾ství faktorù které programátor nemá pod kontrolou. Je tedy velmi dùle¾ité zvolit vhodnou taktiku práce s~pamìtí a té se striktnì dr¾et. Jednou z~mo¾ností je pøedbì¾né vytvoøení v¹ech objektù které mohou být potøeba s~tím, ¾e v~prùbìhu hry ji¾ nové objekty nevznikají. Toto je v¹ak ideální stav, kterého není snadné dosáhnout. Sofistikovanìj¹í správa pamìti bude popsána v~kapitole \ref{sec:vyvoj-s-knihovnama}.
+Jako jedna z~výhod aplikací v~jazyce Java bývá uvádìna automatická správa pamìti pou¾itím tzv. \textit{garbage collectoru}, tedy souèásti virtuálního stroje, která poèítá reference na ka¾dý alokovaný objekt a v~pøípadì odstranìní posledního výskytu tento objekt uvolní z~pamìti. Aèkoliv mù¾e být tento pøístup pohodlný, pøiná¹í mno¾ství rizik. Vzhledem ke slo¾itosti operaèního systému (a èasto i neznalostí jazyka Java) je pro programátora relativnì snadné dr¾et referenci na objekt, který ji¾ nepou¾ívá a o~kterém pøedpokládá, ¾e ji¾ byl z~pamìti uvolnìn. Tím sice nedochází k~nenávratnì ztraceným blokùm pamìti jako pøi práci v~nativním kódu, pamì»ové nároky aplikace v¹ak zbyteènì rostou. Èím více pamìti pak aplikace pou¾ívá, tím èastìji se bude garbage collector obracet právì na ni a její pamì» se bude sna¾it uvolòovat. A~právì pøi úklidu pamìti dochází ke krátkému pozastavení v¹ech vláken dané aplikace. Toto pozastavení bì¾nì trvá jednotky a¾ desítky milisekund a nemusí být pro u¾ivatele viditelné. Zda se ale aplikace pozastaví a jak dlouho tento stav potrvá závisí na velkém mno¾ství faktorù které programátor nemá pod kontrolou. Je tedy velmi dùle¾ité zvolit vhodnou taktiku práce s~pamìtí a té se striktnì dr¾et. Jednou z~mo¾ností je pøedbì¾né vytvoøení v¹ech objektù které mohou být potøeba s~tím, ¾e v~prùbìhu hry ji¾ nové objekty nevznikají. Toto je v¹ak ideální stav, kterého není snadné dosáhnout. Sofistikovanìj¹í správa pamìti bude popsána v~kapitole \ref{sec:libgdx}.
 
 S~problematikou pamìti souvisí také naèítání dat potøebných ve høe, zejména pak geometrie scény a textur. V~pøípadì 3D modelù opìt narazíme na neexistenci jakýchkoliv pomocných tøíd. Ve vývojáøské komunitì navíc není úplná shoda na tom, který z~formátù ulo¾ení modelù pou¾ívat. Ve výsledku je opìt na programátorovi, aby zvolil vhodný formát, ten nastudoval a implementoval jeho naèítání. To vzhledem ke správì pamìti popsané v~pøedchozí èásti rozhodnì není triviální úkol. (U~mnohých formátù existují více èi ménì zdaøilé implementace jejich naèítání, témìø v¾dy ale diktují v~jakých strukturách budou naètená data ulo¾ena, co¾ nemusí být optimální.) 
 
@@ -114,6 +114,7 @@ Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených ø
 \section{Knihovna Libgdx}
 \label{sec:libgdx}
 
+
 \note{TODO: zmínit i bullet - vlastní kapitola?}
 
 Alternativou k~placeným vývojovým nástrojùm jsou men¹í knihovny s~tìsnìj¹í vazbou na systém Android. Nejpou¾ívanìj¹í z~nich jsou AndEngine a Libgdx. První z~jmenovaných se nazývá herním engine, druhý se oznaèuje za framework. Oba jsou v¹ak k~dispozici zdarma ve formì otevøených zdrojových kódù s mo¾ností komerèního i nekomerèního vyu¾ití. Jeliko¾ jsou si obì knihovny velmi podobné, soustøedím se v~dal¹ím popisu pouze na Libgdx, kterou také pou¾iji pøi implementaci. Zdrojem bude z~velké èásti oficiální dokumentace \cite{libgdx} a také kniha ?? ???? ? \cite{mario}. Jejím autorem je Mario Zechner, který je souèasnì tvùrcem knihovny Libgdx a jejím hlavním pøispìvatelem.
@@ -130,7 +131,7 @@ Samozøejmostí je øe¹ení vý¹e zmiòovaných nedostatkù pøi vývoji bez pomocných kni
 \subsection{Struktura aplikace}
 \note{r1 OK}
 
-Vstupním bodem aplikace je instance tøídy \texttt{Application}, která obsahuje základní herní smyèku. Ta je volaná systémem právì na døíve zmiòované frekvenci blízké 60 snímkùm za sekundu. Pøi tvorbì grafických aplikací se èasto vyu¾ívá oddìlené volání pro aktualizaci scény a její vykreslení, Android v¹ak takové rozdìlení nepodporuje (z dùvodu návaznosti na systémový element s OpenGL kontextem, popsaný v kapitole \ref{sec:vyvoj-her}. Je samozøejmì mo¾né aktualizaci scény a její vykreslení oddìlit ruènì, napøíklad v pøípadì ¾e není nutné se scénou manipulovat pøíli¹ èasto, ale chceme zachovat plynulost vykreslování. Typické vyu¾ití mù¾e být u tahových her, kdy se herní logika provádí jen v okam¾iku tahu, zatímco zobrazování probíhá v ka¾dém snímku, napøíklad kvùli probíhajícím animacím. Je samozøejmì mo¾né optimalizovat je¹tì více, animace nepou¾ívat a vykreslovat jen ve chvíli, kdy se scéna zmìní. V takovém pøípadì dochází k maximální úspoøe energie. Aplikace ale mù¾e pùsobit znaènì statickým dojmem a pro akèní hry tento pøístup není vhodný vùbec.
+Vstupním bodem aplikace je instance tøídy \texttt{Application}, která obsahuje základní herní smyèku. Ta je volaná systémem právì na døíve zmiòované frekvenci blízké 60 snímkùm za sekundu. Pøi tvorbì grafických aplikací se èasto vyu¾ívá oddìlené volání pro aktualizaci scény a její vykreslení, Android v¹ak takové rozdìlení nepodporuje (z dùvodu návaznosti na systémový element s OpenGL kontextem, popsaný v kapitole \ref{sec:nativni-vyvoj}. Je samozøejmì mo¾né aktualizaci scény a její vykreslení oddìlit ruènì, napøíklad v pøípadì ¾e není nutné se scénou manipulovat pøíli¹ èasto, ale chceme zachovat plynulost vykreslování. Typické vyu¾ití mù¾e být u tahových her, kdy se herní logika provádí jen v okam¾iku tahu, zatímco zobrazování probíhá v ka¾dém snímku, napøíklad kvùli probíhajícím animacím. Je samozøejmì mo¾né optimalizovat je¹tì více, animace nepou¾ívat a vykreslovat jen ve chvíli, kdy se scéna zmìní. V takovém pøípadì dochází k maximální úspoøe energie. Aplikace ale mù¾e pùsobit znaènì statickým dojmem a pro akèní hry tento pøístup není vhodný vùbec.
 
 Zatímco samostatná tøída aplikace je vhodná jen pro nejtriviálnìj¹í aplikace, u slo¾itìj¹ích bude ¾ádoucí rozdìlit aplikaci do nìkolika èástí. Zde knihovna nabízí èlenìní do tzv. \textit{obrazovek} (potomci tøídy \texttt{Screen}), které mají vlastní ¾ivotní cyklus. Hlavní tøída aplikace pak obstarává pouze pøepínání mezi jednotlivými obrazovkami. Ty lze pova¾ovat za oddìlené logické celky a èasto je mo¾né je i samostatnì vyvíjet, co¾ bude pøínosem zejména pro víceèlenný tým vývojáøù. Obrazovka jako taková v¹ak ¾ádné vy¹¹í funkce nemá a kromì zmínìného zpøehlednìní kódu nabízí jen mo¾nost jednoduchého vykreslování texturovaných obdélníkù (tzv. \textit{sprite}).
 
@@ -166,7 +167,13 @@ Prvky rozhraní také nemusejí být nutnì statické. Ka¾dý prvek mù¾e mít nadefinová
 
 Koøenovou komponentou u¾ivatelského rozhraní je tzv. \textit{Stage} (jeliko¾ by èeský výraz mohl být zavádìjící, ponechávám bez pøekladu a pou¾iji pøímo název tøídy \texttt{Stage}). Pøedstavuje kontejner na vý¹e popsané prvky rozhraní. Ty sice své vykreslování øídí samy, ale pøedpokládají korektnì nastavené parametry vykreslování, pøedev¹ím pohledových transformací. K tomu slou¾í Stage, která udr¾uje kameru s ortogonální projekcí a nìkteré dal¹í struktury slou¾ící k vnitøní optimalizaci vykreslování. Implicitnì Stage pokrývá celou zobrazovací plochu, ale toto chování je mo¾né zmìnit. Stará se také o poøadí vykreslování prvkù rozhraní, èím¾ øídí jak se budou prvky pøekrývat. Na samotnou Stage mù¾eme také, podobnì jako na jednotlivé její prvky, aplikovat nìkteré efekty. Stejnì tak je mo¾né vlo¾it do jedné obrazovky nìkolik instancí Stage a provádìt navigaci mezi nimi, v rámci jediné obrazovky. 
 
-\note{obrázek - menu UI se zapnutým debugem }
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/ui-design.jpg}
+		\caption{Souèásti rozhraní hlavního menu}
+		\label{fig:ui-design}
+	\end{center}
+\end{figure}
 
 \note{TODO: scene2d.ui umí dìlat i jednoduché hry}
 
@@ -387,6 +394,8 @@ Pøesto¾e se zdá ¾e právì dotykové ovládání nabízí ¹iroké mo¾nosti pro inovace, h
 
 \chapter{Návrh dotykového ovládání a letecké hry}
 
+\note{TODO: jak se letadlo pohybuje? hodit pár vzorcù?}
+
 V~této èásti práce popí¹i novì navrhovanou metodu ovládání a varianty její implementace. Dále rozvedu jak by mìla výsledná hra vypadat a jaké budou její herní mechanismy.  Stále je potøeba mít na pamìti, ¾e se pohybujeme v~oblasti her pro mobilní zaøízení. Rozmìry obrazovek, tedy ovládacích ploch, budou omezené, stejnì jako výkon zaøízení. Stejnì tak povaha práce s mobilním zaøízením je diametrálnì odli¹ná od povahy práce s bì¾ným poèítaèem nebo herní konzolí. Tyto faktory bude nutné uvá¾it.
 
 Pøi navrhování hry jsem vycházel zejména z~\cite{gameindustry1} a \cite{gameindustry2}.
@@ -443,6 +452,7 @@ Kombinací tìchto dvou principù vzniká ovládání schopné pokrýt stejný rozsah veli
 
 
 \section{®ánrové zaøazení a herní mechanismy}
+\label{sec:zanrove-zarazeni} 
 
 \note{OK r1}
 
@@ -514,7 +524,7 @@ Z pohledu u¾ivatele je prototyp velmi omezenou verzí hry. Neobsahuje u¾ivatelské
 	\end{center}
 \end{figure}
 
-Ovládacích metod obsahoval prototyp hned nìkolik. V zájmu rychlé implementace se k jejich výbìru pou¾ívá nativní menu platformy. V základu je zvolená ji¾ popsaná nová metoda ovládání a dále je mo¾no pøepnout na ovládání pomocí akcelerometru nebo virtuálního joysticku na obrazovce. Takto mohlo dojít k pøímému porovnání ovládacích metod. Souèasnì vznikaly i varianty jednotlivých metod s rùznou citlivostí nebo lehce odli¹ným chováním. To se týká pøedev¹ím navrhované metody, kde existuje více pøístupù, jak jsem popsal v kapitole \ref{sec:nova-metoda-ovladani}. Ukázalo se, ¾e je vhodnìj¹í pou¾ít variantu, kdy mají ovládací oblasti pevnì danou velikost v závislosti na rozli¹ení obrazovky, pøièem¾ pøípadný pøesah mimo zobrazovací oblast se ignoruje. Zjednodu¹enì lze øíct, ¾e tato metoda udr¾uje konstantní citlivost na úkor mo¾nosti dosáhnout v¾dy plného rozsahu ovladatelnosti. Ideální místo prvotního dotyku tedy bude pøesnì v polovinì vý¹ky obrazovky. Tuto informaci bude potøeba vhodným zpùsobem pøedat u¾ivateli a více tento problém popí¹i v kapitole \ref{implementace-ui}.
+Ovládacích metod obsahoval prototyp hned nìkolik. V zájmu rychlé implementace se k jejich výbìru pou¾ívá nativní menu platformy. V základu je zvolená ji¾ popsaná nová metoda ovládání a dále je mo¾no pøepnout na ovládání pomocí akcelerometru nebo virtuálního joysticku na obrazovce. Takto mohlo dojít k pøímému porovnání ovládacích metod. Souèasnì vznikaly i varianty jednotlivých metod s rùznou citlivostí nebo lehce odli¹ným chováním. To se týká pøedev¹ím navrhované metody, kde existuje více pøístupù, jak jsem popsal v kapitole \ref{sec:nova-metoda-ovladani}. Ukázalo se, ¾e je vhodnìj¹í pou¾ít variantu, kdy mají ovládací oblasti pevnì danou velikost v závislosti na rozli¹ení obrazovky, pøièem¾ pøípadný pøesah mimo zobrazovací oblast se ignoruje. Zjednodu¹enì lze øíct, ¾e tato metoda udr¾uje konstantní citlivost na úkor mo¾nosti dosáhnout v¾dy plného rozsahu ovladatelnosti. Ideální místo prvotního dotyku tedy bude pøesnì v polovinì vý¹ky obrazovky. Tuto informaci bude potøeba vhodným zpùsobem pøedat u¾ivateli a více tento problém popí¹i v kapitole \ref{sec:implementace-ui}.
 
 Druhá popisovaná varianta mìnila rozmìry obládacích oblastí (a tím i citlivost) v závislosti na poloze prvotního dotyku tak, aby nikdy nepøesáhly okraje obrazovky. Tato verze se ukázala jako ménì vhodná. Pùvodní pøedpoklad, ¾e hráè bude mít v prùbìhu celého letu trvale polo¾ené prsty na obrazovce, se ukázal jako nesprávný. Hráèi mají naopak tendence prsty zvedat a opìtovnì se obrazovky dotýkat, co¾ mìní refrenèní hladinu pro ovládání. V pøípadì této varianty se navíc mìnila i citlivost a hráè ztrácel pøehled o tom, jakou odezvu pohyb jeho prstù vyvolá. Ovládání se tím stávalo slo¾ité a nepøirozené, proto jsem tuto variantu zavrhl.
 
@@ -586,7 +596,7 @@ Základní svìt \texttt{BaseWorld} tedy podporuje pouze vykreslení entit. Jeho pot
 
 Tøídy spadající pod knihovnu Bullet Physics obsahují ve svém názvu prefix \texttt{bt}. Pro pou¾ití této knihovny není nutná detailní znalost její vnitøní struktury, proto i já popí¹i tyto tøídy jen velmi zbì¾nì. Základní tøídou je \texttt{btCollisionShape}, tedy kolizní tvar objektu. Podobnì jako vytvoøením instance konstruktoru vzniká entita, tak vytvoøením instance kolizního \textit{tvaru} vzniká kolizní \textit{objekt}, který je souèástí entity a reprezentuje jej tøída \texttt{btCollisionObject}. Z hlediska výkonnosti simulace je dùle¾ité, ¾e opìt objekty vzniklé ze stejného tvaru sdílejí stejné datové struktury. Dále fyzikální svìt obsahuje instanci tøídy \texttt{btCollisionWorld}, co¾ je knihovní reprezentace prostøedí, ve kterém simulace probíhá. (Z dùvodù kompatibility rozhraní je do tøídy \texttt{BulletWorld} pouze vlo¾en a tøída z nìj pøímo nedìdí.) Toto prostøedí pøedstavuje zjednodu¹enou verzi fyzikálního svìta, kde je mo¾né pouze testovat zda dochází ke kolizi nìkterých objektù. Fyzikální simulace ve smyslu napøíklad volného pádu tìles nebo jejich vzájemná interakce zde neprobíhá. Knihovna Bullet Physics toto samozøejmì nabízí, ov¹em za cenu znaèného nárùstu po¾adavkù na výkon. Vyvíjená hra je navíc zámìrnì navr¾ena tak, aby plnohodnotná simulace probíhat nemusela.
 
-\begin{figure}[ht]
+\begin{figure}[ht!]
 	\begin{center}
 		\includegraphics[width=\textwidth]{fig/classes-simulation.eps}
 		\caption{Diagram tøíd reprezentujících herní svìt}
@@ -611,7 +621,7 @@ Herní obrazovka pøed vykreslením ka¾dého snímku vyvolá aktualizaci scény, která 
 
 Je zde také vhodné zmínit závislost výkonu aplikace na pou¾itých kolizních tvarech, kterou jsem pøi vývoji vypozoroval. Dostateènì nízké výkonové nároky tak, aby hra bì¾ela plynule na cílených zaøízeních je nezbytností. Výkonovou nároènost hry lze sni¾ovat optimalizací vykreslování scény anebo optimalizací probíhající fyzikální simulace. Narozdíl od zpùsobu vykreslování má úprava simulace pøímý vliv na hratelnost výsledné hry. Ve høe která pou¾ívá fyzikální knihovnu pouze pro detekci kolizí není mnoho prostoru pro optimalizace. Prakticky jedinou promìnnou jsou zde kolizní tvary jednotlivých herních objektù, a právì jejich volba má dopad jak na výkon, tak i na hratelnost. Ve chvíli, kdy jsou kolizní tvary maximálnì zjednodu¹ené (koule, krychle, plochy) jsou sice po¾adavky na výkon nízké, ale kolize mù¾e být detekována (nebo naopak nedetekována) velmi nepøesnì. Dokonce natolik, ¾e si problému v¹imne i sám hráè a pøedstavuje pro nìj chybu. Pøíkladem mù¾e být aproximace kolizního tvaru kruhu pouhým ètvercem. Zde tvar nepokryje nìkteré krajní oblasti kruhu, které v¹ak hráè mù¾e cílenì vyu¾ívat pro dokonèení závodu v lep¹ím èase. Knihovna Bullet Physics podporuje kromì základních geometrických tvarù také tvary slo¾ené. Právì jejich pomocí jsem implementoval kolizní tvar kruhu, slo¾ený ze dvou ètvercù, které jsou vzájemnì pootoèené. Optimálním øe¹ením by jistì bylo pou¾ít ètvercù mnohem více, pøípadnì pak pøímo obecný polygon, v takovém pøípadì pak ale zaèínají nároky na výkon znaènì narùstat. Ji¾ pøi pou¾ití ètyø ètvercù bylo mo¾né pozorovat zpomalení hry (testováno na pøístroji Samsung Galaxy Nexus, který se v dobì psaní této práce øadí mezi zaøízení vy¹¹í tøídy). Podobnì se ukázalo vhodnìj¹í pou¾ít pro kolizní tvar letadla jednoduchý kvádr, namísto dvou kvádrù pøedstavujících trup a køídla. Oba zmiòované kolizní tvary jsou znázornìny na obrázku 
 
-\begin{figure}[ht]
+\begin{figure}[ht!]
 	\begin{center}
 		\includegraphics[width=\textwidth]{fig/kolizni-tvary.jpg}
 		\caption{Kolizní tvary nìkterých herních objektù}
@@ -623,25 +633,85 @@ Je zde také vhodné zmínit závislost výkonu aplikace na pou¾itých kolizních tvare
 
 
 \section{U¾ivatelské rozhraní}
-\label{sec:implementace-ui} 
-\note{- popis v souladu s kapitolou v teorii}
-\note{- diagram provázanosti obrazovek a dialogù}
-\note{- detailnìj¹í popis nìkterých komponent - slider v menu a letadýlka na pozadí? pøidat i vzorce chování?}
-\note{- tutorial screen - odkazuje sem kapitola o prototypu}
+\label{sec:implementace-ui}
+
+\note{TODO: zmínit výsledky dotazníku týkající se UI?}
+\note{TODO: vyu¾ití nativního tlaèítka zpìt}
+
+Z hlediska u¾ivatelského rozhraní lze hru rozdìlit na dvì èásti -- hlavní menu a samotnou hru. Ty jsou implementovány v ji¾ popisovaných tøídách \texttt{MainMenu} a \texttt{GameScreen}. Vazby souèástí u¾ivatelského rozhraní jsou znázornìny na obrázku \ref{fig:ui-diagram}. Ka¾dá z obrazovek obsahuje jednu instanci potomka tøídy \texttt{BaseStage} (konkrétnì \texttt{MainMenuStage} a \texttt{GameGuiStage}), kde jsou vytváøeny jednotlivé prvky rozhraní a definováno jejich rozlo¾ení. Vyu¾ity jsou pøevá¾nì pøeddefinované komponenty, jejich¾ vizuální podoba je upravená tak, jak bylo popsáno v kapitole \ref{sec:libgdx-ui}. Kromì tìchto dvou obrazovek hra vyu¾ívá nìkolik dialogù. Ty jsou ve své výchozí podobì ztvárnìny pou¾itím plovoucího okna. Tuto podobu jsem upravil tak, ¾e dialogy okno nepou¾ívají (lépe øeèeno je vykresleno prùhlednou barvou) a namísto toho èásteènì ztmaví celou oblast obrazovky. Toto øe¹ení pùsobí ménì technicistním dojmem a lépe zapadá do vizuální podoby celé aplikace.
+
+\vspace{\baselineskip}
+
+\begin{figure}[ht!]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/ui-diagram.eps}
+		\caption{Navigace v aplikaci}
+		\label{fig:ui-diagram}
+	\end{center}
+\end{figure}
+
+Navigace v menu je rozdìlená do dvou úrovní. Na první úrovni lze vybírat mezi sadami závodù, na úrovni druhé pak mezi jednotlivými závody. Vizuálnì výbìr realizuje horizontálnì posuvná oblast s náhledy jednotlivých sad èi závodù. Polo¾ka nejblí¾e støedu obrazovky se pova¾uje za aktuálnì vybranou a kliknutím na její miniaturu nebo na tlaèítko \textit{PLAY} se sada èi závod vybere a spustí. Pro zøetelost vybrané polo¾ky se ostatní polo¾ky s rostoucí vzdáleností od støedu obrazovky zmen¹ují. Pøi posouvání se pak panel v¾dy zafixuje tak, aby byla aktivní polo¾ka právì ve støedu obrazovky. Pro dosa¾ení tohoto chování jsem roz¹íøil knihovní tøídu \texttt{ScrollPane}, která podporuje pouze plynulý horizontální èi vertikální posun obsahu v panelu bez dal¹ího mo¾ného nastavení nebo funkcionality. Výsledné chování implementuje tøída \texttt{MyScrollPane}. Z panelu je také odstranìn klasický posuvník, který nahrazuje skupina ikon, jejich¾ poèet je shodný s poètem polo¾ek v panelu. Ikona reprezentující aktuálnì vybranou polo¾ku je pak vizuálnì odli¹ená. Situaci ilustruje døíve uvedený obrázek \ref{fig:ui-design}, který souèasnì zachycuje rozdìlení obrazovky hlavního menu do jednotlivých komponent.
+
+\vspace{\baselineskip}
+
+V kapitole \ref{sec:implementace-prototypu} jsem zvolil jako optimální variantu ovládání letadla takovou, kdy nevhodné místo prvotního dotyku mù¾e omezit manévrovací schopnosti letadla. Z tohoto dùvodu a souèasnì proto, ¾e je metoda ovládání zcela nová a neznámá, jsem vytvoøil speciální dialog pro zauèení nového hráèe. Zobrazí se pøi spu¹tení prvního závodu ve høe a namísto potvrzovacích tlaèítek jsou vykresleny dva ¾luté kruhy (viz obrázek \ref{fig:ui-tutorial}). Hráè je instruován, aby se souèasnì dotkl obou kruhù, teprve poté se závod zahájí. Kruhy jsou zámìrnì zarovnány svým støedem na støed vý¹ky obrazovky s cílem nauèit hráèe tuto pozici prstù jako výchozí. Tento postup se osvìdèil. Pøi testování se ukázalo, ¾e v drtivé vìt¹inì pøípadù hráèùm staèí pro pochopení ovládání pouze informace zobrazená v tomto dialogu. Nìkteøí navrhovali, ¾e by se dialog mohl zobrazit pøed ka¾dým závodem. Jiní by preferovali, kdyby se místa optimálního dotyku zobrazovala v prùbìhu celého závodu ve chvílích, kdy se hráè obrazovky pøestane dotýkat. Pøedev¹ím druhý zmínìný námìt by mohl pomoci hráèùm rychleji se v ovládání zorientovat napøíklad v pøípadech, ¾e se ke høe vrátili po del¹í dobì. Ani jeden z tìchto námìtù v¹ak v aktuální verzi zahrnut není.
+
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/ingame-tutorial.jpg}
+		\caption{Dialog pro zauèení nového hráèe}
+		\label{fig:ui-tutorial}
+	\end{center}
+\end{figure}
+
+
 
 
 \section{Vývojáøské rozhraní}
-\note{- vlastní kapitola nebo podkapitola?}
-\note{- proè je, kde je, co umí, obrázek}
+
+Souèástí hry je také speciální vývojáøský re¾im. Ten je pro bì¾né hráèe pøirozenì nedostupný a v publikované verzi je odstranìn. Slou¾í k jednoduchým úpravám existujících závodù a k vytváøení závodù nových. Jeho rozhraní je spí¹e strohé, av¹ak úèelné. Zachyceno je na obrázku \ref{fig:ui-dev}. Vývojáøský re¾im implementuje obrazovka \texttt{GatePlacementScreen}, u¾ivatelské rozhraní pak tøída \texttt{OverlayStage}. Obrazovka naète objekty herního svìta, podobnì jako pøi spu¹tìní závodu, s tím rozdílem, ¾e neprobíhá fyzikální simulace ani vyhodnocování stavu závodu. Scéna neobsahuje ani letadlo a kamera se mù¾e volnì pohybovat v prostoru. K tomu slou¾í tlaèítka u¾ivatelského rozhraní pro posun o pevnì danou vzdálenost, pøípadnì pak speciální vstupní procesor \texttt{FreeMoveInputProcessor} umo¾òující plynulé rozhlí¾ení a prùlet scénou. Je mo¾né pøidávat a odebírat jednotlivé kruhy a branky závodu a také nastavit poèáteèní transformaci letadla.
+
+Z dùvodu zachování pøenositelnosti mezi platformami bohu¾el nelze závod pøímo ulo¾it a ihned jej hrát. Aktuálnì se závod vypí¹e do konzole vývojového prostøedí jako øetìzec ve formátu JSON. Ten je nutné ruènì ulo¾it do souboru v adresáøi s ostatními datovými soubory aplikace. Toto chování vzniká proto, ¾e v okam¾iku sestavování aplikace jsou ve¹keré její soubory zabaleny do jediného balíèku, který se dále zpøístupòován pouze pro ètení. Alternativnì by bylo mo¾né ukládat vytváøené závody do u¾ivatelské pamìti zaøízení, ov¹em tyto by pak byly volnì pøístupné a upravitelné, a tudí¾ by nebylo mo¾né zaruèit jejich konzistenci. Èasy jednotlivých závodù jsou vkládány také ruènì, na základì nìkolika zku¹ebních letù. V budoucnu budou èasy upravovány na základì dat získaných anonymním sbìrem statistik.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/ingame-dev.jpg}
+		\caption{Vývojáøské rozhraní pro tvorbu a úpravu závodù}
+		\label{fig:ui-dev}
+	\end{center}
+\end{figure}
+
+
 
 \section{Zveøejnìní hry a zpìtná vazba}
 
 \subsection{Veøejné testování a prùzkum}
 \label{sec:verejne-testovani}
-\note{odkazuje sem prototyp/ovladani} 
-\note{- co je potøeba zaøídit pøed vydáním}
-\note{- jak probíhala public beta}
-\note{- ohlasy, dotazník, shrnutí výsledkù}
+
+Ve chvíli, kdy se hra dostala do finální podoby, bylo mo¾né ji zaèít veøejnì distribuovat. Do té doby jsem testování provádìl osobními schùzkami v rùzných stádiích vývoje, kde bylo mo¾né okam¾itì reagovat na chyby a jiné nedostatky. Tento pøístup souèasnì nabízel mnohem lep¹í zpìtnou vazbu od hráèù, kterou by bylo pozdìji obtí¾né získat. Dal¹ím pøínosem bylo také pøímé testování hry na rùzných zaøízeních. Zde ¾ádné problémy nenastaly a hra bez problémù bì¾ela na v¹ech zaøízeních, se kterými deklarovala kompatibilitu.
+
+Posledním krokem pøed zveøejnìním bylo zapojení statistik. Tuto slu¾bu poskytuje pøímo firma Google formou speciální knihovny. Pùvodnì byla navr¾ená pro sledování klasických aplikací, které jsou zalo¾eny na výchozích komponentách platformy, jako jsou Aktivity, dialogy a dal¹í. Díky poslední verzi jejího rozhraní je v¹ak mo¾né sledované události spou¹tìt manuálnì, a tím ukládat statistiky i pro hru, která má z pohledu sledující knihovny jen jedinou obrazovku. Nìkteré zajímavé statistiky mù¾e ètenáø vidìt na obrázcích \note{???} a \note{???}.
+
+\vspace{\baselineskip}
+
+První veøejnou verzi hry jsem vystavil na internet ve formì samostatného binárního souboru (tedy bez mo¾nosti automatické aktualizace) a nasdílel na nìkterých sociálních sítích. Souèasnì jsem vytvoøil dotazník, o jeho¾ vyplnìní jsem hráèe po¾ádal. Plné znìní dotazníku se nachází v pøíloze \note{???} této práce. Struktura dotazníku je inspirována metodou \textit{Lickert Scale} \note{citace}. Jejím cílem je nepokládat pøímé otázky, ale pøedstavovat tvrzení a mìøit, jak silnì se s nimi hodnotící ztoto¾òuje. Tím by mìlo být hodnocení jednodu¹¹í a spontánnìj¹í. Souèasnì se omezuje ne¾ádoucí kreativita hodnotícího a zjednodu¹uje se i vyhodnocení takového dotazníku. Nejèastìji se pou¾ívá stupnice o 3, 5 nebo 7 hodnotách. Dùle¾itý je v¾dy lichý poèet mo¾ností, umo¾òující hodnotícímu zaujmout neutrální postoj. Mohou nastat výjimky, kdy je ¾ádoucí pou¾ít sudý poèet mo¾ností, a tím si odpovìï vynutit. Tento pøístup ale pro vyvíjenou hru vhodný není. Dal¹í z doporuèení pøi tvorbì dotazníku metodou Lickert Scale je nezaujatost tvrzení. Ta by mìla být ideálnì pøedkládána tak, aby nebylo zøejmé, která z mo¾ností je správná. Hodnotící hráè pak mnohem ménì podléhá spoleèenským a jiným tlakùm.
+
+\vspace{\baselineskip}
+
+Z výsledkù dotazníku vyplývá, ¾e první dojem z aplikace byl pozitivní, hlavní menu hráèùm pøipadá pøehledné a je dobøe ovladatelné. To potvrzuje, ¾e implementace vlastního chování posuvného panelu v menu byla úspì¹ná. Stejnì tak se osvìdèila ikona ozubeného kola reprezentující dialog s nastavením. Zajímavostí je, ¾e z hráèù odpovídajících na dotazník tento dialog otevøela asi jen ètvrtina z nich (dle údajù ze statistik). Pøesto vìt¹ina odpovìdìla, ¾e by umìla zapnout èi vypnout zvuky ve høe. Pøíèinou mù¾e být buï nedbalost pøi vyplòování dotazníku anebo fakt, ¾e jde o silnì za¾itý prvek u¾ivatelského rozhraní ve hrách, od kterého hráèi oèekávají chování, ani¾ by jej ovìøovali.
+
+Prokázala se také vhodnost logické stavby menu. Hodnotící ve høe rozpoznali, ¾e má menu více úrovní a ¾e pro zpøístupnìní uzamèeného závodu bude pravdìpodobnì nutné splnit závod pøedchozí. V pøípadì dotazu na poèet polo¾ek závodù ve høe v¹ak byly odpovìdi sporné. To mohlo být zapøíèinìno nevhodnì formulovaným tvrzením (\textit{Mám pøedstavu o tom, kolik je ve høe levelù}), které vy¾aduje zpøístupnìní v¹ech sad závodù. Sady jsou na sebe navázány stejnì jako jednotlivé závody a do odemèení do nich nelze ani nahlédnout. Hráè který by chtìl na toto tvrzení korektnì odpovìdìt by tedy musel nejdøíve v¹echny závody zpøístupnit, co¾ v¹ak podle statistik neudìlal nikdo. Dal¹ím sporným tvrzením byla mo¾nost spu¹tìní závodu. Zde ¹lo èistì o experiment -- závod lze spustit jak tlaèítkem PLAY, tak i kliknutím na jeho náhled. Témìø tøetina odpovídajících vyu¾ila kliknutí na náhled. Pravdìpodobnì se tak chovali proto, ¾e jde opìt o chování které lze od posuvného panelu obecnì oèekávat. Statistiky vyu¾ívání tlaèítka PLAY a kliknutí na náhled závodu shrnuje obrázek \note{???}; mìøené období je pøibli¾nì jeden mìsíc.
+
+\note{TODO: obrázek ze statstik - pomìr klikù na PLAY a na náhled}
+
+Dal¹í èást dotazníku se vìnovala samotnému prùbìhu závodu a chování letadla. Témìø $80%$ hráèù odpovìdìlo, ¾e jsou schopní letadlo bez pøedchozího vysvìtlení ovládat (my¹leno jiného vysvìtlení ne¾ døívì zmiòovaného dialogu pøed prvním závodem). To potvrzuje intuitivnost navrhovaného ovládání. Vìt¹ina hráèù pova¾uje ovládání za dostateènì pøesné, pøièem¾ lze s letadlem stále provádìt ostré zatáèky. Stejnì tak hráèi odpovídají, ¾e vìdí, jak pohyby jejich prstù ovlivní letadlo. Tím opìt potvrzují dobrý návrh ovládání. Souèasnì v¹ak hráèi nebyli schopni jasnì identifikovat, zda chování letadla odpovídá letu skuteèného letadla. S tím souvisí i tvrzení ohlednì pøedvídatelnosti chování letadla, kde jsou odpovìdi také vesmìs neprùkazné. Ji¾ pøi návrhu hry (v kapitole \ref{sec:zanrove-zarazeni}) jsem deklaroval, ¾e cílem hry není maximálnì vìrné napodobení letu skuteèného letadla, nýbr¾ navr¾ení chování tak, aby vyústilo v co nejvíce zábavnou a obecným hráèùm pochopitelnou hru. Z tohoto pohledu nejsou zmínìné reakce ani pozitivní ani negativní. Bylo by mo¾né øíct, ¾e se chování pohybuje na hranì s lehkým pøesahem do nerealistièna, co¾ aktuálnì pova¾uji za vhodný kompromis. Posledním tvrzením na téma ovladatelnosti byl dotaz na ovládání smìrového kormidla. Zde se hráèi rozdìlili na témìø pøesné poloviny, kdy jedna strana preferuje ovládání pøímé a druhá inverzní. Tento jev se projevil je¹tì pøed veøejným testování a hra ji¾ v dobì vyplòování dotazníku obsahovala mo¾nost pøevrácení svislé ovládací osy. Tato volba je u leteckých her velmi èasto pou¾ívaná a mìla by uspokojit obì skupiny hráèù. Výchozí chování je nastaveno na inverzní, kde posun prstù ke spodní hranì obrazovky zvedá letadlo nahoru. Toto chování toti¾ více odpovídá chování kniplu ve skuteèném letadle (pøípadnì hernímu joysticku).
+
+Poslední èást dotazníku se vìnovala skladbì závodù a prostøedí ve kterém se odehrávají. Letadlo podle vìt¹iny hráèù letí spí¹e pomalu, stejnì jako obtí¾nost závodù hodnotí spí¹e jako nízkou. Je v¹ak vhodné dodat, ¾e statistiky v období vyplòování dotazníku ukazovaly, ¾e do pokroèilej¹ích závodù postoupilo jen malé mno¾ství hráèù. Toto tvrzení tak hodnotí spí¹e subjektivní obtí¾nost, která v¹ak mù¾e být zajímavým doplòkem objektivní obtí¾nosti, kterou lze získat ze statistik na základì èetnosti úspì¹ných dokonèení jednotlivých závodù. \note{Viz obrázek s èetnostma?} Drtivé vìt¹inì odpovídajících hráèù se pak podaøilo dokonèit alespoò jeden závod a alespoò jednou dokonèit závod se ziskem tøí hvìzdièek. Hráèi kladnì ohodnotili také navigaèní ¹ipku, která ukazuje smìr k následujícímu kruhu èi brance. Z dodateèných odpovìdí (volitelný vzkaz na konci dotazníku) vyplývá, ¾e by ocenili i informaci o vzdálenosti následujícího cíle, pøípadnì náhled na rozlo¾ení branek v celém závodì. V závìru bylo pøedstaveno nìkolik tvrzení ohlednì scenerie závodu. Z odpovìdí lze vyèíst, ¾e hráèi prostøedí spí¹e nevnímají, souèasnì by v¹ak uvítali kdyby hra obsahovala více dekorativních objektù. Tyto reakce lze pøièíst subjektivní prázdnotì prostøedí závodu. Pøi vývoji se ukázalo jako velmi efektivní nechat závod probíhat nad moøem v teoreticky neomezeném prostoru. Hráèi ale zøejmì vnímají jistý nedostatek ukotvení scenerie. Vhodným øe¹ením by mohlo být omezení herního prostoru tak, ¾e by závod probíhal napøíklad podél skalního útesu nebo mìsta. Vzhledem k tématice by pak bylo mo¾né doplnit divácké tribuny, reklamní plochy a dal¹í objekty. To mù¾e být tématem dal¹ího roz¹iøování hry.
+
+
+
+
 
 \subsection{Zveøejnìní na Google Play}
 \note{- co se zmìnilo od public bety}
