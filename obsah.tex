@@ -669,6 +669,7 @@ V kapitole \ref{sec:implementace-prototypu} jsem zvolil jako optimální variantu 
 
 
 \section{Vývojáøské rozhraní}
+\label{sec:vyvojarske-rozhrani} 
 
 Souèástí hry je také speciální vývojáøský re¾im. Ten je pro bì¾né hráèe pøirozenì nedostupný a v publikované verzi je odstranìn. Slou¾í k jednoduchým úpravám existujících závodù a k vytváøení závodù nových. Jeho rozhraní je spí¹e strohé, av¹ak úèelné. Zachyceno je na obrázku \ref{fig:ui-dev}. Vývojáøský re¾im implementuje obrazovka \texttt{GatePlacementScreen}, u¾ivatelské rozhraní pak tøída \texttt{OverlayStage}. Obrazovka naète objekty herního svìta, podobnì jako pøi spu¹tìní závodu, s tím rozdílem, ¾e neprobíhá fyzikální simulace ani vyhodnocování stavu závodu. Scéna neobsahuje ani letadlo a kamera se mù¾e volnì pohybovat v prostoru. K tomu slou¾í tlaèítka u¾ivatelského rozhraní pro posun o pevnì danou vzdálenost, pøípadnì pak speciální vstupní procesor \texttt{FreeMoveInputProcessor} umo¾òující plynulé rozhlí¾ení a prùlet scénou. Je mo¾né pøidávat a odebírat jednotlivé kruhy a branky závodu a také nastavit poèáteèní transformaci letadla.
 
@@ -718,8 +719,6 @@ V rámci udr¾ení hráèù jsem do veøejnì testované verze zabudoval omezení, které h
 
 \subsection{Zveøejnìní na Google Play}
 
-\note{TODO: pøed tiskem aktualizovat hodnoty}
-
 Verze publikovaná na internetovém obchodì Google Play se od veøejnì testované prakticky neli¹í. Opravil jsem nìkolik drobných nedostatkù, které se projevovaly pouze na úzkém okruhu zaøízení a samozøejmì jsem také odstranil èasové omezení. V souvislosti s publikováním bylo nutné vytvoøit nìkolik variant propagaèních materiálù. Jeliko¾ jsem ve¹keré grafické podklady vytváøel já sám, mù¾e být jejich kvalita sporná. Zpìtnì bych pravdìpodobnì zvá¾il spolupráci s profesionálním grafikem. Pøesto se volba jednoduché ikony s vyobrazeným letadlem ukázala jako vhodná. Obecný vliv prezentaèních materiálù na potenciální u¾ivatele v¹ak nelze nijak mìøit.
 
 Pro publikování v obchodì je nutné vlastnit vývojáøský úèet, jeho¾ vytvoøení je v dobì psaní této práce podmínìno poplatkem \$25. Vytvoøení úètu, stejnì jako publikování aplikace pak probíhá na poèkání. Není tedy nutné poèítat se zpo¾dìním pøi vydávání aplikace tak, jak je tomu u jiných platforem. Publikovaná aplikace musí být podepsaná soukromým klíèem vývojáøe a stejným klíèem pak musí být podepsány v¹echny dal¹í aktualizace. V pøípadì ztráty tohoto klíèe ji¾ nelze binární podobu aplikace nahrané v obchodì nijak upravovat. 
@@ -728,7 +727,7 @@ Pro publikování v obchodì je nutné vlastnit vývojáøský úèet, jeho¾ vytvoøení je 
 
 Po vydání aplikace jsem ji opìt propagoval na sociálních sítích, vèetnì nìkolika komunit specializovaných na hry a platformu Android. Souèasnì jsem ¾ádal hráèe, aby hru v obchodì ohodnotili (dle vlastní vùle), èím¾ ji uèiní teoreticky lákavìj¹í pro dal¹í potenciální hráèe. Hodnocení probíhá udìlením jedné a¾ pìti hvìzdièek a pøidání pøípadného komentáøe. Poèet hodnotících hráèù je v¹ak velmi nízký, dle souèasných statistik vlo¾í hodnocení ménì ne¾ jeden hráè z 500, komentáø pak vlo¾í asi jeden z tisíce. Aktuálnì hru hodnotilo 87 hráèù, pøièem¾ 61 zvolilo nejvy¹¹í hodnocení, 13 pak hodnocení nejni¾¹í. Pøi takto nízkém poètu v¹ak nemá hodnocení ani vìt¹ina komentáøù témìø ¾ádnou vypovídací hodnotu. Hodnocení hráèù jsem se sna¾il podpoøit herním dialogem, který se jednorázovì spustí po splnìní v¹ech závodù z první sady. 
 
-I pøes nízkou úèast hráèù v hodnocení se hra v obchodì prosadila a necelý mìsíc po vydání se dostala na pozici deváté nejlep¹í závodní hry. Graf vývoje pozice v jednotlivých dnech je na obrázku \ref{fig:pozice-play}. Celkový poèet instalací pøesahuje 47000, pøièem¾ denní trend nových u¾ivatelù v souèasnosti spí¹e stagnuje. 
+I pøes nízkou úèast hráèù v hodnocení se hra v obchodì prosadila a necelý mìsíc po vydání se dostala na pozici deváté nejlep¹í závodní hry. Graf vývoje pozice v jednotlivých dnech je na obrázku \ref{fig:pozice-play}. Celkový poèet instalací pøesahuje 50000, pøièem¾ denní trend nových u¾ivatelù v souèasnosti spí¹e stagnuje. 
 
 \begin{figure}[ht]
 	\begin{center}
@@ -738,14 +737,34 @@ I pøes nízkou úèast hráèù v hodnocení se hra v obchodì prosadila a necelý mìsíc 
 	\end{center}
 \end{figure}
 
+Souèástí vývojáøského rozhraní obchodu Google Play je i sledování vzniklých výjimek. Tìch se objevilo vzhledem k mno¾ství instalací jen minimum. ©lo o nepøedvídatelné chyby, které vznikaly jen na nìkterých jednotlivých modelech nebo konkrétních zaøízeních. Pøesto¾e bývají zaznamenané výjimky bì¾nì svázány s popisem zaøízení na kterém vznikly, v nìkterých pøípadech tato informace chybìla. Lze pøedpokládat, ¾e jde o upravená sestavení platformy Android. Mimo toto jsem narazil také na chybu vyskytující se v rùzném mno¾ství na celé modelové øadì. Jde o chybu pøímo v platformì Android, která se v¹ak vyskytuje jen u konkrétního sestavení a verze. V tomto pøípadì bylo mo¾né pøestat tìmto typùm zaøízení hru nabízet a v obchodì ji oznaèit jako nekompatibilní. V dobì pøed omezením podpory mìla tato zaøízení témìø 10\% podíl na instalacích. Pøesto¾e jde o nezanedbatelný poèet hráèù, jiné øe¹ení dostupné nebylo. Chyba byla nahlá¹ena a v dal¹ích verzích platformy opravena, nicménì výrobce aktualizaci svých pøístrojù nenabídl a jiné øe¹ení ne¾ aktualizace platformy pro tento problém známé není.
 
 
 
 \section{Mo¾nosti dal¹ího vývoje}
-\note{- shrnout slabiny, rozepsat co by se dalo dál roz¹iøovat, co má smysl a co spí¹ ne}
-\note{- hra má velký potenciál -> monetizace}
-\note{- zdaleka se nevyèerpal popsaný návrh hry - stále co dìlat}
-\note{- pøidání tøetí osy ovládání - smìrovka - zmiòuje ji texto o prototypu }
+
+Pøesto¾e jsem v døívìj¹ích kapitolách èasto naznaèil dal¹í mo¾ný vývoj, popí¹i jej nyní detailnì v samostatné kapitole. Za polo¾ku s nejvy¹¹í prioritou aktuálnì pova¾uji vizuální stránku hry. Tu by sice bylo mo¾né zaøadit v rámci her nabízených na Google Play do prùmìru, nicménì je to vlastnost, která produkt prodává. Úplnì nejdøíve potenciální zákazník vidí ikonu hry, následnì propagaèní obrázky a teprve poté si mù¾e pøeèíst popis a hru pøípadnì stáhnout. Z reakcí na hru lze vyèíst, ¾e s navr¾eným zpùsobem ovládání je vìt¹ina hráèù spokojená, nicménì jde právì o tu skupinu hráèù, které neodradil ¾ádný ze zmiòovaných krokù. Lze pøedpokládat, ¾e existuje poèetná skupina náv¹tìvníkù internetového obchodu, které hra nezaujala právì kvùli grafickému zpracování. Konverzi tìchto potenciálních hráèù na hráèe skuteèné by mìlo pomoci právì dal¹í zlep¹ování propagaèních materiálù.
+
+Souèástí vizuální stránky hry je také herní prostøedí. V tomto pøípadì by úpravy cílily pøevá¾nì na ji¾ existující hráèe. Ti se v dotazníku svojí vìt¹inou shodli, ¾e by høe prospìlo více dekorativních objektù. Spolu s tím, jak by v rámci roz¹iøování pøibývaly ve høe dal¹í závody, by mohly zaèít pùsobit pøíli¹ jednotvárnì. Herní objekty jako tribuny, reklamní plochy a dal¹í by mohly takovou jednotvárnost naru¹it a souèasnì (ov¹em ne nezbytnì) zvý¹it obtí¾nost závodù, napøíklad jejich vhodným umístìním do trasy letu. Ve vìt¹ím mìøítku pak mù¾e jít o úplnou zmìnu scenerie závodù. Mohly by se odehrávat napøíklad v pou¹ti, ve mìstì mezi domy anebo témìø v libovolné krajinì. Bylo by zde nutné dbát na výkonové nároky, které jsou v souèasnosti velmi nízké, a pøípadná roz¹íøení zavádìt tak, aby nebylo nutné omezovat podporu nìkterých star¹ích a ménì výkonných zaøízení. Z ménì nároèných úprav pak zmíním napøíklad efekty odlesku a rozptylu svìtla na objektivu kamery (tzv. efekt \textit{lens flare}) nebo viditelné linky vzduchu èi páry u koncù køídel letadla, které by kromì vizuálního efektu mohly hráèi pomoci lépe si pøedstavit, jakým smìrem se letadlo aktuálnì pohybuje.
+
+\vspace{\baselineskip}
+
+Z hlediska ovládání zopakuji ji¾ zménìnou mo¾nost ovládání smìrového kormidla. Jeliko¾ by pravdìpodobnì vìt¹ina hráèù tuto zmìnu nepøivítala, bylo by mo¾né takové roz¹íøení nabízet volitelnì. Bylo by v¹ak velmi zajímavé zji¹»ovat dal¹í mo¾nosti navr¾ené metody ovládání. Dùle¾itým aspektem u úprav tohoto typu v ji¾ publikované høe by bylo zachování zpìtné kompatibility herních výsledkù. Zmìna ovládání, stejnì jako zmìna parametrù letadla, mù¾e zpøístupnit nové a efektivnìj¹í letové trasy anebo naopak ztí¾it dokonèení ji¾ existujících závodù. Pøípad, kdy hráè dostává mo¾nost dokonèit závod rychleji, je pøirozenì lep¹í variantou. I ten by v¹ak mohl naru¹it mo¾nost vzájemného srovnávání výkonù hráèù, napøíklad ve sledovaných statistikách.
+
+Podle nìkterých ohlasù by hráèi uvítali také lep¹i pøehled o konkrétních èasech závodù, napøíklad ve smyslu mo¾nosti zobrazení èasù døívìj¹ích letù. Pokud bych tuto my¹lenku mìl rozvést dál, pravdìpodobnì bych navrhl mo¾nost zobrazení tzv. \textit{ducha}. ©lo by o èásteènì prùhledné letadlo, které by pøedstavovalo hráèùv døívìj¹í let. Díky tomu by bylo zøejmé, kde se hráè od døívìj¹í trasy odchyluje a namísto pøímého srovnání èasù by hra nabízela srovnání vizuální.
+
+S mo¾ností vzájemného srovnání souvisí i dal¹í mo¾nost ro¾¹íøení -- online ¾ebøíèky a závody pro více hráèù. Zmínìnou mo¾nost zobrazení duchù by bylo mo¾né roz¹íøit o sdílení tìchto záznamù závodù mezi hráèi. Ti by pak vedle pøeddefinovaných èasù závodù mohli pøekonávat globální rekordy skutèných hráèù. Toto roz¹íøení by ov¹em znamenalo øádovì více práce, nebo» by bylo nutné zajistit server ukládající tato data a jejich synchronizaci. Nelze také opomenout nutnost zabezpeèení takových pøenosù, aby nebylo mo¾né výsledky závodù podvrhnout.
+
+Jinou cestou roz¹iøování hry pro více hráèù by mohlo být lokální hraní s vyu¾itím technologií jako Bluetooth nebo Wi-Fi. Zde by nároky na synchronizaci a bezpeènost spojení nebyly tak vysoké a souèasnì by bylo mo¾né nabídnout spoleèné hraní v reálném èase. To by umo¾nilo také zavedení nových pøístupù k závodùm, které by vy¾adovaly napøíklad spolupráci obou hráèù nebo naopak jejich vzájemné soupeøení, v extrémním pøípadì i formou vzdu¹ných soubojù (které hráèi v dotazníku také nìkolikrát zmínili).
+
+Pro úplnost zmíním také pøidávání dal¹ích závodù, pøesto¾e jde o roz¹íøení naprosto zøejmé. Tímto zpùsobem by bylo mo¾né udr¾ovat v aktivitì existující hráèe. Opìt zde ale hrozí jistá monotónnost a bylo by vhodné tato roz¹íøení kombinovat právì se zmínìnými grafickými doplòky. Zajímavým, by» opìt realizaènì nároèným roz¹íøením, by byla mo¾nost vytváøení vlastních závodù samotnými hráèi. Základní prvky pro tuto funkcionalitu u¾ hra obsahuje, popsány byly v kapitole \ref{sec:vyvojarske-rozhrani}. Po nezbytných úpravách by se tato dosud vývojáøská obrazovka mohla stát plnohodnotnou souèástí hry. Hráèi by mohli vytvoøené závody sdílet a soupeøit o nejlep¹í èasy, a» u¾ globálnì èi lokálnì. Opìt by ale platily døíve uvedené pøedpoklady o zabezpeèení takovéto funkcionality proti zneu¾ití.
+
+\vspace{\baselineskip}
+
+Pøi úvahách o dal¹ím roz¹iøování hry je vhodné uvá¾it také ekonomickou stránku vìci. Zatímco nìkteré z navrhovaných úprav jsou jednoduché, jiné by vy¾adovaly napøíklad provoz webového serveru. V takovou chvíli by nutnì vznikaly náklady, které by vzhledem k poètu hráèù zøejmì nebyly nízké. Pøesto¾e náklady na dosavadní vývoj hry pøedstavovaly pouze strávený èas, i tento pøedstavuje omezené prostøedky, které by mìly vést k zisku (by» ne nezbytnì materiálnímu). U her pro mobilní zaøízení bývá obecným zvykem vydat hru ve dvou variantách -- bezplatné a zpoplatnìné. Bezplatná verze hry mù¾e slou¾it jako demo a souèasnì èasto obsahuje omezenou nabídku funkcí. V tomto pøípadì by bylo mo¾né vydat hru obohacenou o nìkteré z vý¹e uvedených roz¹íøení ve zpoplatnìné verzi. Pøesto¾e by si placenou verzi zakoupil zøejmì jen zlomek stávajících hráèù, bylo by mo¾né uva¾ovat o alespoò èásteènému návratu investic do vývoje èi provozu hry. Souèasnì by ale vznikaly dal¹í problémy, kterými bezplatná verze netrpí, jako napøíklad pirátství. To mù¾e u ¾ádaných her mù¾e dosahovat a¾ k 90\% nelegálnì získaných kopií \note{citace???}. Dal¹í výzvou by tedy bylo nastavení vhodného obchodního modelu tak, aby se tyto ztráty minimalizovaly. Pøíkladem takového modelu mù¾e být nákup pøímo v aplikaci (tzv. \textit{in-app payments} nebo \textit{in-app transasctions}), kdy se samotná aplikace se základní funkcionalitou distribuuje bezplatnì a dokupování dal¹ího obsahu a mo¾ností probíhá pøímo v aplikaci. Pøesto¾e i tato metoda lze obejít, nákup v aplikaci se aktuálnì jeví oproti zpoplatnìné aplikaci jako lépe zabezpeèená varianta \note{citace???}.
+
+
+
 
 
 \chapter{Závìr}
