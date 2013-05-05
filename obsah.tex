@@ -2,13 +2,13 @@
 
 \chapter{Úvod}
 
-\note{TODO: revize}
+\note{OK r1}
 
 Hry pro mobilní zaøízení, zejména telefony a tablety, v~souèasnosti za¾ívají nebývalý rozmach. Dalo by se øíct, ¾e jsou nyní tam, kde byly pøed patnácti a¾ dvaceti lety hry poèítaèové. Zatímco typický tým vyvíjející hru pro poèítaè nebo herní konzoli èítá desítky, ale èasto i stovky èlenù, hru pro mobilní telefon je stále mo¾né stvoøit jen v~nìkolika málo lidech.
 
 Neustále narùstající výkon dovoluje pøiblí¾it se kvalitì poèítaèových her. Tìmi se novì díky mobilním zaøízením mù¾e hráè zabavit napøíklad na cestách anebo pøi èekání na autobus. Velká vìt¹ina lidí s~sebou neustále nosí výkonný poèítaè ve velmi malém balení, který je navíc vybaven mno¾stvím sensorù a èasto i soustavným pøipojením k~internetu. To nabízí prostor pro velké mno¾ství inovací a je dobøe ¾e se takové inovativní pøístupy skuteènì objevují.
 
-Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých her pro mobilní zaøízení. Nejdøíve popí¹e platformu na které bude implementace probíhat, dále vysvìtlí principy díky kterým letí a manévruje skuteèné letadlo. Tyto principy poté zjednodu¹í pro pou¾ití v~prostøedí her a shrne souèasné mo¾nosti ovládání herních letadel. Nakonec navrhne novou metodu ovládání zalo¾enou na dotyku a popí¹e souèasný stav její implementace a hry na ní zalo¾ené.
+Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých her pro mobilní zaøízení. Nejdøíve bude popsána platforma na které bude implementace probíhat, dále budou vysvìtleny principy, díky kterým letí a manévruje skuteèné letadlo. Tyto principy budou poté zjednodu¹eny pro pou¾ití v~prostøedí her. Dále budou shrnuty souèasné mo¾nosti ovládání herních letadel a navr¾ena nová metoda jejich ovládání, zalo¾ená na dotyku. Nad touto metodou bude vystavìna plnohodnotná letecká hra, její¾ vývoj bude popsán od prvotního návrhu a¾ po její implementaci a publikování v internetovém obchodì Google Play. Na závìr bude nabídnuta také kapitola shrnující dal¹í mo¾ný vývoj této hry.
 
 
 
@@ -18,7 +18,7 @@ Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých
 
 \note{OK r1}
 
-Andriod je operaèní systém pro mobilní zaøízení, zalo¾ený na Linuxovém jádøe a poskytovaný ve formì otevøeného zdrojového kódu. Poprvé byl pøedstaven v~roce 2007, první mobilní telefon s~Androidem se dostal na trh o~rok pozdìji. Aktuálnì dle statistik za první ètvrtletí roku 2013 má na poli \textit{chytrých mobilních telefonù} (smartphone) Android jako¾to operaèní systém podíl pøes 38\% \cite{statCounter} (mìøeno na základì nav¹tìvovanosti webových stránek z mobilních telefonù) se zøejmým vzestupným trendem. Aèkoliv je Android pou¾itelný pro mno¾ství rùzných zaøízení (a implementace mimo pole mobilních telefonù se u¾ nyní objevují), bude se tato práce soustøeïovat pouze na jeho vyu¾ití v~mobilních zaøízeních typu mobilního telefonu nebo tabletu. Informace v následujících kapitolách budou vycházet z oficiálního vývojáøského portálu \cite{androidDevelopers} a z vlastních zku¹eností a poznatkù. Kapitola \ref{sec:libgdx} pak bude èerpat z dokumentace knihovny Libgdx \cite{libgdx} a také knihy tého¾ autora \cite{ligbdxKniha}.
+Andriod je operaèní systém pro mobilní zaøízení, zalo¾ený na Linuxovém jádøe a poskytovaný ve formì otevøeného zdrojového kódu. Poprvé byl pøedstaven v~roce 2007, první mobilní telefon s~Androidem se dostal na trh o~rok pozdìji. Aktuálnì dle statistik za první ètvrtletí roku 2013 má na poli \textit{chytrých mobilních telefonù} (smartphone) Android jako¾to operaèní systém podíl pøes 38\% \cite{statCounter} (mìøeno na základì nav¹tìvovanosti webových stránek z mobilních telefonù) se zøejmým vzestupným trendem. Aèkoliv je Android pou¾itelný pro mno¾ství rùzných zaøízení (a implementace mimo pole mobilních telefonù se u¾ nyní objevují), bude se tato práce soustøeïovat pouze na jeho vyu¾ití v~mobilních zaøízeních typu mobilního telefonu nebo tabletu. Informace v následujících kapitolách budou vycházet z oficiálního vývojáøského portálu \cite{androidDevelopers} a z vlastních zku¹eností a poznatkù. Kapitola \ref{sec:libgdx} pak bude èerpat z dokumentace knihovny Libgdx \cite{libgdx} a také knihy tého¾ autora \cite{libgdxKniha}.
 
 
 \section{Architektura systému}
