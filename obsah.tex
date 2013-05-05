@@ -18,7 +18,7 @@ Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých
 
 \note{OK r1}
 
-Andriod je operaèní systém pro mobilní zaøízení, zalo¾ený na Linuxovém jádøe a poskytovaný ve formì otevøeného zdrojového kódu. Poprvé byl pøedstaven v~roce 2007, první mobilní telefon s~Androidem se dostal na trh o~rok pozdìji. Aktuálnì dle statistik za první ètvrtletí roku 2013 má na poli \textit{chytrých mobilních telefonù} (smartphone) Android jako¾to operaèní systém podíl pøes 38\% \cite{statCounter} (mìøeno na základì nav¹tìvovanosti webových stránek z mobilních telefonù) se zøejmým vzestupným trendem. Aèkoliv je Android pou¾itelný pro mno¾ství rùzných zaøízení (a implementace mimo pole mobilních telefonù se u¾ nyní objevují), bude se tato práce soustøeïovat pouze na jeho vyu¾ití v~mobilních zaøízeních typu mobilního telefonu nebo tabletu. Informace v následujících kapitolách budou vycházet z oficiálního vývojáøského portálu \cite{androidDevelopers} a z vlastních zku¹eností a poznatkù. Kapitola \ref{sec:libgdx} pak bude èerpat z dokumentace knihovny Libgdx \cite{libgdx} a také knihy tého¾ autora \cite{libgdxKniha}.
+Andriod je operaèní systém pro mobilní zaøízení, zalo¾ený na Linuxovém jádøe a poskytovaný ve formì otevøeného zdrojového kódu. Poprvé byl pøedstaven v~roce 2007, první mobilní telefon s~Androidem se dostal na trh o~rok pozdìji. Aktuálnì dle statistik za první ètvrtletí roku 2013 má na poli \textit{chytrých mobilních telefonù} (smartphone) Android jako¾to operaèní systém podíl pøes 38\% \cite{statCounter} (mìøeno na základì nav¹tìvovanosti webových stránek z mobilních telefonù) se zøejmým vzestupným trendem. Aèkoliv je Android pou¾itelný pro mno¾ství rùzných zaøízení (a implementace mimo pole mobilních telefonù se u¾ nyní objevují), bude se tato práce soustøeïovat pouze na jeho vyu¾ití v~mobilních zaøízeních typu mobilního telefonu nebo tabletu. Informace v následujících kapitolách budou vycházet z oficiálního vývojáøského portálu \cite{androidDevelopers}, knihy o vývoji her pro Android \cite{libgdxKniha} a z vlastních zku¹eností a poznatkù. Kapitola \ref{sec:libgdx} pak bude èerpat z dokumentace knihovny Libgdx \cite{libgdx}.
 
 
 \section{Architektura systému}
@@ -27,7 +27,7 @@ Andriod je operaèní systém pro mobilní zaøízení, zalo¾ený na Linuxovém jádøe a p
 
 Architekturu systému lze rozdìlit do nìkolika úrovní. Na té nejvy¹¹í jsou aplikace psané v~jazyce Java, které pou¾ívají systémové funkce a rozhraní. Distribuují se v~balíècích v~tzv. \textit{mezikódu} (Java bytecode). Mezikód je výstup kompilace a jako takový je pøenositelný mezi platformami. Pro spu¹tìní v¹ak potøebuje interpret, kterým je v~tomto pøípadì virtuální stroj pojmenovaný Dalvik.
 
-Dalvik samotný se nachází na ni¾¹í úrovni, tedy mezi programy a jejich souèástmi v~nativním kódu psanými v~jazyce C, C++ èi jazyce symbolických instrukcí. Zde mù¾eme najít pøedev¹ím sadu systémových knihoven od kterých je vy¾adován vysoký výkon. Jsou jimi napøíklad knihovny pro vykreslování (OpenGL), databáze (SQLite), ¹ifrování (SSL) anebo multimédia. Jejich rozhraní je dostupné jak v~prostøedí Javy, tak skrze \textit{JNI} (Java Native Interface). JNI je rozhraní umo¾òující psát programy v~nìkterém z~vý¹e uvedených jazykù s~mo¾ností pøímého propojení se souèástmi psanými v~Javì. Aplikace jako celek je pak rozdìlená do dvou samostatnì kompilovaných èástí, jejich¾ spolupráci zaji¹»uje Dalvik.
+Dalvik samotný se nachází na ni¾¹í úrovni, tedy mezi programy a jejich souèástmi v~nativním kódu, psanými v~jazyce C, C++ èi jazyce symbolických instrukcí. Zde mù¾eme najít pøedev¹ím sadu systémových knihoven, od kterých je vy¾adován vysoký výkon. Jsou jimi napøíklad knihovny pro vykreslování (OpenGL), databáze (SQLite), ¹ifrování (SSL) anebo multimédia. Jejich rozhraní je dostupné jak v~prostøedí Javy, tak skrze \textit{JNI} (Java Native Interface). JNI je rozhraní umo¾òující psát programy v~nìkterém z~vý¹e uvedených jazykù s~mo¾ností pøímého propojení se souèástmi psanými v~Javì. Aplikace jako celek je pak rozdìlená do dvou samostatnì kompilovaných èástí, jejich¾ spolupráci zaji¹»uje Dalvik.
 
 Do nativního kódu je vhodné pøevést pøedev¹ím provádìní nároèných operací v~kritickém èase, napøíklad simulaci fyziky ve 3D scénì anebo výpoèty pro umìlou inteligenci. Není ov¹em vhodné, aèkoliv by se to mohlo zdát, implementovat zde celou aplikaci. Výkon nemusí být oproti interpretovanému kódu nutnì vy¹¹í, a naopak mohou nastat problémy s~pøenositelností a optimalizací pro konkrétní zaøízení \cite{jniPerf}. Tu by bì¾nì provádìl Dalvik, zde ale zále¾í plnì na programátorovi. Konkrétní pøínosy i slabiny pou¾ití JNI budou dále rozvedeny v kapitole \ref{sec:nativni-vyvoj}.
 
@@ -39,17 +39,17 @@ Na nejni¾¹í úrovni je ji¾ zmínìné jádro psané v~jazyce C. To zaji¹»uje pøístup k
 
 \section{Verze systému a cílová zaøízení}
 
-\note{TODO: revize, nové procenta a grafy}
+\note{OK r1}
 
-Vývoj operaèního systému vede firma Google, která vydává zdrojové kódy nových verzí. Ty se ov¹em pøímo do zaøízení dostávají jen velmi zøídka (jde o~referenèní modely telefonù a tabletù které si nechává vyrábìt pøímo Google). Typicky pøebírají kód jednotliví výrobci a upravují èi doplòují jej tak, aby fungoval pro konkrétní modely (nekompatibilita hrozí pøedev¹ím u~specifického hardwaru jako je 3D displej). Èasto také výrobce pøidává dodateèné aplikace, a» u¾ pro plné vyu¾ití mo¾ností zaøízení nebo èistì pro reklamní úèely. Jak bude výsledný systém vypadat, jaké funkce bude obsahovat a jaká zaøízení bude podporovat je plnì v~zodpovìdnosti výrobcù. Právì kvùli tomu jsou nejèastìji aktualizovány modely z~vy¹¹í cenové tøídy a levnìj¹í zaøízení bývají opomíjena.
+Vývoj operaèního systému vede firma Google, která vydává zdrojové kódy nových verzí. Ty se ov¹em pøímo do zaøízení dostávají jen velmi zøídka (jde o~referenèní modely telefonù a tabletù které si nechává vyrábìt pøímo Google). Typicky pøebírají kód jednotliví výrobci a upravují èi doplòují jej tak, aby fungoval pro konkrétní modely (nekompatibilita hrozí pøedev¹ím u~specifického hardwaru jako je 3D displej a dal¹í). Èasto také výrobce pøidává dodateèné aplikace, a» u¾ pro plné vyu¾ití mo¾ností zaøízení nebo èistì pro reklamní úèely. Jak bude výsledný systém vypadat, jaké funkce bude obsahovat a jaká zaøízení bude podporovat je plnì v~zodpovìdnosti výrobcù. Právì kvùli tomu jsou nejèastìji aktualizovány modely z~vy¹¹í cenové tøídy a levnìj¹í zaøízení bývají opomíjena.
 
-Dùsledkem otevøenosti Androidu je jeho roztøí¹tìnost co se verzí týèe. Aktuální rozlo¾ení verzí \textit{API} (programátorské rozhraní, Application Programming Interface) k~prosinci 2012 je na obrázku \ref{fig:api-verze}, data pocházejí z~oficiálního zdroje \cite{statsDroid}. Je jasnì vidìt dominance verzí 9 a 10 (v~u¾ivatelském znaèení jde o~Android verze 2.3.x) které jsou i nyní, po témìø dvou letech od prvního vydání, stále nasazovány do novì prodávaných zaøízení.
+Dùsledkem otevøenosti Androidu je jeho roztøí¹tìnost co se verzí týèe. Aktuální rozlo¾ení verzí \textit{API} (programátorské rozhraní, Application Programming Interface) k~dubnu 2013 je na obrázku \ref{fig:api-verze}, data pocházejí z~oficiálního zdroje \cite{statsDroid} a jsou mìøena podle toho, jak se zaøízení s danými verzemi pøipojují k obchodu Google Play. Statistika tedy nezobrazuje podíly verzí prodaných zaøízení, nýbr¾ tìch, která alespoò jednou nav¹tívila oficiální obchod s aplikacemi. Z hlediska vývojáøe má tato metodika mnohem vy¹¹í vypovídací schopnost. Je vidìt, ¾e více ne¾ tøetinový podíl má verze 10 (v~u¾ivatelském znaèení jde o~Android verze 2.3.x) která je i nyní, po témìø dvou letech od prvního vydání, stále nasazována do novì prodávaných zaøízení. Jde v¹ak pøedev¹ím o zaøízení nejni¾¹í cenové a výkonnostní tøídy.
 
 \begin{figure}[ht]
 	\begin{center}
 		\vspace{\baselineskip}
-		\includegraphics{fig/api-versions.pdf}
-		\caption{Rozlo¾ení verzí systému Android k~prosinci 2012}
+		\includegraphics[width=\textwidth]{fig/api-versions.pdf}
+		\caption{Rozlo¾ení verzí systému Android k~dubnu 2013}
 		\label{fig:api-verze}
 	\end{center}
 \end{figure}
@@ -66,9 +66,9 @@ Je èasto pøipomínanou pravdou, ¾e právì zpìtná kompatibilita se star¹ími verzemi
 
 \note{OK r1}
 
-Pokud se zamìøíme konkrétnì na vývoj grafických her, zjistíme ¾e hluboké znalosti systému nejsou nezbytné. Android umo¾òuje navrhovat velmi slo¾itá a propracovaná u¾ivatelská rozhraní, hernímu vývojáøi v¹ak bude staèit jen nezbytné minimum. Podobnì je tomu s~dal¹ími vymo¾enostmi systému.
+Pøi zamìøení konkrétnì na vývoj grafických her se ukazuje, ¾e hluboké znalosti systému nejsou nezbytné. Android umo¾òuje navrhovat velmi slo¾itá a propracovaná u¾ivatelská rozhraní, hernímu vývojáøi v¹ak bude staèit jen nezbytné minimum. Podobnì je tomu s~dal¹ími vymo¾enostmi systému.
 
-Základním stavebním kamenem ka¾dé aplikace je tzv. \textit{Aktivita} (tøída \texttt{Activity}). Zjednodu¹enì lze øíct ¾e Aktivita je okno aplikace, typicky zobrazované pøes celý prostor displeje (s~výjimkou informaèní li¹ty a pøípadných virtuálních kláves), se kterým mù¾e u¾ivatel interagovat. Aktivita je rodièem jednotlivých elementù u¾ivatelského rozhraní, pøípadných dialogù, nabídek a dal¹ích prvkù. Pro potøeby hry bì¾nì postaèuje jediná aktivita jejím¾ potomkem je speciální oblast do které mù¾e vykreslovat OpenGL (oblast je tøídy \texttt{GLSurfaceView}). Pøi vytoøení této oblasti systém souèasnì spustí speciální vlákno, které má pøístup k~OpenGL kontextu, a mù¾e tedy provádìt grafická volání. Toto vlákno je poté systémem pravidelnì probouzeno tak, aby vykreslování probíhalo v~rychlosti co nejbli¾¹í ideálním 60 snímkùm za vteøinu. S~u¾ivatelským rozhraním systému bì¾ící hra a¾ na výjimky nepracuje, v¹e probíhá v oblasti vyhrazené pro vykreslování.
+Základním stavebním kamenem ka¾dé aplikace je tzv. \textit{Aktivita} (tøída \texttt{Activity}). Zjednodu¹enì lze øíct ¾e Aktivita je okno aplikace, typicky zobrazované pøes celý prostor displeje (s~výjimkou informaèní li¹ty a pøípadných virtuálních kláves), se kterým mù¾e u¾ivatel interagovat. Aktivita je rodièem jednotlivých elementù u¾ivatelského rozhraní, pøípadných dialogù, nabídek a dal¹ích prvkù. Pro potøeby hry bì¾nì postaèuje jediná aktivita jejím¾ potomkem je speciální oblast do které mù¾e vykreslovat OpenGL (oblast je tøídy \texttt{GLSurfaceView}). Pøi vytoøení této oblasti systém souèasnì spustí speciální vlákno, které má pøístup k~OpenGL kontextu, a mù¾e tedy provádìt grafická volání. Toto vlákno je poté systémem pravidelnì probouzeno tak, aby vykreslování probíhalo v~rychlosti co nejbli¾¹í ideálním 60 snímkùm za sekundu. S~u¾ivatelským rozhraním systému bì¾ící hra a¾ na výjimky nepracuje, v¹e probíhá v oblasti vyhrazené pro vykreslování.
 
 Kromì zobrazování je Aktivita dùle¾itá také pro pøíjem vstupních událostí. Má mo¾nost \textit{pøihlásit} se u~systému ke sledování dotykù na obrazovce, stiskù tlaèítek, naklonìní zaøízení, pøípadnì stavù dal¹ích sensorù. Tyto události pøicházejí v~oddìleném vláknì které nemá mo¾nost vykreslování. Vlákno typicky upraví vnitøní stav hry a poté se opìt uspí a èeká na dal¹í událost. Platí zde samozøejmì obdobné principy jako u~jiných vícevláknových prostøedí. Jak vlákno pro vykreslování, tak i vlákno pro zpracování události nesmìjí provádìt blokující volání a nemìly by provádìt èasovì nároèné výpoèty. Pro takové pøípady nabízí Android mo¾nost spu¹tìní oddìleného vlákna a postupy jak s~takovým vláknem asynchronnì komunikovat, ani¾ by docházelo k~naru¹ení plynulosti bìhu aplikace, v~tomto pøípadì poklesu poètu vykreslených snímkù za vteøinu.
 
@@ -78,7 +78,9 @@ Kromì zobrazování je Aktivita dùle¾itá také pro pøíjem vstupních událostí. Má mo
 \subsection{Negativa nativního vývoje}
 \label{sec:negativna-nativniho-vyvoje} 
 
-V~pøípadì ¾e zvolíme tvorbu hry èistì na základì Androidu bez mezièlánkù typu frameworku nebo herního engine, mù¾eme narazit na nìkteré nepøíjemnosti. Pøedev¹ím nemù¾eme poèítat s~jakýmkoliv roz¹íøením nad mo¾nosti OpenGL ES. Je plnì v~kompetenci programátora aby si pøipravil potøebné datové struktury a pomocné tøídy. Systém jako takový sice obsahuje nìkolik základních tøíd pro popis vektorù a matic a operace s~nimi, ty ale nebyly navr¾eny pro práci s~OpenGL a dochází zde k~nesrovnalostem (pøíkladem mù¾e být vnitøní reprezentace matice, která je jednou øádková a jindy sloupcová).
+\note{OK r1}
+
+V~pøípadì ¾e zvolíme tvorbu hry èistì na základì Androidu bez mezièlánkù typu frameworku nebo herního engine, mù¾eme narazit na nìkteré nepøíjemnosti. Pøedev¹ím nemù¾eme poèítat s~jakýmkoliv roz¹íøením nad mo¾nosti OpenGL ES. Je plnì v~kompetenci programátora aby si pøipravil potøebné datové struktury a pomocné tøídy. Systém jako takový sice obsahuje nìkolik základních tøíd pro popis vektorù, matic a operace s~nimi, ty ale nebyly navr¾eny pro práci s~OpenGL a dochází zde k~nesrovnalostem (pøíkladem mù¾e být vnitøní reprezentace matice, která je jednou øádková a jindy sloupcová). Na vìt¹inu tìchto problémù poukazuje autor knihy o vývoji her pro Android \cite{libgdxKniha}, který je souèasnì autorem knihovny Libgdx, která tyto nedostatky napravuje.
 
 Jako jedna z~výhod aplikací v~jazyce Java bývá uvádìna automatická správa pamìti pou¾itím tzv. \textit{garbage collectoru}, tedy souèásti virtuálního stroje, která poèítá reference na ka¾dý alokovaný objekt a v~pøípadì odstranìní posledního výskytu tento objekt uvolní z~pamìti. Aèkoliv mù¾e být tento pøístup pohodlný, pøiná¹í mno¾ství rizik. Vzhledem ke slo¾itosti operaèního systému (a èasto i neznalostí jazyka Java) je pro programátora relativnì snadné dr¾et referenci na objekt, který ji¾ nepou¾ívá a o~kterém pøedpokládá, ¾e ji¾ byl z~pamìti uvolnìn. Tím sice nedochází k~nenávratnì ztraceným blokùm pamìti jako pøi práci v~nativním kódu, pamì»ové nároky aplikace v¹ak zbyteènì rostou. Èím více pamìti pak aplikace pou¾ívá, tím èastìji se bude garbage collector obracet právì na ni a její pamì» se bude sna¾it uvolòovat. A~právì pøi úklidu pamìti dochází ke krátkému pozastavení v¹ech vláken dané aplikace. Toto pozastavení bì¾nì trvá jednotky a¾ desítky milisekund a nemusí být pro u¾ivatele viditelné. Zda se ale aplikace pozastaví a jak dlouho tento stav potrvá závisí na velkém mno¾ství faktorù které programátor nemá pod kontrolou. Je tedy velmi dùle¾ité zvolit vhodnou taktiku práce s~pamìtí a té se striktnì dr¾et. Jednou z~mo¾ností je pøedbì¾né vytvoøení v¹ech objektù které mohou být potøeba s~tím, ¾e v~prùbìhu hry ji¾ nové objekty nevznikají. Toto je v¹ak ideální stav, kterého není snadné dosáhnout. Sofistikovanìj¹í správa pamìti bude popsána v~kapitole \ref{sec:libgdx}.
 
@@ -96,15 +98,15 @@ Z vý¹e uvedeného je zøejmé, ¾e u~vìt¹iny grafických aplikací je ¾ádoucí pou¾ít e
 
 \section{Komplexní vývojová prostøedí}
 
-Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených øe¹ení. Dva nejroz¹íøenìj¹í zástupci této kategorie jsou Unity 3D a Unreal Engine, kde oba sami sebe oznaèují za herní engine. V~obou pøípadech jde o~specializovaná vývojová prostøedí která se sna¾í upozadit programování ve smyslu psaní kódu a naopak upøednostòují pøímé sestavování scény a definice chování. Vývojáø mù¾e hru hrát a soubì¾nì v~reálném èase upravovat. K~tomu slou¾í interaktivní pohled do scény, kde je mo¾né pracovat na úrovni objektù. Samozøejmostí je mno¾ství pøeddefinovaných chování, fyzikálních vlastností, materiálù a èasto i celých objektù se v¹emi vlastnostmi (napøíklad celé pojízdné auto). Na skuteèné programování pøichází èas pouze ve chvíli, kdy je potøeba nadefinovat vnitøní logiku hry, pøípadnì vytvoøit nové chování nìkterého z~objektù. V~takovém pøípadì pou¾ívá engine vlastní skriptovací jazyk. Jak Unity 3D, tak i Unreal Engine jsou komplexní vývojová prostøedí produkující multiplatformní aplikace a Android je pouze jedním z~mnoha výstupù. Vývojáø ve skuteènosti pøichází s~architekturou Androidu do kontaktu jen minimálnì nebo vùbec. I~pøesto není vhodné tento pøístup opomíjet, nebo» s~pou¾itím právì Unity 3D vznikají v~souèasnosti nejlépe hodnocené a po vizuální stránce nejpropracovanìj¹í hry. Záporem je zde vysoká poèáteèní investice, a to v~øádu minimálnì stovek dolarù.
+\note{OK r1}
 
-\note{Obrázek vývojového prostøedí UDK / Unity ?}
+Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených øe¹ení. Dva nejroz¹íøenìj¹í zástupci této kategorie jsou Unity 3D a Unreal Engine, kde oba sami sebe oznaèují za herní engine. V~obou pøípadech jde o~specializovaná vývojová prostøedí která se sna¾í upozadit programování ve smyslu psaní kódu a naopak upøednostòují pøímé sestavování scény a definice chování. Vývojáø mù¾e hru hrát a soubì¾nì v~reálném èase upravovat. K~tomu slou¾í interaktivní pohled do scény, kde je mo¾né pracovat na úrovni objektù. Samozøejmostí je mno¾ství pøeddefinovaných chování, fyzikálních vlastností, materiálù a èasto i celých objektù se v¹emi vlastnostmi (napøíklad celé pojízdné auto). Na skuteèné programování pøichází èas pouze ve chvíli, kdy je potøeba nadefinovat vnitøní logiku hry, pøípadnì vytvoøit nové chování nìkterého z~objektù. V~takovém pøípadì pou¾ívá engine vlastní skriptovací jazyk. Jak Unity 3D, tak i Unreal Engine jsou komplexní vývojová prostøedí produkující multiplatformní aplikace a Android je pouze jedním z~mnoha výstupù. Vývojáø ve skuteènosti pøichází s~architekturou Androidu do kontaktu jen minimálnì nebo vùbec. I~pøesto není vhodné tento pøístup opomíjet, nebo» s~pou¾itím právì Unity 3D vznikají v~souèasnosti nejlépe hodnocené a po vizuální stránce nejpropracovanìj¹í hry. Záporem je zde vysoká poèáteèní investice, a to v~øádu minimálnì stovek dolarù.
 
 \begin{figure}[ht]
 	\begin{center}
 		\vspace{\baselineskip}
 		\includegraphics[width=\textwidth]{fig/shadowgun.jpg}
-		\caption{Hra Shadowgun od brnìnského studia Madfinger Games, vytvoøená v~Unity 3D}
+		\caption{Hra Shadowgun od brnìnského studia Madfinger Games, vytvoøená v~prostøedí Unity 3D, zdroj: \url{www.madfingergames.com}}
 		\label{fig:shadowgun}
 	\end{center}
 \end{figure}
@@ -114,13 +116,9 @@ Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených ø
 \section{Knihovna Libgdx}
 \label{sec:libgdx}
 
+\note{OK r1}
 
-\note{TODO: zmínit i bullet - vlastní kapitola?}
-
-Alternativou k~placeným vývojovým nástrojùm jsou men¹í knihovny s~tìsnìj¹í vazbou na systém Android. Nejpou¾ívanìj¹í z~nich jsou AndEngine a Libgdx. První z~jmenovaných se nazývá herním engine, druhý se oznaèuje za framework. Oba jsou v¹ak k~dispozici zdarma ve formì otevøených zdrojových kódù s mo¾ností komerèního i nekomerèního vyu¾ití. Jeliko¾ jsou si obì knihovny velmi podobné, soustøedím se v~dal¹ím popisu pouze na Libgdx, kterou také pou¾iji pøi implementaci. Zdrojem bude z~velké èásti oficiální dokumentace \cite{libgdx} a také kniha ?? ???? ? \cite{mario}. Jejím autorem je Mario Zechner, který je souèasnì tvùrcem knihovny Libgdx a jejím hlavním pøispìvatelem.
-
-\note{TODO: Citovat Mariovu knihu!}
-\note{TODO: Øíct ¾e kapitola èerpá z dokumentace libgdx a scene2d.ui}
+Alternativou k~placeným vývojovým nástrojùm jsou men¹í knihovny s~tìsnìj¹í vazbou na systém Android. Nejpou¾ívanìj¹í z~nich jsou AndEngine a Libgdx. První z~jmenovaných se nazývá herním engine, druhý se oznaèuje za framework. Oba jsou v¹ak k~dispozici zdarma ve formì otevøených zdrojových kódù s mo¾ností komerèního i nekomerèního vyu¾ití. Jeliko¾ jsou si obì knihovny velmi podobné, soustøedím se v~dal¹ím popisu pouze na Libgdx, kterou také pou¾iji pøi implementaci. Zdrojem bude z~velké èásti oficiální dokumentace \cite{libgdx} a také ji¾ zmiòovaná kniha o vývoji her pro Android \cite{libgdxKniha}.
 
 Na první pohled vypadá knihovna Libgdx podobnì jako døíve zmínìné nástroje -- stejnì jako ony je schopná produkovat aplikaèní balíèky pro více platforem. Pùvodnì v¹ak vznikala jako knihovna pro tvorbu 2D her pro Androida a a¾ postupem èasu do¹lo roz¹íøení o podporu dal¹ích platforem. Aktuálnì je kromì systému Android podporovaná i tvorba webových appletù a klasických aplikací pro poèítaèe. Jak konkrétnì multiplatformní vývoj probíhá bude popsáno v kapitole \ref{sec:oddeleni-platforem}.
 
@@ -129,7 +127,6 @@ Narozdíl od jiných øe¹ení knihovna neobsahuje ¾ádné vývojové prostøedí ani pøedp
 Samozøejmostí je øe¹ení vý¹e zmiòovaných nedostatkù pøi vývoji bez pomocných knihoven. Velká síla Libgdx spoèívá v~tom, ¾e je implementována èásteènì pøímo v~Javì a èásteènì v~nativním kódu. Tím dosahuje vy¹¹ího výkonu zejména u ji¾ zmiòovaných fyzikálních simulací, ale pøedev¹ím má plnou kontrolu nad alokací pamìti a jejím následným uvolòováním. Automatické uvolnìní pøirozenì probíhá pouze v~èásti aplikace be¾ící ve virtuálním stroji, zatímco v~nativním kódu je práce s~pamìtí plnì v~re¾ii programátora. Vhodným propojením tìchto dvou èástí lze bezpeènì alokovat pamì» kterou garbage collector \textit{neuvidí}, a dokonce dosáhnout stavu kdy framework jako takový uvnitø hlavní herní smyèky ¾ádnou pamì» nealokuje. To samozøejmì nemù¾e úplnì zamezit spou¹tìní úklidu pamìti, pøíèinou v¹ak bude bìh ostatních aplikací a systému, nikoliv samotné hry. V~praxi se pak pamì» uklízí jen velmi výjimeènì, probíhá velmi rychle (garbage collector spravuje jen velmi malé mno¾ství pamìti), a hra tedy mù¾e bì¾et plynule.
 
 \subsection{Struktura aplikace}
-\note{r1 OK}
 
 Vstupním bodem aplikace je instance tøídy \texttt{Application}, která obsahuje základní herní smyèku. Ta je volaná systémem právì na døíve zmiòované frekvenci blízké 60 snímkùm za sekundu. Pøi tvorbì grafických aplikací se èasto vyu¾ívá oddìlené volání pro aktualizaci scény a její vykreslení, Android v¹ak takové rozdìlení nepodporuje (z dùvodu návaznosti na systémový element s OpenGL kontextem, popsaný v kapitole \ref{sec:nativni-vyvoj}. Je samozøejmì mo¾né aktualizaci scény a její vykreslení oddìlit ruènì, napøíklad v pøípadì ¾e není nutné se scénou manipulovat pøíli¹ èasto, ale chceme zachovat plynulost vykreslování. Typické vyu¾ití mù¾e být u tahových her, kdy se herní logika provádí jen v okam¾iku tahu, zatímco zobrazování probíhá v ka¾dém snímku, napøíklad kvùli probíhajícím animacím. Je samozøejmì mo¾né optimalizovat je¹tì více, animace nepou¾ívat a vykreslovat jen ve chvíli, kdy se scéna zmìní. V takovém pøípadì dochází k maximální úspoøe energie. Aplikace ale mù¾e pùsobit znaènì statickým dojmem a pro akèní hry tento pøístup není vhodný vùbec.
 
@@ -138,17 +135,16 @@ Zatímco samostatná tøída aplikace je vhodná jen pro nejtriviálnìj¹í aplikace, u 
 
 \subsection{Zpracování vstupních událostí}
 \label{sec:libgdx-vstup}
-\note{r1 OK}
 
-Vstupní události jsou závislé na aktuální platformì, a proto jsou v Libgdx skryty pod jednotným rozhraním, kdy konkrétní implementaci doplòuje sama knihovna právì podle aktuálního prostøedí. Programátor díky tomu nemusí øe¹it, zda bude aplikace ovládaná dotykem èi my¹í, klávesnicí nebo hardwarovými tlaèítky mobilního telefonu nebo tøeba ovladaèem typickým pro herní konzole. Je zøejmé, ¾e v¹echny typy událostí nebudou podporovány na v¹ech platformách. Knihovna v¹ak zavádí vhodné substituce a sjednocení, kde napøíklad kliknutí na dotykovém displeji odpovídá kliknutí levého tlaèítka my¹i. Na vy¹¹í úrovni je pak mo¾né detekovat celá gesta jako chycení a táhnutí nebo zoom.
+Vstupní události jsou závislé na aktuální platformì, a proto jsou v Libgdx skryty pod jednotným rozhraním, kdy konkrétní implementaci doplòuje sama knihovna právì podle aktuálního prostøedí. Programátor díky tomu nemusí øe¹it, zda bude aplikace ovládaná dotykem èi my¹í, klávesnicí nebo hardwarovými tlaèítky mobilního telefonu nebo tøeba ovladaèem typickým pro herní konzole. Je zøejmé, ¾e v¹echny typy událostí nebudou podporovány na v¹ech platformách. Knihovna v¹ak zavádí vhodné substituce a sjednocení, kde napøíklad kliknutí na dotykovém displeji odpovídá kliknutí levého tlaèítka my¹i. Na vy¹¹í úrovni je pak mo¾né detekovat celá gesta jako chycení a táhnutí nebo pøiblí¾ení pou¾itím dvou prstù.
 
 Pøirozenì lze definovat i vlastní zpracování vstupu. Pøíkladem mù¾e být køí¾ový ovladaè vykreslovaný na obrazovku v pøípadì, ¾e aplikace bì¾í na dotykovém zaøízení. Vnitønì pak mù¾e takový ovladaè \textit{pøekládat} dotykové události na události stisku klávesy. Ty pak aplikace obslou¾í jako bì¾né události a programátor tak velmi snadno získává podporu pro dotyková zaøízení, poèítaèové klávesnice i konzolové ovladaèe.
 
-Toto chování je umo¾nìno tzv. \textit{vstupními procesory} (tøída \texttt{InputProcessor}). Vstupní procesor je tøída obsahující kód pro zpracování vstupních událostí. V okam¾iku zpracování v procesoru u¾ je známo o jaký typ události jde. Procesor jako takový tedy ¾ádnou detekci neprovádí. Typicky obsahuje referenci na objekty aplikaèní logiky a s tìmi nìjak pracuje. Na konci svého bìhu vrací návratovou hodnotu podle toho, zda událost zpracoval (a mìla by tedy zaniknout) anebo ne (co¾ nutnì neznamená ¾e na událost nijak nereagoval).
+Toto chování je umo¾nìno tzv. \textit{vstupními procesory} (tøída \texttt{InputProcessor}). Vstupní procesor je objekt obsahující kód pro zpracování vstupních událostí. V okam¾iku zpracování v procesoru u¾ je známo o jaký typ události jde. Procesor jako takový tedy ¾ádnou detekci neprovádí. Typicky obsahuje referenci na objekty aplikaèní logiky a s tìmi nìjak pracuje. Na konci svého bìhu vrací návratovou hodnotu podle toho, zda událost zpracoval (a mìla by tedy zaniknout) anebo ne (co¾ nutnì neznamená ¾e na událost nijak nereagoval).
 
 Vstupních procesorù mù¾e být v aplikaci nìkolik, aktivní je ale v¾dy pouze jeden. Pro komplexní zpracování vstupù se proto zavádí tzv. \textit{multiplexer} (tøída \texttt{InputMultiplexer}), který pøedstavuje kontejner vstupních procesorù, pøièem¾ rozhraní procesoru také sám implementuje. Pøi pøíchodu události ji pouze pøedává jednotlivým procesorùm do té doby, dokud ji nìkterý z nich nezpracuje. 
 
-Tím je mo¾né vytváøet kaskády vstupních procesorù a» u¾ pro zmínìné sjednocení vstupù napøíè platformami anebo pro obsluhu událostí ze slo¾itìj¹ích scén. Pøíkladem mù¾e být dotykem ovládaná hra vyu¾ívající doplòkové ovládací prvky na obrazovce. Vhodným øe¹ením by mohl být multiplexer zastøe¹ující vstupní procesor pro doplòkové prvky (pøicházející na øadu jako první, tedy mù¾e událost zpracovat a nepustit dál) a procesor pro ovládání samotné hry. Takto oddìlené zpracování vede nejen k pøehlednìj¹ímu kódu, ale i k jednodu¹¹í obsluze událostí ve chvílích, kdy existuje více prvkù soubì¾nì èi postupnì reagujících na stejný vsutp.
+Tím je mo¾né vytváøet kaskády vstupních procesorù a» u¾ pro zmínìné sjednocení vstupù napøíè platformami anebo pro obsluhu událostí ze slo¾itìj¹ích scén. Pøíkladem mù¾e být dotykem ovládaná hra vyu¾ívající doplòkové ovládací prvky na obrazovce. Vhodným øe¹ením by mohl být multiplexer zastøe¹ující vstupní procesor pro doplòkové prvky (pøicházející na øadu jako první, tedy mù¾e událost zpracovat a zahodit) a procesor pro ovládání samotné hry. Takto oddìlené zpracování vede nejen k pøehlednìj¹ímu kódu, ale i k jednodu¹¹í obsluze událostí ve chvílích, kdy existuje více prvkù soubì¾nì èi postupnì reagujících na stejný vsutp.
 
 
 
@@ -157,7 +153,7 @@ Tím je mo¾né vytváøet kaskády vstupních procesorù a» u¾ pro zmínìné sjednocení v
 \subsection{Tvorba u¾ivatelského rozhraní}
 \label{sec:libgdx-ui}
 
-Velmi silnou souèástí Libgdx z hlediska tvorby u¾ivatelského rozhraní je knihovna Scene2D.ui (\note{TODO: citace}), která je pou¾itelná i samostatnì v obecných projektech v jazyce Java. Jejím základním prvkem je tabulka (tøída \texttt{Table}), pro kterou se definují jednotlivé buòky a jejich rozdìlení do øádkù. Chování je podobné tabulkám vytvoøeným v jazyce HTML v kombinaci s CSS. Buòkám lze nastavovat pevné èi pomìrné rozmìry, vnitøní okraje, pozadí a nìkteré dal¹í atributy. Je také mo¾né buòky v rámci jednoho øádku sluèovat; vertikální sluèování podporované není, ale lze jej dosáhnout jinou cestou. Specifickým parametrem bunìk je pak \textit{rozpínavost} v rámci øádku a v rámci sloupce. Vhodnou kombinací je mo¾né vytvoøit dynamickou, tzv. \textit{fluidní} tabulku, která se bude pøizpùsobovat svému obsahu i rozmìrùm zobrazovací plochy.
+Velmi silnou souèástí Libgdx z hlediska tvorby u¾ivatelského rozhraní je knihovna Scene2D.ui (\cite{scene2dui}), která je pou¾itelná i samostatnì v obecných projektech v jazyce Java. Jejím základním prvkem je tabulka (tøída \texttt{Table}), pro kterou se definují jednotlivé buòky a jejich rozdìlení do øádkù. Chování je podobné tabulkám vytvoøeným v jazyce HTML v kombinaci s CSS. Buòkám lze nastavovat pevné èi pomìrné rozmìry, vnitøní okraje, pozadí a nìkteré dal¹í atributy. Je také mo¾né buòky v rámci jednoho øádku sluèovat; vertikální sluèování podporované není, ale lze jej dosáhnout jinou cestou. Specifickým parametrem bunìk je pak \textit{rozpínavost} v rámci øádku a v rámci sloupce. Vhodnou kombinací je mo¾né vytvoøit dynamickou, tzv. \textit{fluidní} tabulku, která se bude pøizpùsobovat svému obsahu i rozmìrùm zobrazovací plochy.
 
 Nad tabulkami jsou dále vystavìny základní prvky u¾ivatelského rozhraní jako tlaèítka, dialogy, pole pro zadání textu, obrázky, bloky textu, posouvatelné panely a dal¹í. Vyu¾ití tabulky lze demonstrovat na tlaèítku. To je ve skuteènosti tabulka o tøech øádcích a tøech sloupcích, kde prostøední buòka obsahuje textový popisek èí obrázek. V¹echny jeho buòky pak mají vhodnì nastavené pozadí, èím¾ lze vytvoøit napøíklad i tlaèítka se zakulacenými okraji. Samozøejmì si opìt zachovává schopnost pøizpùsobit rozmìry svému obsahu i okolí. Slo¾itìj¹í prvky vznikají obdobnì, pøièem¾ èasto vyu¾ijí i mo¾nost tabulky do sebe libovolnì vnoøovat.
 
@@ -170,12 +166,11 @@ Koøenovou komponentou u¾ivatelského rozhraní je tzv. \textit{Stage} (jeliko¾ by 
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=\textwidth]{fig/ui-design.jpg}
-		\caption{Souèásti rozhraní hlavního menu}
+		\caption{Souèásti rozhraní hlavního menu hry}
 		\label{fig:ui-design}
 	\end{center}
 \end{figure}
 
-\note{TODO: scene2d.ui umí dìlat i jednoduché hry}
 
 
 
@@ -186,13 +181,19 @@ Knihovna Libgdx obsahuje nìkolik velmi u¾iteèných nástrojù. Nìkteré z nich jsou 
 
 \vspace{\baselineskip}
 
-První zajímavý nástroj se jmenuje \textit{Texture Packer}. Slou¾í k vytváøení tzv. \textit{atlasù textur}, co¾ je jediný obrázkový soubor, který v sobì obsahuje vhodnì poskládané jednotlivé textury. Jde obecnì pou¾ívaný pøístup, který znaènì urychluje naèítání textur i jejich vykreslování zejména v pøípadech, kdy aplikace vyu¾ívá mno¾ství malých textur. Z pohledu naèítání se u¹etøí pøístupy do souborového systému, v okam¾iku vykreslování je pak velká textura ulo¾ená v jediné texturovací jednotce. Pokud by se atlas textur nepou¾il bylo by nutné v prùbìhu vykreslování jediného snímku texturovací jednotky nejen pøepínat, ale vzhledem k jejich omezenému poètu i mìnit k nim pøipojené textury. Texture Packer souèasnì s grafickým výstupem ukládá i soubor ve formátu JSON, který knihovna pøi pou¾ití atlasu automaticky naète a podle informací v nìm obsa¾ených vytvoøí pojmenované texturové oblasti (odpovídající dílèím texturám). S tìmi je následnì mo¾né v aplikaci pracovat jako s bì¾nými texturami, zatímco popsané optimalizace probíhají automaticky bez pøièinìní programátora. U¾iteènou vlastností nástroje Texture Packer je také mo¾nost spou¹tìní z pøíkazové øádky, respektive jeho pøímého zapojení do procesu sestavování aplikace. Programátor tedy udr¾uje adresáø s jednotlivými texturami (jeliko¾ je tento zpùsob mnohem výhodnìj¹í pro pøípadné úpravy), z toho se pøi sestavení aplikace vytvoøí atlas, knihovna jej naète a programátor v aplikaci dostává pøísutp opìt k jednotlivým texturám.
+První zajímavý nástroj se jmenuje \textit{Texture Packer}. Slou¾í k vytváøení tzv. \textit{atlasù textur}, co¾ je jediný obrázkový soubor, který v sobì obsahuje vhodnì seskládané jednotlivé textury. Jde obecnì pou¾ívaný pøístup, který znaènì urychluje naèítání textur i jejich vykreslování zejména v pøípadech, kdy aplikace vyu¾ívá mno¾ství malých textur. Z pohledu naèítání se u¹etøí pøístupy do souborového systému, v okam¾iku vykreslování je pak velká textura ulo¾ená v jediné texturovací jednotce. Pokud by se atlas textur nepou¾il bylo by nutné v prùbìhu vykreslování jediného snímku texturovací jednotky nejen pøepínat, ale vzhledem k jejich omezenému poètu i mìnit k nim pøipojené textury. Texture Packer souèasnì s grafickým výstupem ukládá i soubor ve formátu JSON, který knihovna pøi pou¾ití atlasu automaticky naète a podle informací v nìm obsa¾ených vytvoøí pojmenované texturové oblasti (odpovídající dílèím texturám). S tìmi je následnì mo¾né v aplikaci pracovat jako s bì¾nými texturami, zatímco popsané optimalizace probíhají automaticky bez pøièinìní programátora. U¾iteènou vlastností nástroje Texture Packer je také mo¾nost spou¹tìní z pøíkazové øádky, respektive jeho pøímého zapojení do procesu sestavování aplikace. Programátor tedy udr¾uje adresáø s jednotlivými texturami (jeliko¾ je tento zpùsob mnohem výhodnìj¹í pro pøípadné úpravy), z toho se pøi sestavení aplikace vytvoøí atlas, knihovna jej naète a programátor v aplikaci dostává pøísutp opìt k jednotlivým texturám.
 
-\note{obrázek textury z texture packeru? nebo rovnou rozhraní programu?}
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[width=\textwidth]{fig/ui-atlas.jpg}
+		\caption{Rozhraní nástroje Texture Packer a atlas textur pou¾itý ve høe}
+		\label{fig:ui-atlas}
+	\end{center}
+\end{figure}
 
 \vspace{\baselineskip}
 
-Dal¹ím u¾iteènou souèástí knihovny je podpora bitmapových písem. K pou¾ívání písem a vypisování textù není v Open GL jednotný pøísup. Bitmapová písma se v¹ak jeví jako rozumný kompromis mezi vektorovì definovanými písmy, které je pøed vykreslením potøeba rasterizovat, a bitmapami s pevnì ulo¾enými øetìzci a texty. Bitmapové písmo se skládá z obrázkového souboru, kde jsou jednotlivé znaky a symboly ulo¾eny podobnì jako textury v atlasu textur, a definièního souboru ve formátu ??? \note{FIXME: jmenuje se nìjak???}. Tento soubor v¹ak kromì informací pro rozsekání obrázku na jednotlivé znaky obsahuje informace o tom, jak znaky skládat do slov, o rozestupech mezi nimi, o názvu a charakteristikách písma a dal¹í. K vytvoøení tìchto souborù lze vyu¾ít nìkterý z volnì dostupných nástrojù (bitmapová písma jsou opìt obecnì pou¾ívanou technikou). Knihovna Libgdx tyto soubory naèítá a mù¾e s jejich pou¾itím vykreslovat jednoøádkový èi víceøádkový dynamický text. Taková funkcionalita je velmi výhodná pøi pøekladu aplikace do jiných jazykù. V takovém pøípadì není potøeba udr¾ovat popisky v grafických souborech (èím¾ rapidnì vzrùstá velikost celé aplikace, ale i nároky na její údr¾bu a dal¹í vývoj), ale je mo¾né pou¾ít bì¾ný textový soubor s øetìzci. Pøidání podpory dal¹ího jazyka pak znamená pouhé pøelo¾ení sady øetìzcù, v¹e ostatní probìhne automaticky, vèetnì napøíklad správného zarování popiskù v u¾ivatelském rozhraní, které plyne z chování prvkù rozhraní popisovaných v kapitole \ref{sec:libgdx-ui}.
+Dal¹ím u¾iteènou souèástí knihovny je podpora bitmapových písem. K pou¾ívání písem a vypisování textù není v Open GL jednotný pøísup. Bitmapová písma se v¹ak jeví jako rozumný kompromis mezi vektorovì definovanými písmy, které je pøed vykreslením potøeba rasterizovat, a bitmapami s pevnì ulo¾enými øetìzci a texty. Bitmapové písmo se skládá z obrázkového souboru, kde jsou jednotlivé znaky a symboly ulo¾eny podobnì jako textury v atlasu textur, a definièního souboru ve formátu FNT. Tento soubor v¹ak kromì informací pro rozsekání obrázku na jednotlivé znaky obsahuje informace o tom, jak znaky skládat do slov, o rozestupech mezi nimi, o názvu a charakteristikách písma a dal¹í. K vytvoøení tìchto souborù lze vyu¾ít nìkterý z volnì dostupných nástrojù (bitmapová písma jsou opìt obecnì pou¾ívanou technikou). Knihovna Libgdx tyto soubory naèítá a mù¾e s jejich pou¾itím vykreslovat jednoøádkový èi víceøádkový dynamický text. Taková funkcionalita je velmi výhodná pøi pøekladu aplikace do jiných jazykù. V takovém pøípadì není potøeba udr¾ovat popisky v grafických souborech (èím¾ rapidnì vzrùstá velikost celé aplikace, ale i nároky na její údr¾bu a dal¹í vývoj), ale je mo¾né pou¾ít bì¾ný textový soubor s øetìzci. Pøidání podpory dal¹ího jazyka pak znamená pouhé pøelo¾ení sady øetìzcù, v¹e ostatní probìhne automaticky, vèetnì napøíklad správného zarování popiskù v u¾ivatelském rozhraní, které plyne z chování prvkù rozhraní popisovaných v kapitole \ref{sec:libgdx-ui}.
 
 \vspace{\baselineskip}
 
@@ -200,21 +201,31 @@ Specialitou knihovny Libgdx je pou¾ití vizuálních témat pro celou aplikaci (zákl
 
 \vspace{\baselineskip}
 
-Poslední popisovanou souèástí knihovny je \textit{Assets Manager}, který je mo¾né volnì pøelo¾it jako \textit{správce obsahu}. Pøesto¾e je jeho pou¾ití volitelné, je velmi silnì doporuèováno. Správce obsahu toti¾ pøedstavuje jednotné místo v rámci aplikace, pøes které se bude pøistupovat k datovým souborùm. Tìmi mù¾ou být textury, zvuky, rùzné definièní soubory, a teoreticky jakýkoliv obsah. Správce dostane seznam datových souborù které jsou vy¾adovány pro bìh aplikace a tyto soubory bude naèítat. Jeho rozhraní je vhodnì navr¾ené tak, aby bylo pou¾itelné pro vytvoøení naèítací obrazovky s mo¾ností zobrazení reálného prùbìhu. Zajímavý je také zpùsob jakým ze souborù vznikají datové objekty. Aplikace definuje soubor a cílovou tøídu, její¾ instanci chce získat. Pro ka¾dou takovou tøídu pak musí existovat speciální naèítací tøída (tzv. \textit{loader}), která umí ze souboru konkrétní objekt vytvoøit. Pro v¹echny základní formáty u¾ knihovna tyto tøídy nabízí, stejnì jako mo¾nost naèítání parametrizovat, které se vyu¾ije napøíklad pro volbu zpùsobu filtrování textur. Spolu s naèítáním také správce hlídá, zda jsou data je¹tì pou¾ívána a mù¾e je prùbì¾nì uvolòovat. 
+Poslední popisovanou souèástí knihovny je \textit{Assets Manager}, který je mo¾né volnì pøelo¾it jako \textit{správce obsahu}. Pøesto¾e je jeho pou¾ití volitelné, je velmi silnì doporuèováno. Správce obsahu toti¾ pøedstavuje jednotné místo v rámci aplikace, pøes které se bude pøistupovat k datovým souborùm. Tìmi mù¾ou být textury, zvuky, rùzné definièní soubory, a teoreticky jakýkoliv obsah. Správce dostane seznam datových souborù které jsou vy¾adovány pro bìh aplikace a tyto soubory bude naèítat. Jeho rozhraní je vhodnì navr¾ené tak, aby bylo pou¾itelné pro vytvoøení naèítací obrazovky s mo¾ností zobrazení reálného prùbìhu naèítání. Zajímavý je také zpùsob, jakým ze souborù vznikají datové objekty. Aplikace definuje soubor a cílovou tøídu, její¾ instanci chce získat. Pro ka¾dou takovou tøídu pak musí existovat speciální naèítací tøída (tzv. \textit{loader}), která umí ze souboru konkrétní objekt vytvoøit. Pro v¹echny základní formáty u¾ knihovna tyto tøídy nabízí, stejnì jako mo¾nost naèítání parametrizovat. To se vyu¾ije napøíklad pro volbu zpùsobu filtrování textur. Spolu s naèítáním také správce hlídá, zda jsou data je¹tì pou¾ívána a mù¾e je prùbì¾nì uvolòovat. 
 
 
 
+
+\section{Knihovna Bullet Physics}
+
+\note{...}
 
 
 
 \section{Distribuce aplikací}
 
 \note{- podepisování}
+
 \note{- obfuskace? licencování? root?}
+
 \note{- free markety}
+
 \note{- vývojáøský úèet u Google}
+
 \note{- Google Play}
+
 \note{- nemo¾nost beta testerù nebo obecnì dìlení do skupin}
+
 \note{- featuring na hlavní stranì / hlavní stranì kategorie}
 
 
@@ -415,7 +426,7 @@ Navrhované ovládání tedy bude èistì dotykové. Tím bude mo¾né jej pou¾ívat kdekol
 
 \vspace{\baselineskip}
 
-Pro dal¹í popis rozdìlím ovládání do jednotlivých os. První z~nich bude osa ovládající klapky na køídlech a tím i náklon celého letadla, tedy rotaci kolem osy definované smìrem letu. V~pøípadì joysticku a z~nìj vycházejících metod jde o~pohyb ukazatele èi ovladaèe do stran. Navrhovaná metoda ovládání vy¾aduje aby existovaly právì dva body ve kterých se hráè dotýká displeje. Tyto se pou¾ijí k~sestrojení pomyslné kru¾nice, její¾ støed bude le¾et na støedu úseèky definované obìma body. Úhel náklonu letadla pak odpovídá úhlu o~který se spojnice bodù odchyluje od vodorovné osy kru¾nice. Situace je zachycená na obrázku \ref{fig:ovladani-roll}. Aèkoliv to z~popisu nemusí být zøejmé, na polomìru kru¾nice ve skuteènosti vùbec nezále¾í. Hráè mù¾e prùbì¾nì vzdálenost bodù mìnit a pokud oba body zùstanou na pùvodní úseèce, náklon letadla se nezmìní. Vedlej¹ím efektem je pak mo¾nost takto mìnit citlivost ovládání. Zatímco u~kru¾nice o~velkém polomìru je mo¾né dosáhnout velmi jemné regulace náklonu, pøi pøibli¾ování bodù a zmen¹ování polomìru se citlivost pøirozenì zvy¹uje. Dùle¾ité je, ¾e nezále¾í na pozici kru¾nice v~rámci dotykové plochy a v~ka¾dém okam¾iku se vytváøí tak, aby její støed le¾el ve støedu spojnice mezi obìma body dotyku. V¹echny dvojice protilehlých bodù takové kru¾nice pak definují manévrovací mo¾nosti v dané ose rotace. Ty budou bez dal¹ích omezení odpovídat $360°$. Pro ovládání letadla v¹ak bude vhodnìj¹í pou¾ít rozsah $-180°--180°$, kde nulový úhel náklonu bude odpovídat vodorovné ose obrazovky. (Pøesto¾e se tato práce soutøeïuje na letecké hry, je jistì mo¾né navrhovanou metodu ovládání pou¾ít pro ovládání zcela jiných objektù. V takovém pøípadì mù¾ou být vhodné rozsahy vstupù, stejnì jako neutrální poloha, pochopitelnì odli¹né.) V zájmu sjednocení rozsahù vstupních hodnot z obou os bude posledním krokem pøevod do rozsahu $-1$ a¾ $1$, kde opìt $0$ pøedstavuje neutrální hodnotu.
+Pro dal¹í popis rozdìlím ovládání do jednotlivých os. První z~nich bude osa ovládající klapky na køídlech a tím i náklon celého letadla, tedy rotaci kolem osy definované smìrem letu. V~pøípadì joysticku a z~nìj vycházejících metod jde o~pohyb ukazatele èi ovladaèe do stran. Navrhovaná metoda ovládání vy¾aduje aby existovaly právì dva body ve kterých se hráè dotýká displeje. Tyto se pou¾ijí k~sestrojení pomyslné kru¾nice, její¾ støed bude le¾et na støedu úseèky definované obìma body. Úhel náklonu letadla pak odpovídá úhlu o~který se spojnice bodù odchyluje od vodorovné osy kru¾nice. Situace je zachycená na obrázku \ref{fig:ovladani-roll}. Aèkoliv to z~popisu nemusí být zøejmé, na polomìru kru¾nice ve skuteènosti vùbec nezále¾í. Hráè mù¾e prùbì¾nì vzdálenost bodù mìnit a pokud oba body zùstanou na pùvodní úseèce, náklon letadla se nezmìní. Vedlej¹ím efektem je pak mo¾nost takto mìnit citlivost ovládání. Zatímco u~kru¾nice o~velkém polomìru je mo¾né dosáhnout velmi jemné regulace náklonu, pøi pøibli¾ování bodù a zmen¹ování polomìru se citlivost pøirozenì zvy¹uje. Dùle¾ité je, ¾e nezále¾í na pozici kru¾nice v~rámci dotykové plochy a v~ka¾dém okam¾iku se vytváøí tak, aby její støed le¾el ve støedu spojnice mezi obìma body dotyku. V¹echny dvojice protilehlých bodù takové kru¾nice pak definují manévrovací mo¾nosti v dané ose rotace. Ty budou bez dal¹ích omezení odpovídat 360°. Pro ovládání letadla v¹ak bude vhodnìj¹í pou¾ít rozsah $-180^{\circ}$ a¾ $180^{\circ}$, kde nulový úhel náklonu bude odpovídat vodorovné ose obrazovky. (Pøesto¾e se tato práce soutøeïuje na letecké hry, je jistì mo¾né navrhovanou metodu ovládání pou¾ít pro ovládání zcela jiných objektù. V takovém pøípadì mù¾ou být vhodné rozsahy vstupù, stejnì jako neutrální poloha, pochopitelnì odli¹né.) V zájmu sjednocení rozsahù vstupních hodnot z obou os bude posledním krokem pøevod do rozsahu $-1$ a¾ $1$, kde opìt $0$ pøedstavuje neutrální hodnotu.
 
 Je vhodné zde také zdùraznit, ¾e rozsah hodnot ovládání nemusí pøímo odpovídat silám aplikovaným na ovládaný objekt. V pøípadì letadla si lze hodnoty ovládání pøedstavit jako úroveò pøita¾ení kniplu nebo se¹lápnutí pedálu. Jde o bezrozmìrné hodnoty a teprve jejich \textit{dosazením} na vstup konkrétního matematického modelu letadla vzniknou síly na nìj aplikované. To odpovídá skuteènosti, kde malé letecké letadlo pou¾ívá rámcovì stejné základní ovládací prvky jako napøíklad velký dopravní letoun. A teprve rozmìry a ostatní charakteristiky ovládacích ploch letadla urèují, jak moc letadlo zmìní smìr svého letu.
 
@@ -474,7 +485,7 @@ Celkovì by hra mìla pùsobit akènì a rychle, èemu¾ musí odpovídat i metoda ovládá
 
 
 
-\section{Roz¹iøitelnost}
+\section{Roz¹iøitelnost hry}
 
 \note{OK r1}
 
@@ -743,6 +754,8 @@ Souèástí vývojáøského rozhraní obchodu Google Play je i sledování vzniklých výji
 
 \section{Mo¾nosti dal¹ího vývoje}
 
+\note{TODO: zmínit vhodnost pøekladu hry i popisu v Play}
+
 Pøesto¾e jsem v døívìj¹ích kapitolách èasto naznaèil dal¹í mo¾ný vývoj, popí¹i jej nyní detailnì v samostatné kapitole. Za polo¾ku s nejvy¹¹í prioritou aktuálnì pova¾uji vizuální stránku hry. Tu by sice bylo mo¾né zaøadit v rámci her nabízených na Google Play do prùmìru, nicménì je to vlastnost, která produkt prodává. Úplnì nejdøíve potenciální zákazník vidí ikonu hry, následnì propagaèní obrázky a teprve poté si mù¾e pøeèíst popis a hru pøípadnì stáhnout. Z reakcí na hru lze vyèíst, ¾e s navr¾eným zpùsobem ovládání je vìt¹ina hráèù spokojená, nicménì jde právì o tu skupinu hráèù, které neodradil ¾ádný ze zmiòovaných krokù. Lze pøedpokládat, ¾e existuje poèetná skupina náv¹tìvníkù internetového obchodu, které hra nezaujala právì kvùli grafickému zpracování. Konverzi tìchto potenciálních hráèù na hráèe skuteèné by mìlo pomoci právì dal¹í zlep¹ování propagaèních materiálù.
 
 Souèástí vizuální stránky hry je také herní prostøedí. V tomto pøípadì by úpravy cílily pøevá¾nì na ji¾ existující hráèe. Ti se v dotazníku svojí vìt¹inou shodli, ¾e by høe prospìlo více dekorativních objektù. Spolu s tím, jak by v rámci roz¹iøování pøibývaly ve høe dal¹í závody, by mohly zaèít pùsobit pøíli¹ jednotvárnì. Herní objekty jako tribuny, reklamní plochy a dal¹í by mohly takovou jednotvárnost naru¹it a souèasnì (ov¹em ne nezbytnì) zvý¹it obtí¾nost závodù, napøíklad jejich vhodným umístìním do trasy letu. Ve vìt¹ím mìøítku pak mù¾e jít o úplnou zmìnu scenerie závodù. Mohly by se odehrávat napøíklad v pou¹ti, ve mìstì mezi domy anebo témìø v libovolné krajinì. Bylo by zde nutné dbát na výkonové nároky, které jsou v souèasnosti velmi nízké, a pøípadná roz¹íøení zavádìt tak, aby nebylo nutné omezovat podporu nìkterých star¹ích a ménì výkonných zaøízení. Z ménì nároèných úprav pak zmíním napøíklad efekty odlesku a rozptylu svìtla na objektivu kamery (tzv. efekt \textit{lens flare}) nebo viditelné linky vzduchu èi páry u koncù køídel letadla, které by kromì vizuálního efektu mohly hráèi pomoci lépe si pøedstavit, jakým smìrem se letadlo aktuálnì pohybuje.
@@ -773,7 +786,7 @@ Tento text shrnul mo¾nosti vývoje 3D her na platformì Android s vyu¾itím knihovn
 
 Dále tato práce popsala návrh a implementaci hry, která toto ovládání vyu¾ívá. Jde o~hru kde hráè s~akrobatickým letadlem prolétává brankami a sna¾í se doletìt do cíle v~co nejkrat¹ím èase. Hra je navr¾ená tak, aby co nejvíce tì¾ila z~pøedstavené ovládací metody, podpoøila tak její my¹lenku a v~ideálním pøípadì i dal¹í roz¹íøení na poli mobilních leteckých her. V~prùbìhu vývoje vznikl prototyp hry, na kterém se ovìøily základní principy ovládání. Následnì vznikla plnohodnotná implementace hry s vyu¾itím právì knihovny Libgdx. Hra byla prùbì¾nì konzultována s firmou CUKETA, s.r.o., která se vývojem her profesionálnì zabývá, a pøed zveøejnìním hry probìhl také dotazníkový prùzkum. Po získání a zpracování zpìtné vazby byla hra publikována na internetový obchod Google Play pod názvem Air Racer. Tam se v dobì dokonèování této práce umístila na pozici 9. nejlep¹í bezplatné aplikace v kategorii závodních her a nainstalovalo si ji více ne¾ 50000 hráèù.
 
-
+\note{TODO: pokrytí 99\% zaøízení?}
 
 
 
