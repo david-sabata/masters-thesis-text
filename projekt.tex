@@ -33,6 +33,17 @@
 \usepackage{xcolor}
 \newcommand\note[1]{\textcolor{red}{#1}}
 
+%zmenseni bibiliografie
+\let\oldthebibliography=\thebibliography
+\let\endoldthebibliography=\endthebibliography
+\renewenvironment{thebibliography}[1]{%
+  \begin{oldthebibliography}{#1}%
+    \setlength{\parskip}{0ex}%
+}%
+{%
+  \end{oldthebibliography}%
+}
+
 
 % =======================================================================
 % balíèek "hyperref" vytváøí klikací odkazy v pdf, pokud tedy pou¾ijeme pdflatex

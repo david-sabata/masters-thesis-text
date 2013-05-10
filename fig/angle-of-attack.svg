@@ -13,8 +13,8 @@
    width="960"
    height="450"
    id="svg1929"
-   inkscape:version="0.48.1 "
-   sodipodi:docname="Airfoil.svg">
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="angle-of-attack.svg">
   <metadata
      id="metadata58">
     <rdf:RDF>
@@ -23,7 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,12 +37,12 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1304"
-     inkscape:window-height="746"
+     inkscape:window-height="745"
      id="namedview56"
      showgrid="false"
-     inkscape:zoom="0.5"
-     inkscape:cx="480"
-     inkscape:cy="225"
+     inkscape:zoom="1"
+     inkscape:cx="475.45328"
+     inkscape:cy="241.61057"
      inkscape:window-x="54"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -187,28 +187,8 @@
      id="path6638" />
   <path
      d="M 146.93037,227.91247 C 146.93037,227.91247 144.65406,219.86389 150.38221,208.24125 C 155.17259,198.52138 159.81407,194.44873 165.79171,188.91747"
-     style="fill:none;fill-rule:evenodd;stroke:black;stroke-width:2.136338px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow2Mend);stroke-opacity:1"
+     style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:2.13600000000000010;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow2Mend);stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
      id="path6640" />
-  <path
-     d="m 70.086169,115.3645 60.537021,64.65553"
-     style="fill:none;stroke:#000000;stroke-width:6.75177717px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow2Mend)"
-     id="path6642"
-     inkscape:connector-curvature="0" />
-  <text
-     xml:space="preserve"
-     style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-     x="22"
-     y="68"
-     id="text3035"
-     sodipodi:linespacing="125%"><tspan
-       sodipodi:role="line"
-       id="tspan3037"
-       x="22"
-       y="68">ÚHEL </tspan><tspan
-       sodipodi:role="line"
-       x="22"
-       y="108"
-       id="tspan3039">NÁBĚHU</tspan></text>
   <text
      xml:space="preserve"
      style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -220,4 +200,15 @@
        id="tspan3043"
        x="28"
        y="390">PROUDĚNÍ VZDUCHU</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-size:28px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial;font-stretch:normal;font-variant:normal"
+     x="130"
+     y="209"
+     id="text3876"
+     sodipodi:linespacing="125%"><tspan
+       sodipodi:role="line"
+       id="tspan3878"
+       x="130"
+       y="209">α</tspan></text>
 </svg>
