@@ -9,7 +9,7 @@
 % pøipomínky posílejte na e-mail: bidlom AT fit.vutbr.cz
 % vim: set syntax=tex encoding=latin2:
 %============================================================================
-\documentclass[cover]{fitthesis} % odevzdani do wisu - odkazy, na ktere se da klikat
+\documentclass{fitthesis} % odevzdani do wisu - odkazy, na ktere se da klikat
 %\documentclass[cover,print]{fitthesis} % pro tisk - na odkazy se neda klikat
 %\documentclass[english,print]{fitthesis} % pro tisk - na odkazy se neda klikat
 %      \documentclass[english]{fitthesis}
@@ -88,13 +88,13 @@
   %bud pomoci nasledujicich parametru nebo pomoci vyhrazenych maker (viz dale)
   %===========================================================================
   %Klicova slova
-  keywords.cs={vývoj her, mobilní zaøízení, Android, mechanika letu, dotykové ovládání}, %klicova slova v ceskem jazyce
-  keywords.en={game development, mobile devices, Android, flight mechanics, touch input}, %klicova slova v anglickem jazyce
+  keywords.cs={vývoj her, mobilní zaøízení, mobilní aplikace, Android, mechanika letu, dotykové ovládání}, %klicova slova v ceskem jazyce
+  keywords.en={game development, mobile devices, mobile applications, Android, flight mechanics, touch input}, %klicova slova v anglickem jazyce
   %Abstract
-  abstract.cs={Tato práce se zabývá vývojem letecké hry pro platformu Android. Nejdøíve budou popsány mo¾nosti nativního vývoje a~vývoje s vyu¾itím knihovny Libgdx. Dále budou vysvìtleny principy které se uplatòují pøi letu skuteèného letadla a tyto budou zjednodu¹eny pro pou¾ití v leteckých hrách. Práce také shrne souèasné trendy v ovládání leteckých her na mobilních zaøízeních a navrhne novou metodu zalo¾enou na dotykovém ovládání. V závìru bude popsán aktuální stav implementace.}, % abstrakt v ceskem jazyce
-  abstract.en={This work deals with flight game development on Android platform. Firstly the possibilities of native development and development using Libgdx library will be discussed. Then flight mechanics of a real aircraft will be explained and simplified for the use in flight games. The work will also summarize current trends in mobile flight game controls and will propose a~new control method based on touch input. In the end the current state of implementation will be described.}, % abstrakt v anglickem jazyce
+  abstract.cs={Tato práce se zabývá vývojem letecké hry pro platformu Android. Nejdøíve budou popsány mo¾nosti nativního vývoje a~vývoje s vyu¾itím knihovny Libgdx. Dále budou vysvìtleny principy, které se uplatòují pøi letu skuteèného letadla, a jejich zjednodu¹ené pou¾ití v leteckých hrách. Práce také shrne souèasné trendy v ovládání leteckých her na mobilních zaøízeních a navrhne novou metodu zalo¾enou na dotykovém ovládání. S vyu¾itím tohoto ovládání bude navr¾ena a implementována letecká hra. V závìru bude popsán proces testování a publikování, stejnì jako mo¾nosti dal¹ího vývoje této hry.}, % abstrakt v ceskem jazyce
+  abstract.en={This work deals with flight game development on Android platform. Firstly the possibilities of native development and development using Libgdx library will be discussed. Then flight mechanics of a real aircraft and simplified mechanics used in flight games will be explained. The work will also summarize current trends in mobile flight game controls and will propose a~new control method based on touch input. Using this method a flight game will be designed and implemented. In the end of this work the process of testing and publishing will discussed, as well as possibilities of further development.}, % abstrakt v anglickem jazyce
   %Prohlaseni
-  declaration={Prohla¹uji, ¾e jsem tento semestrální projekt vypracoval samostatnì pod vedením\\ Doc.~Ing.~Adama~Herouta, Ph.D.},
+  declaration={Prohla¹uji, ¾e jsem tuto diplomovou práci vypracoval samostatnì pod vedením\\ Doc.~Ing.~Adama~Herouta, Ph.D.},
   %Podekovani (nepovinne)
   %acknowledgment={Zde je mo¾né uvést podìkování vedoucímu práce a tìm, kteøí poskytli odbornou pomoc.} % nepovinne
 }
@@ -113,8 +113,7 @@
 %Uvedl jsem v¹echny literární prameny a publikace, ze kterých jsem èerpal.}
 
 %Podekovani (nepovinne)
-%\acknowledgment{V této sekci je mo¾no uvést podìkování vedoucímu práce a tìm, kteøí poskytli odbornou pomoc
-%(externí zadavatel, konzultant, apod.).}
+\acknowledgment{Na tomto místì bych rád podìkoval Doc.~Ing.~Adamu~Heroutovi, Ph.D. za odborné vedení a cenné rady pøi tvorbì této práce. Dále také firmì CUKETA, s.\,r.\,o.\, a ostatním, kteøí se podíleli na testování a svými pøipomínkami pøispìli ke kvalitì výsledné aplikace. V neposlední øadì pak dìkuji své rodinì a pøítelkyni za neutuchající podporu pøi studiu.}
 
 \begin{document}
   % Vysazeni titulnich stran

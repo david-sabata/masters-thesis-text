@@ -2,13 +2,11 @@
 
 \chapter{Úvod}
 
-\note{OK r1}
-
 Hry pro mobilní zaøízení, zejména telefony a tablety, v~souèasnosti za¾ívají nebývalý rozmach. Dalo by se øíct, ¾e jsou nyní tam, kde byly pøed patnácti a¾ dvaceti lety hry poèítaèové. Zatímco typický tým vyvíjející hru pro poèítaè nebo herní konzoli èítá desítky, ale èasto i stovky èlenù, hru pro mobilní telefon je stále mo¾né stvoøit jen v~nìkolika málo lidech.
 
-Neustále narùstající výkon dovoluje pøiblí¾it se kvalitì poèítaèových her. Tìmi se novì díky mobilním zaøízením mù¾e hráè zabavit napøíklad na cestách anebo pøi èekání na autobus. Velká vìt¹ina lidí s~sebou neustále nosí výkonný poèítaè ve velmi malém balení, který je navíc vybaven mno¾stvím sensorù a èasto i soustavným pøipojením k~internetu. To nabízí prostor pro velké mno¾ství inovací a je dobøe ¾e se takové inovativní pøístupy skuteènì objevují.
+Neustále narùstající výkon dovoluje pøiblí¾it se kvalitì poèítaèových her. Tìmi se novì díky mobilním zaøízením mù¾e hráè zabavit napøíklad na cestách anebo pøi èekání na autobus. Velká vìt¹ina lidí s~sebou neustále nosí výkonný poèítaè ve velmi malém balení, který je navíc vybaven mno¾stvím sensorù a èasto i soustavným pøipojením k~internetu. To nabízí prostor pro velké mno¾ství inovací a je dobøe, ¾e se takové inovativní pøístupy skuteènì objevují.
 
-Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých her pro mobilní zaøízení. Nejdøíve bude popsána platforma na které bude implementace probíhat, dále budou vysvìtleny principy, díky kterým letí a manévruje skuteèné letadlo. Tyto principy budou poté zjednodu¹eny pro pou¾ití v~prostøedí her. Dále budou shrnuty souèasné mo¾nosti ovládání herních letadel a navr¾ena nová metoda jejich ovládání, zalo¾ená na dotyku. Nad touto metodou bude vystavìna plnohodnotná letecká hra, její¾ vývoj bude popsán od prvotního návrhu a¾ po její implementaci a publikování v internetovém obchodì Google Play. Na závìr bude nabídnuta také kapitola shrnující dal¹í mo¾ný vývoj této hry.
+Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých her pro mobilní zaøízení. Nejdøíve bude popsána platforma na které bude implementace probíhat, dále budou vysvìtleny principy, díky kterým letí a manévruje skuteèné letadlo. Tyto principy budou poté zjednodu¹eny pro pou¾ití v~prostøedí her. Dále budou shrnuty souèasné mo¾nosti ovládání herních letadel a navr¾ena nová metoda jejich ovládání, zalo¾ená na dotyku. Nad touto metodou bude vystavìna plnohodnotná letecká hra, její¾ vývoj bude popsán od prvotního návrhu a¾ po její implementaci a publikování v internetovém obchodì Google Play. Souèástí práce bude také prùzkum reakcí hráèù a jeho zhodnocení. Na závìr bude nabídnuta také kapitola shrnující dal¹í mo¾ný vývoj této hry.
 
 
 
@@ -16,14 +14,10 @@ Tato práce se pokusí pøispìt svým dílem navr¾ením nové metody ovládání leteckých
 
 \chapter{Vývoj her na platformì Android}
 
-\note{OK r1}
-
 Andriod je operaèní systém pro mobilní zaøízení, zalo¾ený na Linuxovém jádøe a poskytovaný ve formì otevøeného zdrojového kódu. Poprvé byl pøedstaven v~roce 2007, první mobilní telefon s~Androidem se dostal na trh o~rok pozdìji. Aktuálnì dle statistik za první ètvrtletí roku 2013 má na poli \textit{chytrých mobilních telefonù} (smartphone) Android jako¾to operaèní systém podíl pøes 38\% \cite{statCounter} (mìøeno na základì nav¹tìvovanosti webových stránek z mobilních telefonù) se zøejmým vzestupným trendem. Aèkoliv je Android pou¾itelný pro mno¾ství rùzných zaøízení (a implementace mimo pole mobilních telefonù se u¾ nyní objevují), bude se tato práce soustøeïovat pouze na jeho vyu¾ití v~mobilních zaøízeních typu mobilního telefonu nebo tabletu. Informace v následujících kapitolách budou vycházet z oficiálního vývojáøského portálu \cite{androidDevelopers}, knihy o vývoji her pro Android \cite{libgdxKniha} a z vlastních zku¹eností a poznatkù. Kapitola \ref{sec:libgdx} pak bude èerpat z dokumentace knihovny Libgdx \cite{libgdx}.
 
 
 \section{Architektura systému}
-
-\note{OK r1}
 
 Architekturu systému lze rozdìlit do nìkolika úrovní. Na té nejvy¹¹í jsou aplikace psané v~jazyce Java, které pou¾ívají systémové funkce a rozhraní. Distribuují se v~balíècích v~tzv. \textit{mezikódu} (Java bytecode). Mezikód je výstup kompilace a jako takový je pøenositelný mezi platformami. Pro spu¹tìní v¹ak potøebuje interpret, kterým je v~tomto pøípadì virtuální stroj pojmenovaný Dalvik.
 
@@ -39,8 +33,6 @@ Na nejni¾¹í úrovni je ji¾ zmínìné jádro psané v~jazyce C. To zaji¹»uje pøístup k
 
 \section{Verze systému a cílová zaøízení}
 
-\note{OK r1}
-
 Vývoj operaèního systému vede firma Google, která vydává zdrojové kódy nových verzí. Ty se ov¹em pøímo do zaøízení dostávají jen velmi zøídka (jde o~referenèní modely telefonù a tabletù které si nechává vyrábìt pøímo Google). Typicky pøebírají kód jednotliví výrobci a upravují èi doplòují jej tak, aby fungoval pro konkrétní modely (nekompatibilita hrozí pøedev¹ím u~specifického hardwaru jako je 3D displej a dal¹í). Èasto také výrobce pøidává dodateèné aplikace, a» u¾ pro plné vyu¾ití mo¾ností zaøízení nebo èistì pro reklamní úèely. Jak bude výsledný systém vypadat, jaké funkce bude obsahovat a jaká zaøízení bude podporovat je plnì v~zodpovìdnosti výrobcù. Právì kvùli tomu jsou nejèastìji aktualizovány modely z~vy¹¹í cenové tøídy a levnìj¹í zaøízení bývají opomíjena.
 
 Dùsledkem otevøenosti Androidu je jeho roztøí¹tìnost co se verzí týèe. Aktuální rozlo¾ení verzí \textit{API} (programátorské rozhraní, Application Programming Interface) k~dubnu 2013 je na obrázku \ref{fig:api-verze}, data pocházejí z~oficiálního zdroje \cite{statsDroid} a jsou mìøena podle toho, jak se zaøízení s danými verzemi pøipojují k obchodu Google Play. Statistika tedy nezobrazuje podíly verzí prodaných zaøízení, nýbr¾ tìch, která alespoò jednou nav¹tívila oficiální obchod s aplikacemi. Z hlediska vývojáøe má tato metodika mnohem vy¹¹í vypovídací schopnost. Je vidìt, ¾e více ne¾ tøetinový podíl má verze 10 (v~u¾ivatelském znaèení jde o~Android verze 2.3.x) která je i nyní, po témìø dvou letech od prvního vydání, stále nasazována do novì prodávaných zaøízení. Jde v¹ak pøedev¹ím o zaøízení nejni¾¹í cenové a výkonnostní tøídy.
@@ -49,7 +41,7 @@ Dùsledkem otevøenosti Androidu je jeho roztøí¹tìnost co se verzí týèe. Aktuální 
 	\begin{center}
 		\vspace{\baselineskip}
 		\includegraphics[width=\textwidth]{fig/api-versions.pdf}
-		\caption{Rozlo¾ení verzí systému Android k~dubnu 2013. Obecné aplikace musejí øe¹it kompatiblitu s co nevìt¹ím mno¾stvím verzí systému. Hry v¹ak pou¾ívají pouze minimum systémových funkcí, a lze tak èasto pokrýt více ne¾ 94\% zaøízení. Zbývající procenta pøedstavují nejménì výkonná zaøízení s nejstar¹ími verzemi systému.}
+		\caption{Rozlo¾ení verzí systému Android k~dubnu 2013. Obecné aplikace musejí øe¹it kompatiblitu s co nevìt¹ím mno¾stvím verzí systému. Hry v¹ak pou¾ívají pouze minimum systémových funkcí, a lze tak èasto pokrýt více ne¾ 94\% zaøízení. Zbývající procenta pøedstavují nejménì výkonná zaøízení s nejstar¹ími verzemi systému. Zdroj dat: oficiální portál Android \cite{statsDroid}}
 		\label{fig:api-verze}
 	\end{center}
 \end{figure}
@@ -64,8 +56,6 @@ Je èasto pøipomínanou pravdou, ¾e právì zpìtná kompatibilita se star¹ími verzemi
 \section{Nativní vývoj her}
 \label{sec:nativni-vyvoj}
 
-\note{OK r1}
-
 Pøi zamìøení konkrétnì na vývoj grafických her se ukazuje, ¾e hluboké znalosti systému nejsou nezbytné. Android umo¾òuje navrhovat velmi slo¾itá a propracovaná u¾ivatelská rozhraní, hernímu vývojáøi v¹ak bude staèit jen nezbytné minimum. Podobnì je tomu s~dal¹ími vymo¾enostmi systému.
 
 Základním stavebním kamenem ka¾dé aplikace je tzv. \textit{Aktivita} (tøída \texttt{Activity}). Zjednodu¹enì lze øíct ¾e Aktivita je okno aplikace, typicky zobrazované pøes celý prostor displeje (s~výjimkou informaèní li¹ty a pøípadných virtuálních kláves), se kterým mù¾e u¾ivatel interagovat. Aktivita je rodièem jednotlivých elementù u¾ivatelského rozhraní, pøípadných dialogù, nabídek a dal¹ích prvkù. Pro potøeby hry bì¾nì postaèuje jediná aktivita jejím¾ potomkem je speciální oblast do které mù¾e vykreslovat OpenGL (oblast je tøídy \texttt{GLSurfaceView}). Pøi vytoøení této oblasti systém souèasnì spustí speciální vlákno, které má pøístup k~OpenGL kontextu, a mù¾e tedy provádìt grafická volání. Toto vlákno je poté systémem pravidelnì probouzeno tak, aby vykreslování probíhalo v~rychlosti co nejbli¾¹í ideálním 60 snímkùm za sekundu. S~u¾ivatelským rozhraním systému bì¾ící hra a¾ na výjimky nepracuje, v¹e probíhá v oblasti vyhrazené pro vykreslování.
@@ -77,8 +67,6 @@ Kromì zobrazování je Aktivita dùle¾itá také pro pøíjem vstupních událostí. Má mo
 
 \subsection{Negativa nativního vývoje}
 \label{sec:negativna-nativniho-vyvoje} 
-
-\note{OK r1}
 
 V~pøípadì ¾e zvolíme tvorbu hry èistì na základì Androidu bez mezièlánkù typu frameworku nebo herního engine, mù¾eme narazit na nìkteré nepøíjemnosti. Pøedev¹ím nemù¾eme poèítat s~jakýmkoliv roz¹íøením nad mo¾nosti OpenGL ES. Je plnì v~kompetenci programátora aby si pøipravil potøebné datové struktury a pomocné tøídy. Systém jako takový sice obsahuje nìkolik základních tøíd pro popis vektorù, matic a operace s~nimi, ty ale nebyly navr¾eny pro práci s~OpenGL a dochází zde k~nesrovnalostem (pøíkladem mù¾e být vnitøní reprezentace matice, která je jednou øádková a jindy sloupcová). Na vìt¹inu tìchto problémù poukazuje autor knihy o vývoji her pro Android \cite{libgdxKniha}, který je souèasnì autorem knihovny Libgdx, která tyto nedostatky napravuje.
 
@@ -98,8 +86,6 @@ Z vý¹e uvedeného je zøejmé, ¾e u~vìt¹iny grafických aplikací je ¾ádoucí pou¾ít e
 
 \section{Komplexní vývojová prostøedí}
 
-\note{OK r1}
-
 Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených øe¹ení. Dva nejroz¹íøenìj¹í zástupci této kategorie jsou Unity 3D a Unreal Engine, kde oba sami sebe oznaèují za herní engine. V~obou pøípadech jde o~specializovaná vývojová prostøedí která se sna¾í upozadit programování ve smyslu psaní kódu a naopak upøednostòují pøímé sestavování scény a definice chování. Vývojáø mù¾e hru hrát a soubì¾nì v~reálném èase upravovat. K~tomu slou¾í interaktivní pohled do scény, kde je mo¾né pracovat na úrovni objektù. Samozøejmostí je mno¾ství pøeddefinovaných chování, fyzikálních vlastností, materiálù a èasto i celých objektù se v¹emi vlastnostmi (napøíklad celé pojízdné auto). Na skuteèné programování pøichází èas pouze ve chvíli, kdy je potøeba nadefinovat vnitøní logiku hry, pøípadnì vytvoøit nové chování nìkterého z~objektù. V~takovém pøípadì pou¾ívá engine vlastní skriptovací jazyk. Jak Unity 3D, tak i Unreal Engine jsou komplexní vývojová prostøedí produkující multiplatformní aplikace a Android je pouze jedním z~mnoha výstupù. Vývojáø ve skuteènosti pøichází s~architekturou Androidu do kontaktu jen minimálnì nebo vùbec. I~pøesto není vhodné tento pøístup opomíjet, nebo» s~pou¾itím právì Unity 3D vznikají v~souèasnosti nejlépe hodnocené a po vizuální stránce nejpropracovanìj¹í hry. Záporem je zde vysoká poèáteèní investice, a to v~øádu minimálnì stovek dolarù.
 
 \begin{figure}[ht]
@@ -115,8 +101,6 @@ Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených ø
 
 \section{Knihovna Libgdx}
 \label{sec:libgdx}
-
-\note{OK r1}
 
 Alternativou k~placeným vývojovým nástrojùm jsou men¹í knihovny s~tìsnìj¹í vazbou na systém Android. Nejpou¾ívanìj¹í z~nich jsou AndEngine a Libgdx. První z~jmenovaných se nazývá herním engine, druhý se oznaèuje za framework. Oba jsou v¹ak k~dispozici zdarma ve formì otevøených zdrojových kódù s mo¾ností komerèního i nekomerèního vyu¾ití. Jeliko¾ jsou si obì knihovny velmi podobné, soustøedím se v~dal¹ím popisu pouze na Libgdx, kterou také pou¾iji pøi implementaci. Zdrojem bude z~velké èásti oficiální dokumentace \cite{libgdx} a také ji¾ zmiòovaná kniha o vývoji her pro Android \cite{libgdxKniha}.
 
@@ -209,8 +193,6 @@ Poslední popisovanou souèástí knihovny je \textit{Assets Manager}, který je mo¾n
 \section{Knihovna Bullet Physics}
 \label{sec:bullet}
 
-\note{OK r1}
-
 Nezbytnou souèástí zejména leteckých her bude jistá forma fyzikální simulace. K tomuto úèelu popí¹i volnì dostupnou knihovnu Bullet Physics. Ta mù¾e fungovat v nìkolika re¾imech, pøièem¾ dva nejvýznamnìj¹í jsou re¾imy tzv. \textit{kolizního svìta} (tøída \texttt{btCollisionWorld}) a \textit{simulaèního svìta} (tøída \texttt{btDiscreteDynamicsWorld}). Základní principy jednoduché 2D a 3D simulace popisuje ji¾ zmiòovaná kniha o vývoji her \cite{libgdxKniha}, informace specifické pro knihovnu Bullet Physics pak vycházejí z její oficiální webové stránky \cite{bullet} (manuál ve formátu PDF je souèástí sta¾itelného vývojáøského balíèku).
 
 Jak ji¾ název napovídá, kolizní svìt obsahuje entity reprezentované svými kolizními tvary a signalizuje, pokud dojde k jejich kontaktu. Na tento kontakt lze následnì reagovat v rámci herní logiky. Entity se ale dále mohou pohybovat a v kolizi pokraèovat. Knihovna zde slou¾í èistì k detekci kolizí a nikoliv k jejich dal¹í obsluze. Detekce probíhá ve dvou fázích -- tzv. \textit{¹iroké} a \textit{úzké}. Pøi ¹iroké fázi jsou namísto skuteèných obalových tìles porovnávány kolize osovì zarovnaných obalových kvádrù (metoda \textit{AABB - Axis Aligned Bounding Boxes}). Tímto krokem je mo¾né rychle odstranit velké mno¾ství dvojic objektù, které spolu nemohou v ¾ádném pøípadì kolidovat. V úzké fázi se následnì hledá kolize mezi skuteènými tvary entit. Tento krok je znaènì nároènìj¹í, nebo» obalové tvary mù¾ou být jednoduché (základní tvary jako koule, kvádr, plocha), ale také slo¾ené z obecnì libovolného mno¾ství základních a slo¾ených tvarù. Se slo¾itostí tvaru pøirozenì roste i nároènost ovìøení kolize. Z tohoto dùvodu je zavedeno rozdìlení do dvou fází, které toto slo¾ité porovnání provede jen v pøípadech, kde mù¾e kolize reálnì nastat.
@@ -226,9 +208,7 @@ Provádìní úplné fyzikální simulace je ve srovnání s pouhou detekcí kolizí øádovì
 \section{Distribuce aplikací}
 \label{sec:distribuce}
 
-\note{OK r1}
-
-Aplikace pro systém Android lze distribuovat nìkolika rùznými cestami. Tou nejzákladnìj¹í je pøímá distribuce binární podoby aplikace (v souboru s pøíponou APK). Tato volba v¹ak znemno¾ní jakoukoliv dal¹í automatickou aktualizaci (manuální aktualizaci lze stále provést získáním nové verze souboru) a souèasnì nedovoluje mít kontrolu nad tím, kteøí u¾ivatelé, na jakých zaøízeních a za jakých podmínek, budou aplikaci pou¾ívat. Z tìchto dùvodù lze pøímou distribuci oznaèit za u¾ivatelsky nepøíli¹ pohodlnou. Své vyu¾ití v¹ak mù¾e nalézt u aplikací, které mají být spou¹tìny jen na nekolika málo kusech zaøízení. Pøíkladem takové situace mù¾e být testování prototypu aplikace a jeho kompatibility.
+Aplikace pro systém Android lze distribuovat nìkolika rùznými cestami. Tou nejzákladnìj¹í je pøímá distribuce binární podoby aplikace (v souboru s pøíponou APK). Tato volba v¹ak znemno¾ní jakoukoliv dal¹í automatickou aktualizaci (manuální aktualizaci lze stále provést získáním nové verze souboru) a souèasnì nedovoluje mít kontrolu nad tím, kteøí u¾ivatelé, na jakých zaøízeních a za jakých podmínek, budou aplikaci pou¾ívat. Navzdory tomu je tato metoda pou¾ívána, napøíklad pri testování prototypu aplikace a jeho kompatibility.
 
 Dùmyslnìj¹ím zpùsobem distribuce je vyu¾ití nìkterého z internetových obchodù. Tìch existuje hned nìkolik s rùznì velkou u¾ivatelskou základnou a s rùznými podmínkami publikování. Dominantní postavení zde má obchod Google Play, pøedstavující oficiální katalog aplikací platformy Android. Jeho hlavní pøedností je, ¾e je pøednastaven v drtivé vìt¹inì prodávaných zaøízení a má tak mo¾nost oslovit maximální mno¾ství potenciálních u¾ivatelù. Vývojáøi souèasnì nabídne mo¾nost aplikaci prùbì¾nì vzdálenì aktualizovat, øídit která zaøízení bude aplikace podporovat, sledovat statistiky instalací a také sbírat zpìtnou vazbu od u¾ivatelù. Aplikaci zde lze zveøejòovat bezplatnì, ale i za poplatek, pøièem¾ si provozovatel obchodu nárokuje 30\% podíl z provedené transakce. Zmínìné pøednosti jsou v¹ak vykoupeny jednorázovým poplatkem za registraci vývojáøe, který v dobì psaní této práce èiní \$25. Dal¹ím nedostatkem obchodu Google Play je nemo¾nost rozdìlit konkrétní u¾ivatele do skupin a tìm následnì nabídnout jinou verzi aplikace nebo napøíklad mo¾nost bezplatného testování placené varianty. Stejnì tak by mnoho vývojáøù ocenilo mo¾nost vygenerování speciálních poukazù, kterými by mohli zdarma zpøístupòovat propagaèní verze svých aplikací.
 
@@ -244,8 +224,6 @@ Pøed návrhem herního ovládání letadla je vhodné se seznámit s~tím, jak létají sk
 
 
 \section{Síly pùsobící za letu}
-
-\note{OK r1}
 
 Základní pojem pro dal¹í popis bude takzvaný \textit{ustálený vodorovný let}. V~tuto chvíli se letadlo pohybuje konstantní rychlostí s~nulovým zrychlením, nestoupá, neklesá a není v~náklonu. Pùsobí na nìj síly vyznaèené na obrázku \ref{fig:letadlo-sily}. Jsou jimi vzlak, gravitaèní tíha, tah a odpor. Pøi ustáleném letu jsou tyto síly v~rovnováze. Ne v¹ak v¹echny navzájem, jak je nìkdy mylnì uvádìno, ale pouze dvojice sil pùsobících proti sobì. Pro ilustraci mù¾eme pou¾ít namísto celého letadla pouze køídlový profil, na kterém jsou velièiny více zøejmé.
 
@@ -271,8 +249,6 @@ Výsledné chování letadla zále¾í v¾dy na pomìru zmínìných sil. Pokud by køídla ne
 
 \section{Ovládací prvky a manévry}
 \label{sec:let-skutecneho-letadla}
-
-\note{OK r1}
 
 Pro popis jiného ne¾ vodorovného letu je potøeba zavést nový pojem, a sice \textit{úhel nábìhu}. Jde o~úhel, který svírá tìtiva profilu køídla s~proudem vzduchu, který na ni dopadá. Úhel nábìhu je vyznaèený na obrázku \ref{fig:uhel-nabehu}.
 
@@ -315,8 +291,6 @@ Správný prùlet zatáèkou probíhá v~náklonu. Pilot nejdøíve zatoèením kniplu naklo
 
 \section{Stabilita letadla}
 
-\note{OK r1}
-
 Ka¾dé letadlo má svou konstrukcí dané stabilizaèní schopnosti, které se uplatòují ani¾ by pilot zasahoval do øízení. Stabilitu se dìlí na statickou a dynamickou.
 
 Statická stabilita popisuje reakci letadla ve chvíli kdy dojde k~naru¹ení jeho dosavadního smìru letu napøíklad poryvem vìtru. U~staticky stabilního letadla vznikne opaèná síla sna¾ící se letadlo vrátit do pùvodní polohy. Staticky neutrální letadlo bude pokraèovat v~pozmìnìném smìru a u~staticky nestabilního letadla se dokonce objeví síla pùsobící spolu s~ru¹ivým vlivem, která odklon od pùvodního smìru je¹tì více posílí.
@@ -329,8 +303,6 @@ Letadlo které je staticky i dynamicky stabilní je vìt¹inou snáze ovladatelné a v
 
 
 \section{Herní ovládání letadla}
-
-\note{OK r1}
 
 V~následujících podkapitolách bude popsáno zapojení vý¹e vysvìtlených mechanik letu do leteckých her. Zamìøím se pøitom pøedev¹ím na takzvané \textit{causual} hry, tedy oddechové hry které od hráèe nevy¾adují vysokou úroveò zku¹eností. U~her a programù profilujících se jako simulátory je zøejmá snaha co nejvíce se pøiblí¾it reálné pøedloze jak u~letové dynamiky, tak i z~hlediska ovládání letadla. I~pøesto lze u~simulátorù pozorovat vyu¾ití nìkterých zjednodu¹ení zejména z~oblasti ovládání.
 
@@ -401,8 +373,6 @@ Pøesto¾e se zdá ¾e právì dotykové ovládání nabízí ¹iroké mo¾nosti pro inovace, h
 
 \chapter{Návrh dotykového ovládání a letecké hry}
 
-\note{OK r1}
-
 V~této èásti práce popí¹i novì navrhovanou metodu ovládání a varianty její implementace. Dále rozvedu jak by mìla výsledná hra vypadat a jaké budou její herní mechanismy.  Stále je potøeba mít na pamìti, ¾e se pohybujeme v~oblasti her pro mobilní zaøízení. Rozmìry obrazovek, tedy ovládacích ploch, budou omezené, stejnì jako výkon zaøízení. Stejnì tak povaha práce s mobilním zaøízením je diametrálnì odli¹ná od povahy práce s bì¾ným poèítaèem nebo herní konzolí. Tyto faktory bude nutné uvá¾it.
 
 Pøi navrhování hry jsem vycházel zejména z knih Game Industry, které sepsali èe¹tí herní vývojáøi \cite{gameindustry1}, \cite{gameindustry2}.
@@ -412,8 +382,6 @@ Pøi navrhování hry jsem vycházel zejména z knih Game Industry, které sepsali èe¹
 
 \section{Novì navrhovaná metoda ovládání}
 \label{sec:nova-metoda-ovladani} 
-
-\note{OK r1}
 
 Pøi uva¾ování o~inovativním pøístupu k~ovládání letadla jsem témìø okam¾itì vyøadil vstup pomocí sensorù. Dùvody zmínìné v kapitole \ref{sec:vstupni-metody} mi pøijdou pøíli¹ omezující. Souèasnì v~této oblasti nejsou velké mo¾nosti k~dal¹ímu roz¹iøování tak, aby pro hráèe zùstala zachovaná pohodlnost a intuitivnost ovládání.
 
@@ -462,8 +430,6 @@ Navrhované ovládání by bylo mo¾né dále roz¹íøit o mo¾nost ovládání smìrového kor
 \section{®ánrové zaøazení a herní mechanismy}
 \label{sec:zanrove-zarazeni} 
 
-\note{OK r1}
-
 Hra se bude odehrávat v~prostøedí leteckých závodù. Hráè je v~roli pilota akrobatického letadla který nav¹tìvuje jednotlivé závody. Samotný závod pak spoèívá v~prùletu branek ve stanoveném poøadí (pøesná dráha letu se nevy¾aduje), vzlet ani pøistávání se neuva¾uje. Branky mù¾ou být rùzného typu: obyèejná, jednosmìrná nebo branka vy¾adující prùlet v~pøedem dané poloze letadla. Právì poslední typ branky je typickým prvkem leteckých závodù, kdy nezále¾í pouze na èasu letu, ale hodnotí se také pøesnost se kterou pilot brankou proletí. Rozli¹uje se prùlet vodorovný, svislý (takzvaný \textit{no¾ový let}) a prùlet vzhùru nohama.
 
 Cílem hráèe je proletìt v¹emi brankami v~co nejkrat¹ím èase. Pøi prùletu brankou vy¾adující konkrétní polohu letadla se kontroluje pøesnost prùletu. Pokud je nízká, pøiète se k~èasu prùletu postih závisející na velikosti odchylky. Prùlet brankou se v¹ak zapoèítá i v~pøípadì, ¾e bude odchylka maximální. To je rozdíl oproti jednosmìrné brance, která se pova¾uje za splnìnou pouze pøi prùletu ze správného smìru. U~obyèejné branky ¾ádná omezení ani postihy nejsou. U~ka¾dého závodu jsou definovány tøi èasy prùletù, které se hráè sna¾í pøekonat. Tyto èasy vzniknou pravdìpodobnì v~prvotní fázi odhadem, pozdìji se upraví na základì testování a zpìtné vazby od hráèù.
@@ -481,8 +447,6 @@ Celkovì by hra mìla pùsobit akènì a rychle, èemu¾ musí odpovídat i metoda ovládá
 
 
 \section{Roz¹iøitelnost hry}
-
-\note{OK r1}
 
 Podstatným faktorem je také následná roz¹iøitelnost hry. Aktualizace aplikace se nemusí zamìøovat pouze na opravování chyb, ale mohou souèasnì pøidávat dal¹í herní obsah. To je z~pohledu hráèe velmi ¾ádoucí a právì informaci o~aktualizaci mu mù¾e pøipomenout dávno dohranou hru. Aktualizace se pak stávají men¹inovým propagaèním nástrojem a je velmi ¾ádoucí s~nimi takto pracovat. Pøíli¹ èasté vydávání nových verzí mù¾e být obtì¾ující, zejména pokud hráè vìt¹inu herního obsahu zkonzumoval a nového se mu nedostává. I~v~pøípadì ¾e má vývojáø vìt¹í mno¾ství nevydaného obsahu, je vhodné jeho zveøejòování dávkovat a sna¾it se tak udr¾ovat dlouhodobý zájem o~hru.
 
@@ -504,8 +468,6 @@ V neposlední øadì je potøeba uva¾ovat o monetizaci hry, tedy o její ziskovosti. 
 
 \chapter{Implementace a publikování hry}
 
-\note{OK r1}
-
 V této èásti popí¹i implementaci navr¾eného ovládání a hry. Ve¹kerá práce probíhala ve vývojovém prostøedí Eclipse, doplnìné o moduly specifické pro platformu Android. Tyto doplòky jsou souèástí podkladù pro vývojáøe a jsou dostupné z oficiálních webových stránek \cite{androidDevelopers}. 
 
 Poslední podkapitola bude vìnovaná publikování vytvoøené hry nejdøíve v omezené skupinì lidí a následnì na internetovém obchodì Google Play. Zhodnotím také výsledky testování, prùzkumù a poznatky získané sbìrem statistik u¾ívání. V závìru kapitoly také shrnu mo¾nosti dal¹ího vývoje.
@@ -515,8 +477,6 @@ Poslední podkapitola bude vìnovaná publikování vytvoøené hry nejdøíve v omezené 
 
 \section{Prototyp a prvotní testování}
 \label{sec:implementace-prototypu} 
-
-\note{OK r1}
 
 V poèátku práce na aplikaci jsem navrhl a impementoval prototyp zalo¾ený èistì na platformì Android, bez pou¾ití dal¹ích knihoven. Potýkal jsem se s problémy, které byly popsány v kapitole \ref{sec:negativna-nativniho-vyvoje}, a zpìtnì lze prohlásit, ¾e vývoj bez pomocných nástrojù èi knihoven bude pøinejmen¹ím velmi obtí¾ný. 
 
@@ -564,8 +524,6 @@ Zmínìné testování probíhalo v prùbìhu vývoje prototypu a jednotlivých metod na v
 
 \section{Struktura aplikace}
 
-\note{OK r1}
-
 Tato kapitola popí¹e strukturu aplikace, která má v pøípadì pou¾ití knihovny Libgdx jistá specifika. Budou také pøedstaveny nìkteré diagramy tøíd, zachycující nejdùle¾itìj¹í vazby mezi herními objekty. Úplny diagram tøíd tato práce neobsahuje, nebo» by od ètenáøe vy¾adoval hlubokou znalost pou¾ité knihovny a pro bì¾ného ètenáøe by nebyl pøíli¹ popisný.
 
 
@@ -581,9 +539,8 @@ Pro dal¹í popis budu vyu¾ívat pojem \textit{projekt} tak, jak je chápán z hledis
 
 Ukázalo se jako velmi výhodné vedle platformy Android pou¾ít i platformu PC a provádìt maximální mo¾né mno¾ství vývoje právì zde. Narozdíl od mobilní aplikace, kde probíhá typický proces sestavení a následné instalace do zaøízení, zde dochází k sestavení a spu¹tìní pøímo v poèítaèi vývojáøe. To probíhá øádovì v jednotkách sekund, tedy zásadnì rychleji ne¾ na mobilním zaøízení. Díky knihovnì Libgdx jsou pøitom rozdíly mezi platformami z pohledu vyvíjené hry minimální a lze takto vyvíjet celé u¾ivatelské rozhraní i ve¹keré vykreslování 3D scény. Problém nastává pøi implementace ovládání, které pro svoji funkènost vy¾aduje souèasný dotyk dvou prstù. Tuto èást bylo tedy nutné vyvíjet pøímo na skuteèném mobilním zaøízení. Díky dùmyslnému systému práce se vstupem (který je popsán v kapitole \ref{sec:libgdx-vstup}) lze nahradit dotykový vstup vstupem z klávesnice. Takové øe¹ení sice není ideální (øízení letadla je skokové), ale pro vývoj èástí se vstupem pøímo nesouvisejících je více ne¾ postaèující.
 
-Dal¹ím dùvodem k vytvoøení projektu pro platformu PC mù¾e být také tvorba propagaèních materiálù, typicky videí. V pøípadì mobilních zaøízení je snímání obrazovky a souèasné ukládání ve formì videa velmi omezené nebo úplnì nemo¾né. Je to dáno jak výkonovými mo¾nostmi, tak i potøebou speciálního oprávnìní takové snímací aplikace. U bì¾ného poèítaèe by v souèasnosti po¾adavky na výkon nemìly pøedstavovat problém a stejnì tak je snadno dostupný i software pro záznam. Opìt díky sjednocenému chování napøíè platformami je mo¾né vytvoøit video pøímo ze hry, ani¾ by neznalý divák rozeznal rozdíl. Stejnì jako pøi vývoji zde mù¾e nastat problém se vstupem. Není v¹ak slo¾ité pøi hraní na mobilním zaøízení ve¹kerý vstup zaznamenávat a následnì jej v poèítaèi pøehrávat do bì¾ící aplikace. Tímto zpùsobem lze velmi efektivnì vizualizovat i místa dotyku a vytvoøit napøíklad názornou ukázku, jak mù¾e hráè svými dotyky letadlo ovládat.
+Dal¹ím dùvodem k vytvoøení projektu pro platformu PC mù¾e být také tvorba propagaèních materiálù, typicky videí. V pøípadì mobilních zaøízení je snímání obrazovky a souèasné ukládání ve formì videa velmi omezené nebo úplnì nemo¾né. Je to dáno jak výkonovými mo¾nostmi, tak i potøebou speciálního oprávnìní takové snímací aplikace. U bì¾ného poèítaèe by v souèasnosti po¾adavky na výkon nemìly pøedstavovat zásadní problém a stejnì tak je snadno dostupný i software pro záznam. Opìt díky sjednocenému chování napøíè platformami je mo¾né vytvoøit video pøímo ze hry, ani¾ by neznalý divák rozeznal rozdíl. Stejnì jako pøi vývoji zde mù¾e nastat problém se vstupem. Je v¹ak mo¾né pøi hraní na mobilním zaøízení ve¹kerý vstup zaznamenávat a následnì jej v poèítaèi pøehrávat do bì¾ící aplikace. Tímto zpùsobem lze velmi efektivnì vizualizovat i místa dotyku a vytvoøit napøíklad názornou ukázku, jak mù¾e hráè svými dotyky letadlo ovládat.
 
-\note{TODO: jak se toèil screencast? je pou¾itý?}
 
 
 \subsection{Objektová struktura aplikace}
@@ -622,8 +579,6 @@ Tøídy spadající pod knihovnu Bullet Physics obsahují ve svém názvu prefix \textt
 
 \section{Herní logika a prùbìh simulace}
 
-\note{OK r1}
-
 Øídicí funkci z hlediska herní logiky má herní obrazovka, tedy instance tøídy \texttt{GameScreen}. Ve chvíli svého vytvoøení dostává v konstruktoru pøipravený herní svìt (tedy \texttt{GameWorld}) a v nìm naètený závod. Obrazovka vytvoøí objekt letadla (souèástí definice svìta je pouze jeho poèáteèní transformace), nastaví zpracování vstupù tak, aby se dotykové události dostaly na vstup letadla, nechá probíhat simulaci a souèasnì scénu vykresluje pomocí tøídy \texttt{GameRenderer}. Samotný pohyb letadla ve scénì probíhá velmi jednodu¹e, vyèíslováním vztahu pro rovnomìrný pøímoèarý pohyb, kde jako èasový parametr slou¾í doba uplynulá mezi dvìma vykreslovanými snímky. Díky tomu se bude letadlo pohybovat stále stejnì rychle bez ohledu na to, jaký je aktuální poèet snímkù za sekundu.
 
 Vykreslovací tøída je velmi jednoduchá, a proto se jí nebudu hloubìji zabývat. Z externích souborù naèítá shadery ve formátu GLSL, v ka¾dém snímku nastavuje jejich parametry a jejich pomocí vykresluje jednotlivé entity daného svìta. K tomu by jí postaèovaly instance \texttt{BaseWorld} a \texttt{BaseEntity}. Takový objekt je v¹ak ve høe pouze jediný, a sice tzv. \textit{skybox}, tedy krychle obalující celou scénu, na její¾ vnitøních stìnách je textura nebe. V¹echny ostatní objekty jsou zapojeny do fyzikální simulace, kvùli èemu¾ musejí být v hierarchii dìdiènosti ní¾e.
@@ -656,8 +611,6 @@ Je zde také vhodné zmínit závislost výkonu aplikace na pou¾itých kolizních tvare
 
 \section{U¾ivatelské rozhraní}
 \label{sec:implementace-ui}
-
-\note{OK r1}
 
 Z hlediska u¾ivatelského rozhraní lze hru rozdìlit na dvì èásti -- hlavní menu a samotnou hru. Ty jsou implementovány v ji¾ popisovaných tøídách \texttt{MainMenu} a \texttt{GameScreen}. Vazby souèástí u¾ivatelského rozhraní jsou znázornìny na obrázku \ref{fig:ui-diagram}. Ka¾dá z obrazovek obsahuje jednu instanci potomka tøídy \texttt{BaseStage} (konkrétnì \texttt{MainMenuStage} a \texttt{GameGuiStage}), kde jsou vytváøeny jednotlivé prvky rozhraní a definováno jejich rozlo¾ení. Vyu¾ity jsou pøevá¾nì pøeddefinované komponenty, jejich¾ vizuální podoba je upravená tak, jak bylo popsáno v kapitole \ref{sec:libgdx-ui}. Kromì tìchto dvou obrazovek hra vyu¾ívá nìkolik dialogù. Ty jsou ve své výchozí podobì ztvárnìny pou¾itím plovoucího okna. Tuto podobu jsem upravil tak, ¾e dialogy okno nepou¾ívají (lépe øeèeno je vykresleno prùhlednou barvou) a namísto toho èásteènì ztmaví celou oblast obrazovky. Toto øe¹ení pùsobí ménì technicistním dojmem a lépe zapadá do vizuální podoby celé aplikace.
 
@@ -692,8 +645,6 @@ V kapitole \ref{sec:implementace-prototypu} jsem zvolil jako optimální variantu 
 \section{Vývojáøské rozhraní}
 \label{sec:vyvojarske-rozhrani} 
 
-\note{OK r1}
-
 Souèástí hry je také speciální vývojáøský re¾im. Ten je pro bì¾né hráèe pøirozenì nedostupný a v publikované verzi je odstranìn. Slou¾í k jednoduchým úpravám existujících závodù a k vytváøení závodù nových. Jeho rozhraní je spí¹e strohé, av¹ak úèelné. Zachyceno je na obrázku \ref{fig:ui-dev}. Vývojáøský re¾im implementuje obrazovka \texttt{GatePlacementScreen}, u¾ivatelské rozhraní pak tøída \texttt{OverlayStage}. Obrazovka naète objekty herního svìta, podobnì jako pøi spu¹tìní závodu, s tím rozdílem, ¾e neprobíhá detekce kolizí ani vyhodnocování stavu závodu. Scéna neobsahuje ani letadlo a kamera se mù¾e volnì pohybovat v prostoru. K tomu slou¾í tlaèítka u¾ivatelského rozhraní pro posun o pevnì danou vzdálenost, pøípadnì pak speciální vstupní procesor \texttt{FreeMoveInputProcessor} umo¾òující plynulé rozhlí¾ení a prùlet scénou. Je mo¾né pøidávat a odebírat jednotlivé kruhy a branky závodu a také nastavit poèáteèní transformaci letadla.
 
 Z dùvodu zachování pøenositelnosti mezi platformami bohu¾el nelze závod pøímo ulo¾it a ihned jej hrát. Aktuálnì se závod vypí¹e do konzole vývojového prostøedí jako øetìzec ve formátu JSON. Ten je nutné ruènì ulo¾it do souboru v adresáøi s ostatními datovými soubory aplikace. Toto chování vzniká proto, ¾e v okam¾iku sestavování aplikace jsou ve¹keré její soubory zabaleny do jediného balíèku, který se dále zpøístupòován pouze pro ètení. Alternativnì by bylo mo¾né ukládat vytváøené závody do u¾ivatelské pamìti zaøízení, ov¹em tyto by pak byly volnì pøístupné a upravitelné, a tudí¾ by nebylo mo¾né zaruèit jejich konzistenci. Èasy jednotlivých závodù jsou vkládány také ruènì, na základì nìkolika zku¹ebních letù. V budoucnu budou èasy upravovány na základì dat získaných anonymním sbìrem statistik.
@@ -710,8 +661,6 @@ Z dùvodu zachování pøenositelnosti mezi platformami bohu¾el nelze závod pøímo ul
 
 \section{Zveøejnìní hry a zpìtná vazba}
 \label{sec:zverejneni}
-
-\note{OK r1; aktualizovat statistiky}
 
 Ve chvíli, kdy se hra dostala do finální podoby, bylo mo¾né ji zaèít veøejnì distribuovat. Souèasnì jsem pro dosud bezejmennou hru zvolil název Air Racer. Do té doby jsem testování provádìl osobními schùzkami v rùzných stádiích vývoje, kde bylo mo¾né okam¾itì reagovat na chyby a jiné nedostatky. Tento pøístup souèasnì nabízel mnohem lep¹í zpìtnou vazbu od hráèù, kterou by bylo pozdìji obtí¾né získat. Dal¹ím pøínosem bylo také pøímé testování hry na rùzných zaøízeních. Zde ¾ádné problémy nenastaly a hra bez problémù bì¾ela na v¹ech zaøízeních, se kterými deklarovala kompatibilitu. Hodnotné reakce pøinesly také pravidelné konzultace ve firmì CUKETA, s.\,r.\,o.\,, která se herním vývojem profesionálnì zabývá.
 
@@ -752,7 +701,7 @@ Jak ji¾ bylo popsáno v kapitole \ref{sec:distribuce}, pro publikování v obchodì 
 
 Po vydání aplikace jsem ji opìt propagoval na sociálních sítích, vèetnì nìkolika komunit specializovaných na hry a platformu Android. Souèasnì jsem ¾ádal hráèe, aby hru v obchodì ohodnotili (dle vlastní vùle), èím¾ ji uèiní teoreticky lákavìj¹í pro dal¹í potenciální hráèe. Hodnocení probíhá udìlením jedné a¾ pìti hvìzdièek a pøidání pøípadného komentáøe. Poèet hodnotících hráèù je v¹ak velmi nízký, dle souèasných statistik vlo¾í hodnocení ménì ne¾ jeden hráè z 500, komentáø pak vlo¾í asi jeden z tisíce. Aktuálnì hru hodnotilo 87 hráèù, pøièem¾ 61 zvolilo nejvy¹¹í hodnocení, 13 pak hodnocení nejni¾¹í. Pøi takto nízkém poètu v¹ak nemá hodnocení ani vìt¹ina komentáøù témìø ¾ádnou vypovídací hodnotu. Hodnocení hráèù jsem se sna¾il podpoøit herním dialogem, který se jednorázovì spustí po splnìní v¹ech závodù z první sady. 
 
-I pøes nízkou úèast hráèù v hodnocení se hra v obchodì prosadila a necelý mìsíc po vydání se dostala na pozici deváté nejlep¹í závodní hry. Graf vývoje pozice v jednotlivých dnech je na obrázku \ref{fig:pozice-play}. Celkový poèet instalací pøesahuje 50000, pøièem¾ denní trend nových u¾ivatelù v souèasnosti spí¹e stagnuje. 
+I pøes nízkou úèast hráèù v hodnocení se hra v obchodì prosadila a necelý mìsíc po vydání se dostala na pozici deváté nejlep¹í závodní hry. Graf vývoje pozice v jednotlivých dnech je na obrázku \ref{fig:pozice-play}. Celkový poèet instalací pøesahuje 70000, pøièem¾ denní trend nových u¾ivatelù v souèasnosti spí¹e stagnuje. 
 
 \begin{figure}[ht]
 	\begin{center}
@@ -767,8 +716,6 @@ Souèástí vývojáøského rozhraní obchodu Google Play je i sledování vzniklých výji
 
 
 \section{Mo¾nosti dal¹ího vývoje}
-
-\note{OK r1}
 
 Pøesto¾e jsem v døívìj¹ích kapitolách èasto naznaèil dal¹í mo¾ný vývoj, popí¹i jej nyní detailnì v samostatné kapitole. Za polo¾ku s nejvy¹¹í prioritou aktuálnì pova¾uji vizuální stránku hry. Tu by sice bylo mo¾né zaøadit v rámci her nabízených na Google Play do prùmìru, nicménì je to vlastnost, která produkt prodává. Úplnì nejdøíve potenciální zákazník vidí ikonu hry, následnì propagaèní obrázky a teprve poté si mù¾e pøeèíst popis a hru pøípadnì stáhnout. Z reakcí na hru lze vyèíst, ¾e s navr¾eným zpùsobem ovládání je vìt¹ina hráèù spokojená, nicménì jde právì o tu skupinu hráèù, které neodradil ¾ádný ze zmiòovaných krokù. Lze pøedpokládat, ¾e existuje poèetná skupina náv¹tìvníkù internetového obchodu, které hra nezaujala právì kvùli grafickému zpracování. Konverzi tìchto potenciálních hráèù na hráèe skuteèné by mìlo pomoci právì dal¹í zlep¹ování propagaèních materiálù. Jejich souèástí je také popis hry v obchodì, který by bylo vhodné pøelo¾it do více jazykù (aktuálnì je pouze anglicky). Stejnì tak by bylo mo¾né pøelo¾it v¹echny texty ve høe, jak také napovídaly nìkteré reakce hráèù.
 
@@ -795,16 +742,16 @@ Pøi úvahách o dal¹ím roz¹iøování hry je vhodné uvá¾it také ekonomickou stránku v
 
 
 \chapter{Závìr}
-
-\note{TODO: aktualizovat statistiky}
+\hyphenation{Libgdx}
+\hyphenation{Google}
 
 Tento text shrnul mo¾nosti vývoje 3D her na platformì Android s vyu¾itím knihovny Libgdx. Dále se vìnoval popisu letu skuteèného letadla a z~nìj vycházející zjednodu¹ené simulace letu pou¾ívané ve hrách. Srovnává také existující metody ovládání leteckých her a navrhuje novou metodu, která záva¾nými nedostatky oproti ostatním netrpí. Navrhovaná metoda je zalo¾ená na dotykovém vstupu za pou¾ití dvou prstù a nabízí velmi rychlé a pøesné ovládání, èím¾ posiluje dojem, ¾e má hráè letadlo plnì pod kontrolou.
 
-Dále tato práce popsala návrh a implementaci hry, která toto ovládání vyu¾ívá. Jde o~hru kde hráè s~akrobatickým letadlem prolétává brankami a sna¾í se doletìt do cíle v~co nejkrat¹ím èase. Hra je navr¾ená tak, aby co nejvíce tì¾ila z~pøedstavené ovládací metody, podpoøila tak její my¹lenku a v~ideálním pøípadì i dal¹í roz¹íøení na poli mobilních leteckých her. V~prùbìhu vývoje vznikl prototyp hry, na kterém se ovìøily základní principy ovládání. Následnì vznikla plnohodnotná implementace hry s vyu¾itím právì knihovny Libgdx. 
+Dále tato práce popsala návrh a implementaci hry, která toto ovládání vyu¾ívá. Jde o~hru, kde hráè s~akrobatickým letadlem prolétává brankami a sna¾í se doletìt do cíle v~co nejkrat¹ím èase. Hra je navr¾ená tak, aby co nejvíce tì¾ila z~pøedstavené ovládací metody, podpoøila tak její my¹lenku a v~ideálním pøípadì i dal¹í roz¹íøení na poli mobilních leteckých her. V~prùbìhu vývoje vznikl prototyp hry, který ovìøil základní principy ovládání a umo¾nil srovnání s ji¾ pou¾ívanými metodami. Následnì vznikla plnohodnotná implementace hry s vyu¾itím právì knihovny Libgdx. 
 
 Hra byla prùbì¾nì konzultována s firmou CUKETA, s.\,r.\,o.\,, která se vývojem her profesionálnì zabývá. Pøed zveøejnìním hry probìhl také dotazníkový prùzkum, který ukázal, ¾e hráèi ovládací metodu i samotnou hru hodnotí velmi pozitivnì.
 
-Po získání a zpracování zpìtné vazby byla hra publikována na internetový obchod Google Play pod názvem Air Racer\footnote{\url{https://play.google.com/store/apps/details?id=cz.davidsabata.airracer}}. Tam se v dobì dokonèování této práce umístila na pozici 9. nejlep¹í bezplatné aplikace v kategorii závodních her a nainstalovalo si ji více ne¾ 50000 hráèù. Hra je kompatibilní s více ne¾ 94\% mobilních zaøízení platformy Android (dle døíve uvedených statistik).
+Po získání a zpracování zpìtné vazby byla hra publikována na internetový obchod Google Play pod názvem Air Racer\footnote{\url{https://play.google.com/store/apps/details?id=cz.davidsabata.airracer}}. Tam se v dobì dokonèování této práce umístila na pozici 9. nejlep¹í bezplatné aplikace v kategorii závodních her a nainstalovalo si ji více ne¾ 70000 hráèù. Hra je kompatibilní s více ne¾ 94\% mobilních zaøízení platformy Android (dle døíve uvedených statistik).
 
 
 
