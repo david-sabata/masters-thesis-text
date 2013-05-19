@@ -92,7 +92,7 @@ Jistou ochranou pøed hrozbou budoucích problémù je vyu¾ití komerènì nabízených ø
 	\begin{center}
 		\vspace{\baselineskip}
 		\includegraphics[width=\textwidth]{fig/shadowgun.jpg}
-		\caption{Hra Shadowgun od brnìnského studia Madfinger Games, vytvoøená v~prostøedí Unity 3D, zdroj: \url{www.madfingergames.com}}
+		\caption{Hra Shadowgun od brnìnského studia Madfinger Games, vytvoøená v~prostøedí Unity 3D, zdroj: www.madfingergames.com}
 		\label{fig:shadowgun}
 	\end{center}
 \end{figure}
@@ -375,7 +375,7 @@ Pøesto¾e se zdá ¾e právì dotykové ovládání nabízí ¹iroké mo¾nosti pro inovace, h
 
 V~této èásti práce popí¹i novì navrhovanou metodu ovládání a varianty její implementace. Dále rozvedu jak by mìla výsledná hra vypadat a jaké budou její herní mechanismy.  Stále je potøeba mít na pamìti, ¾e se pohybujeme v~oblasti her pro mobilní zaøízení. Rozmìry obrazovek, tedy ovládacích ploch, budou omezené, stejnì jako výkon zaøízení. Stejnì tak povaha práce s~mobilním zaøízením je diametrálnì odli¹ná od povahy práce s~bì¾ným poèítaèem nebo herní konzolí. Tyto faktory bude nutné uvá¾it.
 
-Pøi navrhování hry jsem vycházel zejména z~knih Game Industry, které sepsali èe¹tí herní vývojáøi \cite{gameindustry1}, \cite{gameindustry2}.
+Pøi navrhování hry jsem vycházel zejména z~knih Game Industry, které sepsali èe¹tí herní vývojáøi \cite{gameindustry1, gameindustry2}.
 
 
 
@@ -563,7 +563,7 @@ První obrazovka která se po spu¹tìní aplikace zobrazí je \texttt{LoadingScreen}.
 
 Datová reprezentace svìta je znázornìná na obrázku \ref{fig:classes-simulation}. Diagram opìt nìkteré souvislosti v~zájmu pøehledosti zjednodu¹uje. Klíèovou tøídou je zde \texttt{GameWorld}, reprezentující právì herní svìt. Z~hierarchie dìdiènosti lze vyèíst, ¾e tøída roz¹iøuje tøídy \texttt{BulletWorld} a \texttt{BaseWorld}. Druhá zmínìná, tedy \texttt{BaseWorld}, pøedstavuje základní svìt obsahující vykreslitelné entity. (Samotné vykreslování v¹ak provádí tøída \texttt{GameRenderer}, spravovaná tøídou herní obrazovky.) Ka¾dá entita vzniká ze svého \textit{konstruktoru} (ve smyslu tøídy \texttt{Constructor}). Konstruktor definuje 3D model entity a v~pøípadì, ¾e má být entita souèástí kontroly kolizí, definuje i její kolizní tvar. Entita je pak instancí svého konstruktoru na urèitém místì ve scénì (pøesnìji øeèeno s~urèitou transformací). Tento princip umo¾òuje sdílet zdrojová data v¹ech entit stejného typu a sni¾ovat tak pamì»ové i výkonové nároky.
 
-Základní svìt \texttt{BaseWorld} tedy podporuje pouze vykreslení entit. Jeho potomek \texttt{BulletWorld} roz¹iøuje toto chování o~mo¾nost provádìní detekce kolizí. K~tomu roz¹iøuje i konstruktor na \texttt{BulletConstructor}, obsahující právì informaci o~kolizním tvaru a povaze tìlesa jak byla popsána v~kapitole \ref{sec:bullet}. Stejnì tak roz¹iøuje entitu na \texttt{BulletEntity}, se kterou mù¾e knihovna detekci provádìt. Poslední roz¹íøení svìta je právì na nejdùle¾itìj¹í tøídu \texttt{GameWorld}, která nad bì¾ící simulací spou¹tí samotnou hru ve smyslu dodání sémantiky kolizím objektù. Z~tohoto dùvodu zavádí tøídu \texttt{GateEntity}, která reprezentuje entitu, s~ní¾ je kolize ¾ádoucí, tedy branku nebo kruh k~prolétnutí.
+Základní svìt \texttt{BaseWorld} tedy podporuje pouze vykreslení entit. Jeho potomek \\\texttt{BulletWorld} roz¹iøuje toto chování o~mo¾nost provádìní detekce kolizí. K~tomu roz¹iøuje i konstruktor na \texttt{BulletConstructor}, obsahující právì informaci o~kolizním tvaru a povaze tìlesa jak byla popsána v~kapitole \ref{sec:bullet}. Stejnì tak roz¹iøuje entitu na \texttt{BulletEntity}, se kterou mù¾e knihovna detekci provádìt. Poslední roz¹íøení svìta je právì na nejdùle¾itìj¹í tøídu \texttt{GameWorld}, která nad bì¾ící simulací spou¹tí samotnou hru ve smyslu dodání sémantiky kolizím objektù. Z~tohoto dùvodu zavádí tøídu \texttt{GateEntity}, která reprezentuje entitu, s~ní¾ je kolize ¾ádoucí, tedy branku nebo kruh k~prolétnutí.
 
 Tøídy spadající pod knihovnu Bullet Physics obsahují ve svém názvu prefix \texttt{bt}. Pro pou¾ití této knihovny není nutná detailní znalost její vnitøní struktury, proto i já popí¹i tyto tøídy jen velmi zbì¾nì. Základní tøídou je \texttt{btCollisionShape}, tedy kolizní tvar objektu. Podobnì jako vytvoøením instance konstruktoru vzniká entita, tak vytvoøením instance kolizního \textit{tvaru} vzniká kolizní \textit{objekt}, který je souèástí entity a reprezentuje jej tøída \texttt{btCollisionObject}. Z~hlediska výkonnosti detekce kolizí je dùle¾ité, ¾e opìt objekty vzniklé ze stejného tvaru sdílejí stejné datové struktury. Dále fyzikální svìt obsahuje instanci tøídy \texttt{btCollisionWorld}, co¾ je knihovní reprezentace prostøedí, ve kterém detekce probíhá. (Z~dùvodù kompatibility rozhraní je do tøídy \texttt{BulletWorld} pouze vlo¾en a tøída z~nìj pøímo nedìdí.) Toto prostøedí pøedstavuje zjednodu¹enou verzi fyzikálního svìta, kde je mo¾né pouze testovat zda dochází ke kolizi nìkterých objektù. Fyzikální simulace ve smyslu napøíklad volného pádu tìles nebo jejich vzájemná interakce zde neprobíhá. Knihovna Bullet Physics toto samozøejmì nabízí, ov¹em za cenu znaèného nárùstu po¾adavkù na výkon. Vyvíjená hra je navíc zámìrnì navr¾ena tak, aby plnohodnotná simulace probíhat nemusela.
 
